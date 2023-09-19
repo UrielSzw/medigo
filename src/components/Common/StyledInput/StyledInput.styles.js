@@ -8,5 +8,7 @@ export const styles = StyleSheet.create({
     borderColor: theme.colors.grey,
     borderRadius: 8,
     paddingLeft: 10,
+    fontFamily: 'Poppins-Regular',
+    color: theme.colors.black,
   },
 });
