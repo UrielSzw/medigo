@@ -2,6 +2,9 @@ import {StyleSheet} from 'react-native';
 import {theme} from '../../../theme/theme';
 
 export const styles = StyleSheet.create({
+  text: {
+    fontFamily: 'Poppins-Regular',
+  },
   white: {
     color: theme.colors.white,
   },
@@ -37,5 +40,8 @@ export const styles = StyleSheet.create({
   },
   xl: {
     fontSize: theme.fontSize.xl,
+  },
+  bold: {
+    fontWeight: 'bold',
   },
 });

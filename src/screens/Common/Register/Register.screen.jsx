@@ -1,16 +1,20 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import {styles} from './Register.styles';
 import {StyledText} from '../../../components';
+import {BigButton} from '../../../components/Common/BigButton/BigButton.component';
 
 export const Register = () => {
   return (
     <View>
       <View style={styles.header} />
-      <StyledText size="xl" color="black">
-        dasdads
+      <StyledText bold style={styles.title}>
+        Register
       </StyledText>
-      <Text style={styles.title}>Register</Text>
+      <View style={styles.body}>
+        <StyledText>Elige tipo de cuenta</StyledText>
+        <BigButton />
+      </View>
     </View>
   );
 };

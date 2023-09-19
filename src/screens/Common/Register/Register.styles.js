@@ -21,4 +21,8 @@ export const styles = StyleSheet.create({
     zIndex: 1,
     alignSelf: 'center',
   },
+  body: {
+    borderWidth: 1,
+    alignItems: 'center',
+  },
 });
