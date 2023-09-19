@@ -22,7 +22,16 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   body: {
-    borderWidth: 1,
     alignItems: 'center',
+  },
+  buttonsWrapper: {
+    paddingTop: 25,
+    flexDirection: 'row',
+    gap: 15,
+  },
+  loginWrapper: {
+    flexDirection: 'row',
+    marginTop: 150,
+    gap: 4,
   },
 });

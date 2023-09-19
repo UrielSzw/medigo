@@ -1,13 +1,23 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {CaduceusIcon, UserIcon} from '../../../assets';
+import {StyledText} from '../StyledText/StyledText.component';
+import {styles} from './BigButton.styles';
 
-export const BigButton = ({}) => {
+export const BigButton = ({isDoctor}) => {
+  const wrapperStyles = {
+    ...styles.wrapper,
+    ...styles[isDoctor ? 'doctor' : 'patient'],
+  };
+
   return (
-    <View>
-      <CaduceusIcon />
-      <UserIcon />
-      <Text>Medico</Text>
-    </View>
+    <TouchableOpacity>
+      <View style={wrapperStyles}>
+        {isDoctor ? <CaduceusIcon /> : <UserIcon />}
+        <StyledText color={isDoctor ? 'blue' : 'white'}>
+          {isDoctor ? 'Medico' : 'Paciente'}
+        </StyledText>
+      </View>
+    </TouchableOpacity>
   );
 };
