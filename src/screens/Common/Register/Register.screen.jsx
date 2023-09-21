@@ -1,7 +1,6 @@
 import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
-import {StyledText} from '../../../components';
-import {BigButton} from '../../../components/Common/BigButton/BigButton.component';
+import {BigButton, StyledText} from '../../../components';
 import {styles} from './Register.styles';
 
 export const Register = () => {
