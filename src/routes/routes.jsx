@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Register} from '../screens';
+import {Login, Register} from '../screens';
 import {PATHS} from './paths';
 
 export const Routes = () => {
@@ -13,8 +13,9 @@ export const Routes = () => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName={PATHS.REGISTER}>
+        initialRouteName={PATHS.LOGIN}>
         <Stack.Screen name={PATHS.REGISTER} component={Register} />
+        <Stack.Screen name={PATHS.LOGIN} component={Login} />
       </Stack.Navigator>
     </NavigationContainer>
   );

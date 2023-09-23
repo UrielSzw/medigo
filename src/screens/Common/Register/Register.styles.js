@@ -4,6 +4,10 @@ import {theme} from '../../../theme/theme';
 const {width} = Dimensions.get('screen');
 
 export const styles = StyleSheet.create({
+  container: {
+    backgroundColor: theme.colors.white,
+    flex: 1,
+  },
   header: {
     width: width * 1.5,
     height: 300,

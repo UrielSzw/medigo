@@ -3,15 +3,15 @@ import {TextInput, View} from 'react-native';
 import {StyledText} from '../StyledText/StyledText.component';
 import {styles} from './StyledInput.styles';
 
-export const StyledInput = ({label, placeholder, secureTextEntry}) => {
+export const StyledInput = ({label, placeholder, secureTextEntry, style}) => {
   return (
     <View>
-      <StyledText size="default" color="black">
+      <StyledText size="md" color="black">
         {label}
       </StyledText>
       <TextInput
         secureTextEntry={secureTextEntry}
-        style={styles.input}
+        style={{...styles.input, ...style}}
         placeholder={placeholder}
       />
     </View>

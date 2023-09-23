@@ -1,11 +1,16 @@
 import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {BigButton, StyledText} from '../../../components';
+import {PATHS} from '../../../routes/paths';
 import {styles} from './Register.styles';
 
-export const Register = () => {
+export const Register = ({navigation}) => {
+  const handleNavigateLogin = () => {
+    navigation.navigate(PATHS.LOGIN);
+  };
+
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.header} />
       <StyledText bold style={styles.title}>
         Registrate
@@ -18,7 +23,7 @@ export const Register = () => {
         </View>
         <View style={styles.loginWrapper}>
           <StyledText color="grey">¿Ya tienes cuenta?</StyledText>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleNavigateLogin}>
             <StyledText color="blue">ingresa</StyledText>
           </TouchableOpacity>
         </View>

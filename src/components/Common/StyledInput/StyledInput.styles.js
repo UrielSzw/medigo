@@ -10,5 +10,6 @@ export const styles = StyleSheet.create({
     paddingLeft: 10,
     fontFamily: 'Poppins-Regular',
     color: theme.colors.black,
+    marginTop: 5,
   },
 });
