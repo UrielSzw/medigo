@@ -9,7 +9,7 @@ export const Register = ({navigation}) => {
     navigation.navigate(PATHS.LOGIN);
   };
 
-   // No esta funcionando
+   // No esta funcionando no permite navegar el BigButton
    const handleNavigateRegisterDoc = () => {
     console.log("Llamado");
     navigation.navigate(PATHS.REGISTERDOCTOR);
