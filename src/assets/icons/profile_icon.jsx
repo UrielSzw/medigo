@@ -12,7 +12,8 @@ export function ProfileIcon(props) {
       {...props}>
       <Path
         d="M12.41 10.87c-.1-.01-.22-.01-.33 0a4.42 4.42 0 01-4.27-4.43C7.81 3.99 9.79 2 12.25 2a4.435 4.435 0 01.16 8.87zM7.41 14.56c-2.42 1.62-2.42 4.26 0 5.87 2.75 1.84 7.26 1.84 10.01 0 2.42-1.62 2.42-4.26 0-5.87-2.74-1.83-7.25-1.83-10.01 0z"
-        stroke="#8696BB"
+        stroke={props.fill ? props.fill : '#8696BB'}
+        fill={props.fill ? props.fill : '#8696BB'}
         strokeWidth={1.5}
         strokeLinecap="round"
         strokeLinejoin="round"
