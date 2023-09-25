@@ -13,7 +13,7 @@ export const Routes = () => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName={PATHS.LOGIN}>
+        initialRouteName={PATHS.REGISTER}>
         <Stack.Screen name={PATHS.REGISTER} component={Register} />
         <Stack.Screen name={PATHS.LOGIN} component={Login} />
       </Stack.Navigator>
