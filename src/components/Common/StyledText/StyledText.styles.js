@@ -23,6 +23,9 @@ export const styles = StyleSheet.create({
   green: {
     color: theme.colors.green,
   },
+  orange: {
+    color: theme.colors.orange,
+  },
   xs: {
     fontSize: theme.fontSize.xs,
   },
