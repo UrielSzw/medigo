@@ -15,6 +15,7 @@ export const HomePat = () => {
   const address = 'Av.Corrientes 3235';
 
   const [openModal, setOpenModal] = useState(false);
+  const [openMedicModal, setOpenMedicModal] = useState(false);
 
   return (
     <View style={styles.wrapper}>
@@ -27,10 +28,33 @@ export const HomePat = () => {
         </TouchableOpacity>
         <WelcomeHeader />
       </View>
-      <View style={styles.buttonWrapper}>
-        <StyledButton>Solicitar medico</StyledButton>
-      </View>
+      <TouchableOpacity onPress={setOpenMedicModal}>
+        <View style={styles.buttonWrapper}>
+          <StyledText>Solicitar medico</StyledText>
+        </View>
+      </TouchableOpacity>
       <FooterPatient />
+      <StyledModal
+        title="Ingresar informacion medica"
+        content={
+          <View style={styles.contentAskMedicWrapper}>
+            <StyledInput label="Motivo" />
+            <StyledInput label="Sintomas" />
+            <StyledInput label="Especialidad" />
+            <StyledInput label="Miembro del grupo familiar" />
+            <StyledInput label="Direccion" />
+            <View>
+              <StyledButton>Ver medicos disponibles</StyledButton>
+              <TouchableOpacity onPress={() => setOpenMedicModal(false)}>
+                <StyledText style={styles.cancelButton} color="grey">
+                  Cancelar
+                </StyledText>
+              </TouchableOpacity>
+            </View>
+          </View>
+        }
+        open={openMedicModal}
+      />
       <StyledModal
         title="Cambiar direccion"
         content={
@@ -38,7 +62,11 @@ export const HomePat = () => {
             <StyledInput label="Direccion" placeholder={address} />
             <View>
               <StyledButton>Cambiar</StyledButton>
-              <StyledButton variant="empty">Cancelar</StyledButton>
+              <TouchableOpacity onPress={() => setOpenModal(false)}>
+                <StyledText style={styles.cancelButton} color="grey">
+                  Cancelar
+                </StyledText>
+              </TouchableOpacity>
             </View>
           </View>
         }
