@@ -11,7 +11,7 @@ import {PATHS} from '../../../routes/paths';
 import {styles} from './RegisterDoc.styles';
 import {MedigoLogoIcon} from '../../../assets';
 
-export const RegisterDoctor = ({navigation}) => {
+export const RegisterDoc = ({navigation}) => {
 
     const [formData, setFormData] = useState({
         fullName: '',
