@@ -9,6 +9,12 @@ export const Register = ({navigation}) => {
     navigation.navigate(PATHS.LOGIN);
   };
 
+   // No esta funcionando no permite navegar el BigButton
+   const handleNavigateRegisterDoc = () => {
+    console.log("Llamado");
+    navigation.navigate(PATHS.REGISTERDOCTOR);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header} />
@@ -18,7 +24,7 @@ export const Register = ({navigation}) => {
       <View style={styles.body}>
         <StyledText>Elige tipo de cuenta</StyledText>
         <View style={styles.buttonsWrapper}>
-          <BigButton isDoctor />
+          <BigButton isDoctor onPress={handleNavigateRegisterDoc}/>
           <BigButton />
         </View>
         <View style={styles.loginWrapper}>
