@@ -58,7 +58,6 @@ export const HomePat = () => {
         title="Ingresar informacion medica"
         content={
           <KeyboardAwareScrollView
-            style={styles.contentAskMedicWrapper}
             contentContainerStyle={styles.contentAskMedicWrapperScroll}>
             <StyledInput
               label="Motivo"

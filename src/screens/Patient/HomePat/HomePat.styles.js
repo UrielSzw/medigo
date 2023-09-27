@@ -25,10 +25,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 30,
   },
-  contentAskMedicWrapper: {
-    gap: 10,
-  },
   contentAskMedicWrapperScroll: {
+    gap: 15,
     justifyContent: 'space-between',
   },
   buttonsWrapper: {
