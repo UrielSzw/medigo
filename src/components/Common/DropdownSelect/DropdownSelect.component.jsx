@@ -71,7 +71,9 @@ export const DropdownSelect = ({
         onPress={() => handleOnPress()}>
         <View style={styles.container}>
           <TouchableWithoutFeedback>
-            <StyledText style={styles.title}>{title}</StyledText>
+            <StyledText color="white" style={styles.title}>
+              {title}
+            </StyledText>
           </TouchableWithoutFeedback>
           <ScrollView contentContainerStyle={styles.options}>
             {showOptions?.map((option, index) => (
