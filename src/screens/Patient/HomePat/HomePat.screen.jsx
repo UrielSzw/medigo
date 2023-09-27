@@ -10,12 +10,32 @@ import {
 } from '../../../components';
 import {PencilIcon} from '../../../assets';
 import {styles} from './HomePat.styles';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export const HomePat = () => {
   const address = 'Av.Corrientes 3235';
 
   const [openModal, setOpenModal] = useState(false);
   const [openMedicModal, setOpenMedicModal] = useState(false);
+
+  const [medicData, setMedicData] = useState({
+    motivo: '',
+    sintomas: '',
+    especialidad: '',
+    miembroFamiliar: '',
+    direccion: '',
+  });
+
+  const handleMedicDataChange = (text, name) => {
+    setMedicData(prevData => ({
+      ...prevData,
+      [name]: text,
+    }));
+  };
+
+  const handleDataSubmit = () => {
+    setOpenModal(false);
+  };
 
   return (
     <View style={styles.wrapper}>
@@ -28,30 +48,63 @@ export const HomePat = () => {
         </TouchableOpacity>
         <WelcomeHeader />
       </View>
-      <TouchableOpacity onPress={setOpenMedicModal}>
-        <View style={styles.buttonWrapper}>
-          <StyledText>Solicitar medico</StyledText>
-        </View>
-      </TouchableOpacity>
+      <View style={styles.buttonWrapper}>
+        <StyledButton variant="primary" onPress={setOpenMedicModal}>
+          Solicitar medico
+        </StyledButton>
+      </View>
       <FooterPatient />
       <StyledModal
         title="Ingresar informacion medica"
         content={
-          <View style={styles.contentAskMedicWrapper}>
-            <StyledInput label="Motivo" />
-            <StyledInput label="Sintomas" />
-            <StyledInput label="Especialidad" />
-            <StyledInput label="Miembro del grupo familiar" />
-            <StyledInput label="Direccion" />
-            <View>
+          <KeyboardAwareScrollView
+            style={styles.contentAskMedicWrapper}
+            contentContainerStyle={styles.contentAskMedicWrapperScroll}>
+            <StyledInput
+              label="Motivo"
+              onChangeText={e =>
+                handleMedicDataChange(e.target.value, 'motivo')
+              }
+              value={medicData.motivo}
+            />
+            <StyledInput
+              label="Sintomas"
+              onChangeText={e =>
+                handleMedicDataChange(e.target.value, 'sintomas')
+              }
+              value={medicData.sintomas}
+            />
+            <StyledInput
+              label="Especialidad"
+              onChangeText={e =>
+                handleMedicDataChange(e.target.value, 'especialidad')
+              }
+              value={medicData.especialidad}
+            />
+            <StyledInput
+              label="Miembro del grupo familiar"
+              onChangeText={e =>
+                handleMedicDataChange(e.target.value, 'miembroFamiliar')
+              }
+              value={medicData.miembroFamiliar}
+            />
+            <StyledInput
+              label="Direccion"
+              onChangeText={e =>
+                handleMedicDataChange(e.target.value, 'direccion')
+              }
+              value={medicData.direccion}
+            />
+            <View style={styles.buttonsWrapper}>
               <StyledButton>Ver medicos disponibles</StyledButton>
-              <TouchableOpacity onPress={() => setOpenMedicModal(false)}>
-                <StyledText style={styles.cancelButton} color="grey">
-                  Cancelar
-                </StyledText>
-              </TouchableOpacity>
+
+              <StyledButton
+                variant="empty"
+                onPress={() => setOpenMedicModal(false)}>
+                Cancelar
+              </StyledButton>
             </View>
-          </View>
+          </KeyboardAwareScrollView>
         }
         open={openMedicModal}
       />
@@ -61,12 +114,11 @@ export const HomePat = () => {
           <View style={styles.contentWrapper}>
             <StyledInput label="Direccion" placeholder={address} />
             <View>
-              <StyledButton>Cambiar</StyledButton>
-              <TouchableOpacity onPress={() => setOpenModal(false)}>
-                <StyledText style={styles.cancelButton} color="grey">
-                  Cancelar
-                </StyledText>
-              </TouchableOpacity>
+              <StyledButton onPress={handleDataSubmit}>Cambiar</StyledButton>
+
+              <StyledButton variant="empty" onPress={() => setOpenModal(false)}>
+                Cancelar
+              </StyledButton>
             </View>
           </View>
         }

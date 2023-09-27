@@ -26,11 +26,12 @@ export const styles = StyleSheet.create({
     gap: 30,
   },
   contentAskMedicWrapper: {
-    justifyContent: 'space-between',
-    gap: 20,
+    gap: 10,
   },
-  cancelButton: {
-    alignSelf: 'center',
+  contentAskMedicWrapperScroll: {
+    justifyContent: 'space-between',
+  },
+  buttonsWrapper: {
     paddingTop: 10,
   },
 });
