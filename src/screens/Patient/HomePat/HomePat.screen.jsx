@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {
+  DropdownSelect,
   FooterPatient,
   StyledButton,
   StyledInput,
@@ -9,20 +10,24 @@ import {
   WelcomeHeader,
 } from '../../../components';
 import {PencilIcon} from '../../../assets';
-import {styles} from './HomePat.styles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {styles} from './HomePat.styles';
 
 export const HomePat = () => {
   const address = 'Av.Corrientes 3235';
 
   const [openModal, setOpenModal] = useState(false);
   const [openMedicModal, setOpenMedicModal] = useState(false);
+  const [especialidad, setEspecialidad] = useState('Seleccione especialidad');
+  const [especialidadModal, setEspecialidadModal] = useState(false);
+  const [grupoFamiliarModal, setGrupoFamiliarModal] = useState(false);
+  const [grupoFamiliar, setGrupoFamiliar] = useState(
+    'Seleccione grupo familiar',
+  );
 
   const [medicData, setMedicData] = useState({
     motivo: '',
     sintomas: '',
-    especialidad: '',
-    miembroFamiliar: '',
     direccion: '',
   });
 
@@ -73,20 +78,25 @@ export const HomePat = () => {
               }
               value={medicData.sintomas}
             />
-            <StyledInput
-              label="Especialidad"
-              onChangeText={e =>
-                handleMedicDataChange(e.target.value, 'especialidad')
-              }
-              value={medicData.especialidad}
-            />
-            <StyledInput
-              label="Miembro del grupo familiar"
-              onChangeText={e =>
-                handleMedicDataChange(e.target.value, 'miembroFamiliar')
-              }
-              value={medicData.miembroFamiliar}
-            />
+
+            <View>
+              <StyledText>Especialidad</StyledText>
+              <StyledButton
+                variant="empty"
+                onPress={() => setEspecialidadModal(true)}>
+                {especialidad}
+              </StyledButton>
+            </View>
+
+            <View>
+              <StyledText>Miembro del grupo familiar</StyledText>
+              <StyledButton
+                variant="empty"
+                onPress={() => setGrupoFamiliarModal(true)}>
+                {grupoFamiliar}
+              </StyledButton>
+            </View>
+
             <StyledInput
               label="Direccion"
               onChangeText={e =>
@@ -122,6 +132,22 @@ export const HomePat = () => {
           </View>
         }
         open={openModal}
+      />
+      <DropdownSelect
+        dropdownValue={especialidad}
+        setDropdownValue={setEspecialidad}
+        title="Seleciona una especialidad"
+        options={['Kinesiologia', 'Clinico', 'Traumatologo', 'Alergista']}
+        visible={especialidadModal}
+        setVisible={setEspecialidadModal}
+      />
+      <DropdownSelect
+        dropdownValue={grupoFamiliar}
+        setDropdownValue={setGrupoFamiliar}
+        title="Seleciona un grupoFamiliar"
+        options={['Yo', 'Hijo', 'Esposo']}
+        visible={grupoFamiliarModal}
+        setVisible={setGrupoFamiliarModal}
       />
     </View>
   );
