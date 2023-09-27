@@ -6,7 +6,7 @@ import {styles} from './Register.styles';
 
 export const Register = ({navigation}) => {
   const handleNavigateLogin = () => {
-    navigation.navigate(PATHS.LOGIN);
+    navigation.navigate(PATHS.HOMEDOCTOR);
   };
 
   return (
