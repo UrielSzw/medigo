@@ -3,6 +3,7 @@ export * from './Common/StyledInput/StyledInput.component';
 export * from './Common/BigButton/BigButton.component';
 export * from './Common/Banner/Banner.component';
 export * from './Common/StyledButton/StyledButton.component';
+export * from './Common/DynamicInput/DynamicInput.component';
 export * from './Common/WelcomeHeader/WelcomeHeader.component';
 export * from './Common/StyledModal/StyledModal.component';
 export * from './Common/UserDataItem/UserDataItem.component';
