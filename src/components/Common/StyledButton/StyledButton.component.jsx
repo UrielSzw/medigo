@@ -8,13 +8,17 @@ export const StyledButton = ({
   style,
   children = 'Click',
   onPress,
+  disabled,
 }) => {
   const buttonStyles = {...styles[variant], ...styles.button, ...style};
   const buttonColor =
     variant === 'secondary' ? 'blue' : variant === 'empty' ? 'grey' : 'white';
 
   return (
-    <TouchableOpacity style={buttonStyles} onPress={onPress}>
+    <TouchableOpacity
+      style={buttonStyles}
+      onPress={onPress}
+      disabled={disabled}>
       <StyledText color={buttonColor}>{children}</StyledText>
     </TouchableOpacity>
   );

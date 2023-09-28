@@ -10,7 +10,6 @@ export const Register = ({navigation}) => {
   };
 
   const handleNavigateRegisterDoc = () => {
-    console.log('pepe');
     navigation.navigate(PATHS.REGISTERDOCTOR);
   };
 
