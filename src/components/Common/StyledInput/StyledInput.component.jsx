@@ -11,7 +11,7 @@ export const StyledInput = ({label, placeholder, secureTextEntry, style}) => {
       </StyledText>
       <TextInput
         secureTextEntry={secureTextEntry}
-        style={styles.input}
+        style={{...styles.input, ...style}}
         placeholder={placeholder}
       />
     </View>

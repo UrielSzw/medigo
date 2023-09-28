@@ -19,8 +19,8 @@ export const styles = StyleSheet.create({
     borderColor: theme.colors.blue,
   },
   empty: {
-    backgroundColor: theme.colors.white,
-    borderColor: theme.colors.white,
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
   },
   warning: {
     backgroundColor: theme.colors.red,

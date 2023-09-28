@@ -4,14 +4,14 @@ import {CaduceusIcon, UserIcon} from '../../../assets';
 import {StyledText} from '../StyledText/StyledText.component';
 import {styles} from './BigButton.styles';
 
-export const BigButton = ({isDoctor}) => {
+export const BigButton = ({isDoctor, onPress}) => {
   const wrapperStyles = {
     ...styles.wrapper,
     ...styles[isDoctor ? 'doctor' : 'patient'],
   };
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <View style={wrapperStyles}>
         {isDoctor ? <CaduceusIcon /> : <UserIcon />}
         <StyledText color={isDoctor ? 'blue' : 'white'}>

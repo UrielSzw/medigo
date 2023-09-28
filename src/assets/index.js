@@ -17,3 +17,4 @@ export * from './icons/profile_icon';
 export * from './icons/reviews_icon';
 export * from './icons/star_icon';
 export * from './icons/user_icon';
+export * from './icons/default_profile';
