@@ -2,6 +2,7 @@ export const PATHS = {
   REGISTER: 'register',
   REGISTER_PAT: 'registerPat',
   LOGIN: 'login',
-  REGISTERDOCTOR: 'registerDoctor',
+  REGISTERDOCTOR: 'registerDoc',
+  HOMEDOCTOR: 'homeDoc',
   HOMEPATIENT: 'homePatient',
 };
