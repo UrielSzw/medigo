@@ -31,8 +31,26 @@ export const SelectDoc = () => {
           <StyledText bold size="md">
             Doctores cercanos
           </StyledText>
-          <DoctorListItem />
-          <DoctorListItem />
+          <DoctorListItem
+            showTime
+            showInfo
+            time="15"
+            price="2500"
+            reviews="(120 reseñas)"
+            rating="4.8"
+            name="Dr. Joseph Brostito"
+            category="Kinesiologo"
+          />
+          <DoctorListItem
+            showTime
+            showInfo
+            time="17"
+            price="3100"
+            reviews="(32 reseñas)"
+            rating="4.6"
+            name="Dr. Frederick James"
+            category="Kinesiologo"
+          />
         </View>
       </View>
       <FooterPatient />

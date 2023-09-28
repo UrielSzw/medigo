@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     flex: 1,
     justifyContent: 'space-between',
-    paddingTop: 10,
+    paddingTop: 5,
     gap: 10,
   },
   selectDocContainer: {
@@ -17,7 +17,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 20,
     alignItems: 'center',
-    marginTop: 10,
   },
   addressTop: {
     alignSelf: 'center',
@@ -34,8 +33,8 @@ export const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   nearDocsContainer: {
-    marginTop: 20,
+    marginTop: 10,
     paddingHorizontal: 20,
-    gap: 10,
+    gap: 5,
   },
 });
