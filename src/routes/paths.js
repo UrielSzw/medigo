@@ -3,4 +3,5 @@ export const PATHS = {
   LOGIN: 'login',
   REGISTERDOCTOR: 'registerDoc',
   HOMEDOCTOR: 'homeDoc',
+  HOMEPATIENT: 'homePatient',
 };

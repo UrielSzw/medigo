@@ -6,7 +6,12 @@ import {styles} from './Register.styles';
 
 export const Register = ({navigation}) => {
   const handleNavigateLogin = () => {
-    navigation.navigate(PATHS.HOMEDOCTOR);
+    navigation.navigate(PATHS.LOGIN);
+  };
+
+  const handleNavigateRegisterDoc = () => {
+    console.log('pepe');
+    navigation.navigate(PATHS.REGISTERDOCTOR);
   };
 
   return (
@@ -18,7 +23,7 @@ export const Register = ({navigation}) => {
       <View style={styles.body}>
         <StyledText>Elige tipo de cuenta</StyledText>
         <View style={styles.buttonsWrapper}>
-          <BigButton isDoctor/>
+          <BigButton isDoctor onPress={handleNavigateRegisterDoc} />
           <BigButton />
         </View>
         <View style={styles.loginWrapper}>

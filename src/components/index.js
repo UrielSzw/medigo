@@ -6,6 +6,7 @@ export * from './Common/StyledButton/StyledButton.component';
 export * from './Common/WelcomeHeader/WelcomeHeader.component';
 export * from './Common/StyledModal/StyledModal.component';
 export * from './Common/UserDataItem/UserDataItem.component';
+export * from './Common/DropdownSelect/DropdownSelect.component';
 export * from './Doctor/DoctorListItem/DoctorListItem.component';
 export * from './Doctor/FooterDoc/FooterDoc.component';
 export * from './Patient/FooterPatient/FooterPatient.component';
