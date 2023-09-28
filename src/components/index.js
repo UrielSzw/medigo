@@ -11,3 +11,4 @@ export * from './Common/DropdownSelect/DropdownSelect.component';
 export * from './Doctor/DoctorListItem/DoctorListItem.component';
 export * from './Doctor/FooterDoc/FooterDoc.component';
 export * from './Patient/FooterPatient/FooterPatient.component';
+export * from './Common/WelcomePerfilHeader/WelcomePerfilHeader.component'
