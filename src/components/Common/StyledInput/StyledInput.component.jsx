@@ -5,8 +5,10 @@ import {styles} from './StyledInput.styles';
 
 export const StyledInput = ({label, placeholder, secureTextEntry, style}) => {
   return (
-    <View>
-      <StyledText color="black">{label}</StyledText>
+    <View style={style}>
+      <StyledText size="default" color="black">
+        {label}
+      </StyledText>
       <TextInput
         secureTextEntry={secureTextEntry}
         style={{...styles.input, ...style}}
