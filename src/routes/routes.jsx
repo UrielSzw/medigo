@@ -20,13 +20,13 @@ export const Routes = () => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName={PATHS.HOMEPATIENT}>
+        initialRouteName={PATHS.HOMEDOCTOR}>
+        <Stack.Screen name={PATHS.LOGIN} component={Login} />
         <Stack.Screen name={PATHS.REGISTER} component={Register} />
         <Stack.Screen name={PATHS.REGISTER_PAT} component={RegisterPat} />
-        <Stack.Screen name={PATHS.LOGIN} component={Login} />
-        <Stack.Screen name={PATHS.HOMEDOCTOR} component={HomeDoc} />
         <Stack.Screen name={PATHS.REGISTERDOCTOR} component={RegisterDoc} />
         <Stack.Screen name={PATHS.HOMEPATIENT} component={HomePat} />
+        <Stack.Screen name={PATHS.HOMEDOCTOR} component={HomeDoc} />
       </Stack.Navigator>
     </NavigationContainer>
   );

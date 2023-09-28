@@ -18,3 +18,4 @@ export * from './icons/reviews_icon';
 export * from './icons/star_icon';
 export * from './icons/user_icon';
 export * from './icons/default_profile';
+export * from './icons/pin_icon';
