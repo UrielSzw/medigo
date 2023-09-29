@@ -9,11 +9,13 @@ import {
     DoctorListItem,
 } from '../../../components';
 import {styles} from './HomeDoc.styles';
+import {PATHS} from '../../../routes/paths';
 
-export const HomeDoc = () => {
+export const HomeDoc = ({navigation}) => {
     const [activo, setActivo] = useState(false);
     const [cuentaActivada, setCuentaActivada] = useState(false); 
     const [openModal, setOpenModal] = useState(false);
+   
 
     const handleConfirmarClick = () => {
         if (cuentaActivada) {
@@ -22,8 +24,11 @@ export const HomeDoc = () => {
         } else {
             setCuentaActivada(true);
             setActivo(true); 
+            navigation.navigate(PATHS.MAP);
         }
         closeModal();
+
+        
     };
 
     const closeModal = () => {

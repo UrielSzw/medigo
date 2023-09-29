@@ -5,4 +5,5 @@ export const PATHS = {
   REGISTERDOCTOR: 'registerDoc',
   HOMEDOCTOR: 'homeDoc',
   HOMEPATIENT: 'homePatient',
+  MAP: 'map',
 };
