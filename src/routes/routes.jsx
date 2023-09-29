@@ -21,7 +21,7 @@ export const Routes = () => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName={PATHS.PERFILDOCTOR}>
+        initialRouteName={PATHS.REGISTER_PAT}>
         <Stack.Screen name={PATHS.LOGIN} component={Login} />
         <Stack.Screen name={PATHS.REGISTER} component={Register} />
         <Stack.Screen name={PATHS.REGISTER_PAT} component={RegisterPat} />
