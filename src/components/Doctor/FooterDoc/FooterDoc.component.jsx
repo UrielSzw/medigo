@@ -21,6 +21,10 @@ export const FooterDoc = ({current = 'home'}) => {
     });
   };
 
+  const handlePress = name => {
+    handleChangeSelection(name);
+  };
+
   return (
     <View style={styles.wrapper}>
       <TouchableOpacity
@@ -29,7 +33,7 @@ export const FooterDoc = ({current = 'home'}) => {
             ? {...styles.button, ...styles.selected}
             : styles.button
         }
-        onPress={() => handleChangeSelection('map')}>
+        onPress={() => handlePress('map')}>
         <MapIcon fill={selectedButton.map && '#63B4FF'} />
         {selectedButton.map && <StyledText color="blue">Mapa</StyledText>}
       </TouchableOpacity>
@@ -39,7 +43,7 @@ export const FooterDoc = ({current = 'home'}) => {
             ? {...styles.button, ...styles.selected}
             : styles.button
         }
-        onPress={() => handleChangeSelection('home')}>
+        onPress={() => handlePress('home')}>
         <HomeIcon fill={selectedButton.home && '#FFF'} />
         {selectedButton.home && <StyledText color="blue">Inicio</StyledText>}
       </TouchableOpacity>
@@ -49,7 +53,7 @@ export const FooterDoc = ({current = 'home'}) => {
             ? {...styles.button, ...styles.selected}
             : styles.button
         }
-        onPress={() => handleChangeSelection('profile')}>
+        onPress={() => handlePress('profile')}>
         <ProfileIcon fill={selectedButton.profile && '#63B4FF'} />
         {selectedButton.profile && <StyledText color="blue">Perfil</StyledText>}
       </TouchableOpacity>
