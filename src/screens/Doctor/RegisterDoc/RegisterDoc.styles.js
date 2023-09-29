@@ -1,7 +1,5 @@
-import {Dimensions, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {theme} from '../../../theme/theme';
-
-const {width} = Dimensions.get('screen');
 
 export const styles = StyleSheet.create({
   container: {
@@ -9,11 +7,13 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   bodyWrapper: {
-    flex: 1,
+    width: '100%',
+    height: 370,
     paddingHorizontal: '5%',
+    marginBottom: 50,
   },
   input: {
-    marginBottom: 25,
+    marginBottom: 5,
   },
   footerWrapper: {
     marginTop: 20,

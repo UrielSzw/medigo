@@ -1,29 +1,27 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity, View} from 'react-native';
 import {HomeIcon, MapIcon, ProfileIcon} from '../../../assets';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {styles} from './FooterDoc.styles';
+import {PATHS} from '../../../routes/paths';
 
 export const FooterDoc = ({current = 'home'}) => {
+  const navigation = useNavigation();
   const [selectedButton, setSelectedButton] = useState({
     map: false,
     home: false,
     profile: false,
-    [current]: true,
   });
 
-  const handleChangeSelection = name => {
+  useEffect(() => {
     setSelectedButton({
       map: false,
       home: false,
       profile: false,
-      [name]: true,
+      [current]: true,
     });
-  };
-
-  const handlePress = name => {
-    handleChangeSelection(name);
-  };
+  }, [current]);
 
   return (
     <View style={styles.wrapper}>
@@ -33,7 +31,7 @@ export const FooterDoc = ({current = 'home'}) => {
             ? {...styles.button, ...styles.selected}
             : styles.button
         }
-        onPress={() => handlePress('map')}>
+        onPress={() => navigation.navigate(PATHS.HOMEDOCTOR)}>
         <MapIcon fill={selectedButton.map && '#63B4FF'} />
         {selectedButton.map && <StyledText color="blue">Mapa</StyledText>}
       </TouchableOpacity>
@@ -43,7 +41,7 @@ export const FooterDoc = ({current = 'home'}) => {
             ? {...styles.button, ...styles.selected}
             : styles.button
         }
-        onPress={() => handlePress('home')}>
+        onPress={() => navigation.navigate(PATHS.HOMEDOCTOR)}>
         <HomeIcon fill={selectedButton.home && '#FFF'} />
         {selectedButton.home && <StyledText color="blue">Inicio</StyledText>}
       </TouchableOpacity>
@@ -53,7 +51,7 @@ export const FooterDoc = ({current = 'home'}) => {
             ? {...styles.button, ...styles.selected}
             : styles.button
         }
-        onPress={() => handlePress('profile')}>
+        onPress={() => navigation.navigate(PATHS.PERFILDOCTOR)}>
         <ProfileIcon fill={selectedButton.profile && '#63B4FF'} />
         {selectedButton.profile && <StyledText color="blue">Perfil</StyledText>}
       </TouchableOpacity>
