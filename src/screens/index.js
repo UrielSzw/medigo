@@ -6,3 +6,4 @@ export * from './Doctor/HomeDoc/HomeDoc.screen';
 export * from './Patient/HomePat/HomePat.screen';
 export * from './Doctor/Map/Map.screen';
 export * from './Doctor/PerfilDoc/PerfilDoc.screen';
+export * from './Patient/ProfilePat/ProfilePat.screen';
