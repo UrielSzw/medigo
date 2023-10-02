@@ -8,6 +8,7 @@ import {
   RegisterDoc,
   HomeDoc,
   RegisterPat,
+  Map,
   PerfilDoc,
 } from '../screens';
 import {PATHS} from './paths';
@@ -28,6 +29,7 @@ export const Routes = () => {
         <Stack.Screen name={PATHS.REGISTERDOCTOR} component={RegisterDoc} />
         <Stack.Screen name={PATHS.HOMEPATIENT} component={HomePat} />
         <Stack.Screen name={PATHS.HOMEDOCTOR} component={HomeDoc} />
+        <Stack.Screen name={PATHS.MAP} component={Map} />
         <Stack.Screen name={PATHS.PERFILDOCTOR} component={PerfilDoc} />
       </Stack.Navigator>
     </NavigationContainer>
