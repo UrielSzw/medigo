@@ -10,6 +10,7 @@ export * from './Common/UserDataItem/UserDataItem.component';
 export * from './Common/DropdownSelect/DropdownSelect.component';
 export * from './Common/WelcomePerfilHeader/WelcomePerfilHeader.component';
 export * from './Common/ProfileOption/ProfileOption.component';
+export * from './Doctor/PatientRequest/PatientRequest.component';
 export * from './Doctor/DoctorListItem/DoctorListItem.component';
 export * from './Doctor/FooterDoc/FooterDoc.component';
 export * from './Patient/FooterPatient/FooterPatient.component';

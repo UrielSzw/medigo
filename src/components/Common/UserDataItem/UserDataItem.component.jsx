@@ -6,7 +6,7 @@ import {styles} from './UserDataItem.styles';
 
 export const UserDataItem = ({
   name = 'Nombre',
-  category = 'Especialidad',
+  category,
   showTime,
   logo,
   time = '15',

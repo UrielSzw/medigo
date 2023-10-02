@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View} from 'react-native';
 import {
   FooterDoc,
@@ -6,6 +6,7 @@ import {
   StyledModal,
   StyledButton,
   WelcomeHeader,
+  PatientRequest,
 } from '../../../components';
 import {styles} from './HomeDoc.styles';
 
@@ -13,6 +14,18 @@ export const HomeDoc = () => {
   const [activo, setActivo] = useState(false);
   const [cuentaActivada, setCuentaActivada] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [openModalDetail, setOpenModalDetail] = useState(false);
+  const [count, setCount] = useState(60);
+
+  useEffect(() => {
+    if (count <= 0) {
+      console.log('Cancelado la request');
+    } else {
+      setTimeout(() => {
+        setCount(count - 1);
+      }, 1000);
+    }
+  }, [count]);
 
   const handleConfirmarClick = () => {
     if (cuentaActivada) {
@@ -39,6 +52,10 @@ export const HomeDoc = () => {
           <StyledText size="xl" bold={true} color={activo ? 'green' : 'red'}>
             {activo ? 'ACTIVO' : 'INACTIVO'}
           </StyledText>
+          <PatientRequest
+            count={count}
+            setOpenModalDetail={setOpenModalDetail}
+          />
         </View>
       </View>
       <View style={styles.buttonWrapper}>
@@ -62,6 +79,27 @@ export const HomeDoc = () => {
           </View>
         }
         open={openModal}
+      />
+      <StyledModal
+        open={openModalDetail}
+        title={
+          <View style={styles.headerModalWrapper}>
+            <StyledText color="white" size="xs">
+              Tiempo restante para acceptar:
+            </StyledText>
+            <StyledText size="s" color="white">
+              {count}
+            </StyledText>
+          </View>
+        }
+        content={
+          <View>
+            <StyledText>Detalles</StyledText>
+            <StyledButton onPress={() => setOpenModalDetail(false)}>
+              Cerrar Modal
+            </StyledButton>
+          </View>
+        }
       />
     </View>
   );
