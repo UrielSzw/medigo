@@ -6,4 +6,5 @@ export const PATHS = {
   HOMEDOCTOR: 'homeDoc',
   HOMEPATIENT: 'homePatient',
   MAP: 'map',
+  PERFILDOCTOR: 'perfilDoc',
 };

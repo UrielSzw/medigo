@@ -10,11 +10,15 @@ export const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    alignItems: 'center', 
-    justifyContent: 'flex-start', 
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: 30,
   },
   textState: {
-    marginTop: 50, 
+    marginTop: 50,
+    gap: 40,
+    width: '90%',
+    alignItems: 'center',
   },
   activarButtonWrapper: {
     width: '100%',
@@ -32,5 +36,10 @@ export const styles = StyleSheet.create({
   contentWrapper: {
     justifyContent: 'space-between',
     gap: 30,
+  },
+  headerModalWrapper: {
+    flexDirection: 'row',
+    gap: 10,
+    alignItems: 'center',
   },
 });

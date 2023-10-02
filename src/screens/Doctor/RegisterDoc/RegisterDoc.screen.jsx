@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {View, TouchableOpacity} from 'react-native';
+import {View, ScrollView, TouchableOpacity} from 'react-native';
+import {useForm, Controller} from 'react-hook-form';
 import {
   Banner,
   StyledButton,
@@ -12,115 +13,147 @@ import {styles} from './RegisterDoc.styles';
 import {MedigoLogoIcon} from '../../../assets';
 
 export const RegisterDoc = ({navigation}) => {
-  const [formData, setFormData] = useState({
-    fullName: '',
-    password: '',
-    dni: '',
-    phone: '',
-    specialty: '',
-    price: '',
-    licenseNumber: '',
-    radius: '',
-    address: '',
-    email: '',
-  });
+  const {control, handleSubmit} = useForm();
+
+  const onSubmit = data => {
+    console.log(data);
+  };
 
   const handleNavigateRegister = () => {
     navigation.navigate(PATHS.REGISTER);
   };
 
-  const handleChange = e => {
-    const {name, value} = e.target;
-    setFormData({...formData, [name]: value});
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    console.log(formData);
-  };
-
   return (
     <KeyboardAwareScrollView style={styles.container}>
       <Banner />
-      <View style={styles.bodyWrapper}>
-        <StyledInput
-          label="Nombre Completo"
+      <ScrollView style={styles.bodyWrapper}>
+        <Controller
+          control={control}
           name="fullName"
-          value={formData.fullName}
-          onChange={handleChange}
-          style={styles.input}
+          render={({field}) => (
+            <StyledInput
+              label="Nombre Completo"
+              style={styles.input}
+              field={field}
+              name="fullName"
+            />
+          )}
         />
-        <StyledInput
-          secureTextEntry
-          label="Contraseña"
+        <Controller
+          control={control}
           name="password"
-          value={formData.password}
-          onChange={handleChange}
-          style={styles.input}
+          render={({field}) => (
+            <StyledInput
+              label="Contraseña"
+              style={styles.input}
+              field={field}
+              name="password"
+            />
+          )}
         />
-        <StyledInput
-          label="DNI"
+        <Controller
+          control={control}
           name="dni"
-          value={formData.dni}
-          onChange={handleChange}
-          style={styles.input}
+          render={({field}) => (
+            <StyledInput
+              label="DNI"
+              style={styles.input}
+              field={field}
+              name="dni"
+            />
+          )}
         />
-        <StyledInput
-          label="Telefono"
+        <Controller
+          control={control}
           name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          style={styles.input}
+          render={({field}) => (
+            <StyledInput
+              label="Telefono"
+              style={styles.input}
+              field={field}
+              name="phone"
+            />
+          )}
         />
-        <StyledInput
-          label="Especialidad"
+        <Controller
+          control={control}
           name="specialty"
-          value={formData.specialty}
-          onChange={handleChange}
-          style={styles.input}
+          render={({field}) => (
+            <StyledInput
+              label="Especialidad"
+              style={styles.input}
+              field={field}
+              name="specialty"
+            />
+          )}
         />
-        <StyledInput
-          label="Precio"
+        <Controller
+          control={control}
           name="price"
-          value={formData.price}
-          onChange={handleChange}
-          style={styles.input}
+          render={({field}) => (
+            <StyledInput
+              label="Precio"
+              style={styles.input}
+              field={field}
+              name="price"
+            />
+          )}
         />
-        <StyledInput
-          label="Numero de Matricula"
+        <Controller
+          control={control}
           name="licenseNumber"
-          value={formData.licenseNumber}
-          onChange={handleChange}
-          style={styles.input}
+          render={({field}) => (
+            <StyledInput
+              label="Numero de Matricula"
+              style={styles.input}
+              field={field}
+              name="licenseNumber"
+            />
+          )}
         />
-        <StyledInput
-          label="Radio de Accion(km)"
+        <Controller
+          control={control}
           name="radius"
-          value={formData.radius}
-          onChange={handleChange}
-          style={styles.input}
+          render={({field}) => (
+            <StyledInput
+              label="Radio de Accion(km)"
+              style={styles.input}
+              field={field}
+              name="radius"
+            />
+          )}
         />
-        <StyledInput
-          label="Direccion"
+        <Controller
+          control={control}
           name="address"
-          value={formData.address}
-          onChange={handleChange}
-          style={styles.input}
+          render={({field}) => (
+            <StyledInput
+              label="Direccion"
+              style={styles.input}
+              field={field}
+              name="address"
+            />
+          )}
         />
-        <StyledInput
-          label="Email"
+        <Controller
+          control={control}
           name="email"
-          value={formData.email}
-          onChange={handleChange}
-          style={styles.input}
+          render={({field}) => (
+            <StyledInput
+              label="Email"
+              style={styles.input}
+              field={field}
+              name="email"
+            />
+          )}
         />
-        <StyledButton onPress={handleSubmit}>Siguiente</StyledButton>
+        <StyledButton onPress={handleSubmit(onSubmit)}>Siguiente</StyledButton>
         <View style={styles.footerWrapper}>
           <TouchableOpacity onPress={handleNavigateRegister}>
             <StyledText color="blue">Volver</StyledText>
           </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
       <MedigoLogoIcon style={styles.logo} />
     </KeyboardAwareScrollView>
   );
