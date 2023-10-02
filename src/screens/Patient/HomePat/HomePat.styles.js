@@ -23,13 +23,21 @@ export const styles = StyleSheet.create({
   },
   contentWrapper: {
     justifyContent: 'space-between',
-    gap: 30,
+    gap: 20,
   },
   contentAskMedicWrapperScroll: {
-    gap: 15,
     justifyContent: 'space-between',
   },
   buttonsWrapper: {
     paddingTop: 10,
+  },
+  input: {
+    backgroundColor: theme.colors.white,
+    borderWidth: 1,
+    borderColor: theme.colors.grey,
+    borderRadius: 8,
+    paddingLeft: 10,
+    fontFamily: 'Poppins-Regular',
+    color: theme.colors.black,
   },
 });

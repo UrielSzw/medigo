@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
-import Geolocation from '@react-native-community/geolocation';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import MapView, {Marker} from 'react-native-maps';
+import Geolocation from '@react-native-community/geolocation';
 import {FooterDoc, StyledButton} from '../../../components';
-import {styles} from './Map.Styles';
 import {PATHS} from '../../../routes/paths';
+import {styles} from './Map.Styles';
 
 export const Map = ({navigation}) => {
   const [currentLocation, setCurrentLocation] = useState(null);

@@ -1,6 +1,8 @@
 import React from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {View, TouchableOpacity} from 'react-native';
+import {Controller, useForm} from 'react-hook-form';
+import {useDispatch} from 'react-redux';
 import {
   Banner,
   StyledButton,
@@ -10,8 +12,42 @@ import {
 import {MedigoLogoIcon} from '../../../assets';
 import {PATHS} from '../../../routes/paths';
 import {styles} from './Login.styles';
+import {setUserData} from '../../../redux/user.slice';
+
+const USERS = [
+  {
+    email: 'medico@gmail.com',
+    password: 'medico',
+    type: 'doctor',
+  },
+  {
+    email: 'user@gmail.com',
+    password: 'user',
+    type: 'patient',
+    address: 'Av. Corrientes 3235',
+  },
+];
 
 export const Login = ({navigation}) => {
+  const {control, handleSubmit} = useForm();
+  const dispatch = useDispatch();
+
+  const onSubmit = data => {
+    if (data) {
+      const foundeUser = USERS.find(user => user.email === data.email);
+
+      if (foundeUser && foundeUser.password === data.password) {
+        dispatch(setUserData(foundeUser));
+
+        if (foundeUser.type === 'doctor') {
+          navigation.navigate(PATHS.HOMEDOCTOR);
+        } else {
+          navigation.navigate(PATHS.HOMEPATIENT);
+        }
+      }
+    }
+  };
+
   const handleNavigateRegister = () => {
     navigation.navigate(PATHS.REGISTER);
   };
@@ -20,9 +56,32 @@ export const Login = ({navigation}) => {
     <KeyboardAwareScrollView style={styles.container}>
       <Banner />
       <View style={styles.bodyWrapper}>
-        <StyledInput label="Email" style={styles.input} />
-        <StyledInput secureTextEntry label="Contraseña" style={styles.input} />
-        <StyledButton>Ingresar</StyledButton>
+        <Controller
+          control={control}
+          name="email"
+          render={({field}) => (
+            <StyledInput
+              field={field}
+              name="email"
+              label="Email"
+              style={styles.input}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="password"
+          render={({field}) => (
+            <StyledInput
+              field={field}
+              name="password"
+              secureTextEntry
+              label="Contraseña"
+              style={styles.input}
+            />
+          )}
+        />
+        <StyledButton onPress={handleSubmit(onSubmit)}>Ingresar</StyledButton>
         <View style={styles.footerWrapper}>
           <StyledText color="grey">¿No tienes cuenta?</StyledText>
           <TouchableOpacity onPress={handleNavigateRegister}>
