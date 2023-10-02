@@ -6,7 +6,7 @@ import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {styles} from './FooterDoc.styles';
 import {PATHS} from '../../../routes/paths';
 
-export const FooterDoc = ({current = 'home'}) => {
+export const FooterDoc = ({current = 'home', style}) => {
   const navigation = useNavigation();
   const [selectedButton, setSelectedButton] = useState({
     map: false,
@@ -24,7 +24,7 @@ export const FooterDoc = ({current = 'home'}) => {
   }, [current]);
 
   return (
-    <View style={styles.wrapper}>
+    <View style={{...styles.wrapper, ...style}}>
       <TouchableOpacity
         style={
           selectedButton.map
