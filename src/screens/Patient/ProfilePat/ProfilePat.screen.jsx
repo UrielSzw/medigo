@@ -14,9 +14,12 @@ import {
   FamilyIcon,
 } from '../../../assets';
 import {styles} from './ProfilePat.styles';
+import {PATHS} from '../../../routes/paths';
 
-export const ProfilePat = () => {
-  const handleActivityPress = () => {};
+export const ProfilePat = ({navigation}) => {
+  const handleActivityPress = () => {
+    navigation.navigate(PATHS.ACTIVITYPAT);
+  };
 
   const handleHelpPress = () => {};
 

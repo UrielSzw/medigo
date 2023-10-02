@@ -1,59 +1,40 @@
 import React from 'react';
 
-import {styles} from './SelectDoc.styles.js';
+import {styles} from './ActivityPat.styles.js';
 import {View} from 'react-native';
 import {
   DoctorListItem,
   FooterPatient,
+  StyledButton,
   StyledText,
-  WelcomeHeader,
+  WelcomePerfilHeader,
 } from '../../../components';
-import {FilterIcon} from '../../../assets/index.js';
+import {ActivityIcon} from '../../../assets/index.js';
+import {PATHS} from '../../../routes/paths.js';
 
-export const ActivityPat = () => {
+export const ActivityPat = ({navigation}) => {
+  const handleNavigateProfile = () => {
+    navigation.navigate(PATHS.PERFILPATIENT);
+  };
+
   return (
     <View style={styles.selectDocWrapper}>
       <View style={styles.selectDocContainer}>
-        <StyledText style={styles.addressTop} color="grey">
-          Av.Corrientes 4251
-        </StyledText>
-        <WelcomeHeader />
-        <View style={styles.specialtyFilterContainer}>
-          <StyledText color="grey" style={styles.specialty}>
-            Kinesiologo
-          </StyledText>
-          <View style={styles.filterContainer}>
-            <FilterIcon />
-            <StyledText color="grey">Filtro</StyledText>
-          </View>
-        </View>
+        <WelcomePerfilHeader username="Joe Doe" email="joedoe@gmail.com" />
+
         <View style={styles.nearDocsContainer}>
-          <StyledText bold size="md">
-            Doctores cercanos
-          </StyledText>
-          <DoctorListItem
-            showTime
-            showInfo
-            time="15"
-            price="2500"
-            reviews="(120 reseñas)"
-            rating="4.8"
-            name="Dr. Joseph Brostito"
-            category="Kinesiologo"
-          />
-          <DoctorListItem
-            showTime
-            showInfo
-            time="17"
-            price="3100"
-            reviews="(32 reseñas)"
-            rating="4.6"
-            name="Dr. Frederick James"
-            category="Kinesiologo"
-          />
+          <View style={styles.activityContainer}>
+            <ActivityIcon />
+            <StyledText bold size="md">
+              Actividad
+            </StyledText>
+          </View>
+          <DoctorListItem name="Dr. Joseph Brostito" category="Kinesiologo" />
+          <DoctorListItem name="Dr. Frederick James" category="Kinesiologo" />
+          <StyledButton onPress={handleNavigateProfile} children="Volver" />
         </View>
       </View>
-      <FooterPatient />
+      <FooterPatient current="profile" />
     </View>
   );
 };

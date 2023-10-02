@@ -3,6 +3,8 @@ import {View} from 'react-native';
 import {StyledText, UserDataItem, StyledButton} from '../../';
 import {MoneyIcon, StarIcon} from '../../../assets';
 import {styles} from './DoctorListItem.styles';
+import {PATHS} from '../../../routes/paths';
+import {useNavigation} from '@react-navigation/native';
 
 export const DoctorListItem = ({
   showTime,
@@ -15,6 +17,12 @@ export const DoctorListItem = ({
   category,
   logo,
 }) => {
+  const navigation = useNavigation();
+
+  const handleDocDetails = () => {
+    navigation.navigate(PATHS.DOCINFO);
+  };
+
   return (
     <View style={styles.wrapper}>
       <View style={styles.data}>
@@ -39,7 +47,9 @@ export const DoctorListItem = ({
           </View>
         </View>
       )}
-      <StyledButton variant="empty">Ver detalles</StyledButton>
+      <StyledButton onPress={handleDocDetails} variant="empty">
+        Ver detalles
+      </StyledButton>
     </View>
   );
 };

@@ -10,11 +10,12 @@ export const UserDataItem = ({
   showTime,
   logo,
   time = '15',
+  style,
 }) => {
   const showTimeStyle = showTime ? styles.wrapper : styles.wrapperCenter;
 
   return (
-    <View style={showTimeStyle}>
+    <View style={{...showTimeStyle, ...style}}>
       <View style={styles.dataWrapper}>
         {logo ? logo : <DefaultProfile />}
         <View>

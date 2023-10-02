@@ -7,4 +7,7 @@ export const PATHS = {
   HOMEPATIENT: 'homePatient',
   MAP: 'map',
   PERFILDOCTOR: 'perfilDoc',
+  PERFILPATIENT: 'perfilPat',
+  ACTIVITYPAT: 'activityPat',
+  DOCINFO: 'docInfoPat',
 };
