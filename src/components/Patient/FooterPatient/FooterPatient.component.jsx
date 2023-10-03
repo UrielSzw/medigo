@@ -39,7 +39,7 @@ export const FooterPatient = ({current = 'home'}) => {
             ? {...styles.button, ...styles.selected}
             : styles.button
         }
-        onPress={() => navigation.navigate(PATHS.HOMEPATIENT)}>
+        onPress={() => navigation.navigate(PATHS.PERFILPATIENT)}>
         <ProfileIcon fill={selectedButton.profile && '#63B4FF'} />
         {selectedButton.profile && <StyledText color="blue">Perfil</StyledText>}
       </TouchableOpacity>

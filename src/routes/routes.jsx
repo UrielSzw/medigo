@@ -11,6 +11,7 @@ import {
   RegisterPat,
   Map,
   PerfilDoc,
+  ProfilePat,
 } from '../screens';
 import {PATHS} from './paths';
 
@@ -33,6 +34,7 @@ export const Routes = () => {
         ) : userData.type === 'patient' ? (
           <>
             <Stack.Screen name={PATHS.HOMEPATIENT} component={HomePat} />
+            <Stack.Screen name={PATHS.PERFILPATIENT} component={ProfilePat} />
           </>
         ) : (
           <>
