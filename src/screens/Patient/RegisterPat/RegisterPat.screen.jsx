@@ -9,12 +9,17 @@ import {
   DynamicInput,
 } from '../../../components';
 import {styles} from './RegisterPat.styles';
+import {PATHS} from '../../../routes/paths';
 
-export const RegisterPat = () => {
+export const RegisterPat = ({navigation}) => {
   const {control, handleSubmit} = useForm();
 
   const onSubmit = data => {
     console.log(data);
+  };
+
+  const handleNavigateRegister = () => {
+    navigation.navigate(PATHS.REGISTER);
   };
 
   return (
@@ -104,7 +109,7 @@ export const RegisterPat = () => {
           onPress={handleSubmit(onSubmit)}>
           Siguiente
         </StyledButton>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleNavigateRegister}>
           <StyledText color="blue">Volver</StyledText>
         </TouchableOpacity>
       </View>

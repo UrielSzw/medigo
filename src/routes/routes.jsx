@@ -1,4 +1,5 @@
 import React from 'react';
+import {useSelector} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
@@ -10,27 +11,39 @@ import {
   RegisterPat,
   Map,
   PerfilDoc,
+  ProfilePat,
 } from '../screens';
 import {PATHS} from './paths';
 
 export const Routes = () => {
   const Stack = createNativeStackNavigator();
+  const {userData} = useSelector(state => state.userReducer);
 
   return (
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-        }}
-        initialRouteName={PATHS.HOMEDOCTOR}>
-        <Stack.Screen name={PATHS.LOGIN} component={Login} />
-        <Stack.Screen name={PATHS.REGISTER} component={Register} />
-        <Stack.Screen name={PATHS.REGISTER_PAT} component={RegisterPat} />
-        <Stack.Screen name={PATHS.REGISTERDOCTOR} component={RegisterDoc} />
-        <Stack.Screen name={PATHS.HOMEPATIENT} component={HomePat} />
-        <Stack.Screen name={PATHS.HOMEDOCTOR} component={HomeDoc} />
-        <Stack.Screen name={PATHS.MAP} component={Map} />
-        <Stack.Screen name={PATHS.PERFILDOCTOR} component={PerfilDoc} />
+        }}>
+        {userData.type === 'doctor' ? (
+          <>
+            <Stack.Screen name={PATHS.HOMEDOCTOR} component={HomeDoc} />
+            <Stack.Screen name={PATHS.PERFILDOCTOR} component={PerfilDoc} />
+            <Stack.Screen name={PATHS.MAP} component={Map} />
+          </>
+        ) : userData.type === 'patient' ? (
+          <>
+            <Stack.Screen name={PATHS.HOMEPATIENT} component={HomePat} />
+            <Stack.Screen name={PATHS.PERFILPATIENT} component={ProfilePat} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name={PATHS.LOGIN} component={Login} />
+            <Stack.Screen name={PATHS.REGISTER} component={Register} />
+            <Stack.Screen name={PATHS.REGISTER_PAT} component={RegisterPat} />
+            <Stack.Screen name={PATHS.REGISTERDOCTOR} component={RegisterDoc} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

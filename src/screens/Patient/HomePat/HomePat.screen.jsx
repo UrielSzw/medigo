@@ -1,5 +1,9 @@
-import React, {useState} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect, useState} from 'react';
+import {TextInput, TouchableOpacity, View} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {useDispatch, useSelector} from 'react-redux';
+import {Controller, useForm} from 'react-hook-form';
 import {
   DropdownSelect,
   FooterPatient,
@@ -10,12 +14,19 @@ import {
   WelcomeHeader,
 } from '../../../components';
 import {PencilIcon} from '../../../assets';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {setUserData} from '../../../redux/user.slice';
 import {styles} from './HomePat.styles';
 
 export const HomePat = () => {
-  const address = 'Av.Corrientes 3235';
-
+  const {control, handleSubmit, setValue} = useForm({
+    address: '',
+    motive: '',
+    symptoms: '',
+    specialty: '',
+    familyGroup: '',
+  });
+  const {userData} = useSelector(state => state.userReducer);
+  const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
   const [openMedicModal, setOpenMedicModal] = useState(false);
   const [especialidad, setEspecialidad] = useState('Seleccione especialidad');
@@ -24,23 +35,23 @@ export const HomePat = () => {
   const [grupoFamiliar, setGrupoFamiliar] = useState(
     'Seleccione grupo familiar',
   );
+  const [addressPreview, setAddressPreview] = useState(userData.address);
 
-  const [medicData, setMedicData] = useState({
-    motivo: '',
-    sintomas: '',
-    direccion: '',
-  });
-
-  const handleMedicDataChange = (text, name) => {
-    setMedicData(prevData => ({
-      ...prevData,
-      [name]: text,
-    }));
-  };
-
-  const handleDataSubmit = () => {
+  const onSubmitAdress = () => {
+    setValue('address', addressPreview);
+    dispatch(setUserData({address: addressPreview}));
     setOpenModal(false);
   };
+
+  const onSubmit = data => {
+    setValue('specialty', especialidad);
+    setValue('familyGroup', grupoFamiliar);
+    console.log(data);
+  };
+
+  useEffect(() => {
+    setValue('address', addressPreview);
+  }, []);
 
   return (
     <View style={styles.wrapper}>
@@ -48,7 +59,7 @@ export const HomePat = () => {
         <TouchableOpacity
           onPress={setOpenModal}
           style={styles.adressButtonWrapper}>
-          <StyledText color="grey">{address}</StyledText>
+          <StyledText color="grey">{userData.address}</StyledText>
           <PencilIcon style={styles.icon} />
         </TouchableOpacity>
         <WelcomeHeader />
@@ -58,27 +69,26 @@ export const HomePat = () => {
           Solicitar medico
         </StyledButton>
       </View>
-      <FooterPatient />
+      <FooterPatient current="home" />
       <StyledModal
         title="Ingresar informacion medica"
         content={
           <KeyboardAwareScrollView
             contentContainerStyle={styles.contentAskMedicWrapperScroll}>
-            <StyledInput
-              label="Motivo"
-              onChangeText={e =>
-                handleMedicDataChange(e.target.value, 'motivo')
-              }
-              value={medicData.motivo}
+            <Controller
+              control={control}
+              name="motive"
+              render={({field}) => (
+                <StyledInput label="Motivo" field={field} name="motive" />
+              )}
             />
-            <StyledInput
-              label="Sintomas"
-              onChangeText={e =>
-                handleMedicDataChange(e.target.value, 'sintomas')
-              }
-              value={medicData.sintomas}
+            <Controller
+              control={control}
+              name="symptoms"
+              render={({field}) => (
+                <StyledInput label="Sintomas" field={field} name="symptoms" />
+              )}
             />
-
             <View>
               <StyledText>Especialidad</StyledText>
               <StyledButton
@@ -97,15 +107,17 @@ export const HomePat = () => {
               </StyledButton>
             </View>
 
-            <StyledInput
-              label="Direccion"
-              onChangeText={e =>
-                handleMedicDataChange(e.target.value, 'direccion')
-              }
-              value={medicData.direccion}
+            <Controller
+              control={control}
+              name="address"
+              render={({field}) => (
+                <StyledInput label="Direccion" field={field} name="address" />
+              )}
             />
             <View style={styles.buttonsWrapper}>
-              <StyledButton>Ver medicos disponibles</StyledButton>
+              <StyledButton onPress={handleSubmit(onSubmit)}>
+                Ver medicos disponibles
+              </StyledButton>
 
               <StyledButton
                 variant="empty"
@@ -121,9 +133,15 @@ export const HomePat = () => {
         title="Cambiar direccion"
         content={
           <View style={styles.contentWrapper}>
-            <StyledInput label="Direccion" placeholder={address} />
+            <StyledText>Direccion</StyledText>
+            <TextInput
+              placeholder={userData.address}
+              value={addressPreview}
+              onChangeText={text => setAddressPreview(text)}
+              style={styles.input}
+            />
             <View>
-              <StyledButton onPress={handleDataSubmit}>Cambiar</StyledButton>
+              <StyledButton onPress={onSubmitAdress}>Cambiar</StyledButton>
 
               <StyledButton variant="empty" onPress={() => setOpenModal(false)}>
                 Cancelar

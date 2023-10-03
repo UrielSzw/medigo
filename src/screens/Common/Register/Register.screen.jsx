@@ -13,6 +13,10 @@ export const Register = ({navigation}) => {
     navigation.navigate(PATHS.REGISTERDOCTOR);
   };
 
+  const handleNavigateRegisterPat = () => {
+    navigation.navigate(PATHS.REGISTER_PAT);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header} />
@@ -23,7 +27,7 @@ export const Register = ({navigation}) => {
         <StyledText>Elige tipo de cuenta</StyledText>
         <View style={styles.buttonsWrapper}>
           <BigButton isDoctor onPress={handleNavigateRegisterDoc} />
-          <BigButton />
+          <BigButton onPress={handleNavigateRegisterPat} />
         </View>
         <View style={styles.loginWrapper}>
           <StyledText color="grey">¿Ya tienes cuenta?</StyledText>

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
+import {View, Linking} from 'react-native';
 import {
   FooterDoc,
   StyledText,
@@ -17,6 +17,16 @@ export const HomeDoc = ({navigation}) => {
   const [openModal, setOpenModal] = useState(false);
   const [openModalDetail, setOpenModalDetail] = useState(false);
   const [count, setCount] = useState(60);
+
+  const openGoogleMaps = (
+    startLatitude,
+    startLongitude,
+    endLatitude,
+    endLongitude,
+  ) => {
+    const url = `https://www.google.com/maps/dir/?api=1&origin=${startLatitude},${startLongitude}&destination=${endLatitude},${endLongitude}&travelmode=driving`;
+    Linking.openURL(url);
+  };
 
   useEffect(() => {
     if (count <= 0) {
@@ -54,10 +64,12 @@ export const HomeDoc = ({navigation}) => {
           <StyledText size="xl" bold={true} color={activo ? 'green' : 'red'}>
             {activo ? 'ACTIVO' : 'INACTIVO'}
           </StyledText>
-          <PatientRequest
-            count={count}
-            setOpenModalDetail={setOpenModalDetail}
-          />
+          {cuentaActivada && (
+            <PatientRequest
+              count={count}
+              setOpenModalDetail={setOpenModalDetail}
+            />
+          )}
         </View>
       </View>
       <View style={styles.buttonWrapper}>
@@ -67,7 +79,11 @@ export const HomeDoc = ({navigation}) => {
       </View>
       <FooterDoc current="home" />
       <StyledModal
-        title="¿Estas seguro que desea activar y comenzar a recibir consultas?"
+        title={
+          cuentaActivada
+            ? '¿Estas seguro que desea desactivar y dejar de recibir consultas?'
+            : '¿Estas seguro que desea activar y comenzar a recibir consultas?'
+        }
         content={
           <View style={styles.contentWrapper}>
             <View>
