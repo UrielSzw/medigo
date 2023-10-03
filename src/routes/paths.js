@@ -8,4 +8,6 @@ export const PATHS = {
   MAP: 'map',
   PERFILDOCTOR: 'perfilDoc',
   PERFILPATIENT: 'perfilPat',
+  ACTIVITYPAT: 'activityPat',
+  DOCINFO: 'docInfoPat',
 };

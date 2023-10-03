@@ -53,7 +53,7 @@ export const SelectDoc = () => {
           />
         </View>
       </View>
-      <FooterPatient />
+      <FooterPatient current="profile" />
     </View>
   );
 };
