@@ -6,6 +6,10 @@ const initialState = {
     password: '',
     type: '',
     address: '',
+    location: {
+      latitude: '',
+      longitude: '',
+    },
   },
 };
 

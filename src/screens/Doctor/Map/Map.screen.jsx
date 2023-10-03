@@ -3,15 +3,21 @@ import {View} from 'react-native';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import MapView, {Marker} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+import {useDispatch} from 'react-redux';
+import {setUserData} from '../../../redux/user.slice';
 import {FooterDoc, StyledButton} from '../../../components';
 import {PATHS} from '../../../routes/paths';
 import {styles} from './Map.Styles';
 
 export const Map = ({navigation}) => {
   const [currentLocation, setCurrentLocation] = useState(null);
+  const dispatch = useDispatch();
+
   const handleNavigateRegister = () => {
-    navigation.navigate(PATHS.REGISTER);
+    navigation.navigate(PATHS.HOMEDOCTOR);
+    dispatch(setUserData({location: currentLocation}));
   };
+
   useEffect(() => {
     const getLocation = async () => {
       try {
@@ -56,10 +62,7 @@ export const Map = ({navigation}) => {
 
   const handleMarkerDragEnd = event => {
     const {latitude, longitude} = event.nativeEvent.coordinate;
-
-    console.log(
-      `Nuevo marcador en Latitud: ${latitude}, Longitud: ${longitude}`,
-    );
+    setCurrentLocation({latitude, longitude});
   };
 
   return (

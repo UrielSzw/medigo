@@ -1,7 +1,6 @@
 export * from './icons/activity_icon';
 export * from './icons/caduceus_icon';
 export * from './icons/clock_icon';
-export * from './icons/emptyStar_icon';
 export * from './icons/family_icon';
 export * from './icons/filter_icon';
 export * from './icons/help_icon';
@@ -19,4 +18,6 @@ export * from './icons/star_icon';
 export * from './icons/user_icon';
 export * from './icons/default_profile';
 export * from './icons/pin_icon';
-export * from './icons/next_icon'
+export * from './icons/next_icon';
+export * from './icons/star_filled_icon';
+export * from './icons/star_outlined_icon';
