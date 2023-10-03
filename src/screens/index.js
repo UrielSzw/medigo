@@ -9,3 +9,4 @@ export * from './Doctor/PerfilDoc/PerfilDoc.screen';
 export * from './Patient/ProfilePat/ProfilePat.screen';
 export * from './Patient/ActivityPat/ActivityPat.screen';
 export * from './Patient/DocInfoPat/DocInfoPat.screen';
+export * from './Patient/PersonalData/PersonalData.screen';
