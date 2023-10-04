@@ -10,9 +10,9 @@ import {
   Rating,
   AcceptedPatient,
 } from '../../../components';
-import {styles} from './HomeDoc.styles';
 import {PATHS} from '../../../routes/paths';
 import {ClockIcon, DefaultProfile} from '../../../assets';
+import {styles} from './HomeDoc.styles';
 
 export const HomeDoc = ({navigation}) => {
   const [activo, setActivo] = useState(false);
