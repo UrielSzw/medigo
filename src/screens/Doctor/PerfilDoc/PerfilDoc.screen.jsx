@@ -7,10 +7,13 @@ import {
   WelcomePerfilHeader,
 } from '../../../components';
 import {HelpIcon, PersonalDataIcon, ActivityIcon} from '../../../assets';
+import {PATHS} from '../../../routes/paths';
 import {styles} from './PerfilDoc.styles';
 
-export const PerfilDoc = () => {
-  const handleActividadPress = () => {};
+export const PerfilDoc = ({navigation}) => {
+  const handleActividadPress = () => {
+    navigation.navigate(PATHS.ACTIVITYDOC);
+  };
 
   const handleDatosPersonalesPress = () => {};
 

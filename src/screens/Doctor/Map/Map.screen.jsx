@@ -5,7 +5,7 @@ import MapView, {Marker} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import {useDispatch} from 'react-redux';
 import {setUserData} from '../../../redux/user.slice';
-import {FooterDoc, StyledButton} from '../../../components';
+import {FooterDoc, StyledButton, StyledText} from '../../../components';
 import {PATHS} from '../../../routes/paths';
 import {styles} from './Map.Styles';
 
@@ -67,6 +67,9 @@ export const Map = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.confirmLocation}>
+        <StyledText color="white">Confirma tu ubicación:</StyledText>
+      </View>
       {currentLocation && (
         <MapView
           style={styles.map}

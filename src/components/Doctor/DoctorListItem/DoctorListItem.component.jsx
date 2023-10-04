@@ -1,10 +1,10 @@
 import React from 'react';
 import {View} from 'react-native';
 import {StyledText, UserDataItem, StyledButton} from '../../';
-import {MoneyIcon, StarIcon} from '../../../assets';
-import {styles} from './DoctorListItem.styles';
-import {PATHS} from '../../../routes/paths';
 import {useNavigation} from '@react-navigation/native';
+import {MoneyIcon, StarIcon} from '../../../assets';
+import {PATHS} from '../../../routes/paths';
+import {styles} from './DoctorListItem.styles';
 
 export const DoctorListItem = ({
   showTime,
@@ -20,7 +20,7 @@ export const DoctorListItem = ({
   const navigation = useNavigation();
 
   const handleDocDetails = () => {
-    navigation.navigate(PATHS.DOCINFO);
+    navigation.navigate(PATHS.DOCINFOINPAT);
   };
 
   return (

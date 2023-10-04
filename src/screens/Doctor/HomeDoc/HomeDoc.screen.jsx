@@ -7,23 +7,28 @@ import {
   StyledButton,
   WelcomeHeader,
   PatientRequest,
+  Rating,
+  AcceptedPatient,
 } from '../../../components';
 import {styles} from './HomeDoc.styles';
 import {PATHS} from '../../../routes/paths';
+import {ClockIcon, DefaultProfile} from '../../../assets';
 
 export const HomeDoc = ({navigation}) => {
   const [activo, setActivo] = useState(false);
   const [cuentaActivada, setCuentaActivada] = useState(false);
+  const [acceptedPatient, setAcceptedPatient] = useState({});
   const [openModal, setOpenModal] = useState(false);
   const [openModalDetail, setOpenModalDetail] = useState(false);
   const [count, setCount] = useState(60);
 
   const openGoogleMaps = (
-    startLatitude,
-    startLongitude,
-    endLatitude,
-    endLongitude,
+    startLatitude = '-34.617865',
+    startLongitude = '-58.4332',
+    endLatitude = '-35.617865',
+    endLongitude = '-59.4332',
   ) => {
+    console.log(startLatitude);
     const url = `https://www.google.com/maps/dir/?api=1&origin=${startLatitude},${startLongitude}&destination=${endLatitude},${endLongitude}&travelmode=driving`;
     Linking.openURL(url);
   };
@@ -54,6 +59,12 @@ export const HomeDoc = ({navigation}) => {
     setOpenModal(false);
   };
 
+  const handleAcceptPatientRequest = () => {
+    setOpenModalDetail(false);
+    setActivo(false);
+    setAcceptedPatient({});
+  };
+
   return (
     <View style={styles.wrapper}>
       <View>
@@ -68,6 +79,18 @@ export const HomeDoc = ({navigation}) => {
             <PatientRequest
               count={count}
               setOpenModalDetail={setOpenModalDetail}
+            />
+          )}
+          {!cuentaActivada && acceptedPatient && (
+            <AcceptedPatient
+              onPress={() =>
+                openGoogleMaps(
+                  '-34.617865',
+                  '-58.4332',
+                  '-35.617865',
+                  '-59.4332',
+                )
+              }
             />
           )}
         </View>
@@ -112,9 +135,53 @@ export const HomeDoc = ({navigation}) => {
         }
         content={
           <View>
-            <StyledText>Detalles</StyledText>
-            <StyledButton onPress={() => setOpenModalDetail(false)}>
-              Cerrar Modal
+            <View style={styles.dataWrapper}>
+              <View style={styles.nameWrapper}>
+                <DefaultProfile />
+                <View>
+                  <StyledText bold size="md">
+                    User
+                  </StyledText>
+                  <StyledText color="grey">Pacietne</StyledText>
+                </View>
+              </View>
+              <View style={styles.timeWrapper}>
+                <ClockIcon fill="#8696BB" style={styles.icon} />
+                <StyledText color="grey">15 m</StyledText>
+              </View>
+            </View>
+            <View style={styles.detailsWrapper}>
+              <Rating rating={4} readOnly />
+              <StyledText color="grey" size="default">
+                DNI: 22222222
+              </StyledText>
+              <StyledText color="grey" size="default">
+                Miembro familiar: Joe Doe
+              </StyledText>
+              <StyledText color="grey" size="default">
+                Ubicacion de atencion: Av Corrientes 4251
+              </StyledText>
+              <View>
+                <StyledText color="grey" size="default">
+                  Motivo:
+                </StyledText>
+                <StyledText color="grey" size="default">
+                  - Siento mucho dolor en el codo cuando me toco o hago algun
+                  movimiento leve
+                </StyledText>
+              </View>
+              <StyledText color="grey" size="default">
+                Sintomas: molestia en el codo
+              </StyledText>
+            </View>
+            <StyledButton onPress={handleAcceptPatientRequest}>
+              Acceptar
+            </StyledButton>
+            <StyledButton
+              style={styles.button}
+              variant="secondary"
+              onPress={() => setOpenModalDetail(false)}>
+              Rechazar
             </StyledButton>
           </View>
         }

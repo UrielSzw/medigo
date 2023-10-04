@@ -1,4 +1,5 @@
 import React from 'react';
+import {View} from 'react-native';
 import {
   FooterPatient,
   StyledButton,
@@ -6,11 +7,9 @@ import {
   UserDataItem,
   WelcomePerfilHeader,
 } from '../../../components';
-import {View} from 'react-native';
-
-import {styles} from './PersonalData.styles';
 import {PersonalDataIcon} from '../../../assets';
 import {PATHS} from '../../../routes/paths';
+import {styles} from './PersonalData.styles';
 
 export const PersonalData = ({navigation}) => {
   const handleBackActivity = () => {

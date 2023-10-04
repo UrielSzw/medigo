@@ -9,5 +9,6 @@ export const PATHS = {
   PERFILDOCTOR: 'perfilDoc',
   PERFILPATIENT: 'perfilPat',
   ACTIVITYPAT: 'activityPat',
-  DOCINFO: 'docInfoPat',
+  DOCINFOINPAT: 'docInfoPat',
+  ACTIVITYDOC: 'activityDoc',
 };

@@ -42,4 +42,29 @@ export const styles = StyleSheet.create({
     gap: 10,
     alignItems: 'center',
   },
+  dataWrapper: {
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  nameWrapper: {
+    gap: 15,
+    flexDirection: 'row',
+  },
+  timeWrapper: {
+    gap: 3,
+    flexDirection: 'row',
+  },
+  icon: {
+    marginTop: 3,
+  },
+  detailsWrapper: {
+    gap: 10,
+    paddingTop: 10,
+    paddingBottom: 20,
+    paddingHorizontal: 20,
+  },
+  button: {
+    marginTop: 15,
+  },
 });

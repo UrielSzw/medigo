@@ -19,4 +19,13 @@ export const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: theme.colors.grey,
   },
+  confirmLocation: {
+    position: 'absolute',
+    top: 35,
+    paddingHorizontal: 50,
+    paddingVertical: 10,
+    borderRadius: 8,
+    zIndex: 10,
+    backgroundColor: theme.colors.grey,
+  },
 });
