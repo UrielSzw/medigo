@@ -15,6 +15,7 @@ import {
   ActivityPat,
   DocInfoPat,
   ActivityDoc,
+  PersonalDataDoc
 } from '../screens';
 import {PATHS} from './paths';
 
@@ -32,6 +33,7 @@ export const Routes = () => {
           <>
             <Stack.Screen name={PATHS.HOMEDOCTOR} component={HomeDoc} />
             <Stack.Screen name={PATHS.PERFILDOCTOR} component={PerfilDoc} />
+            <Stack.Screen name={PATHS.PERSONALDATADOC} component={PersonalDataDoc} />
             <Stack.Screen name={PATHS.ACTIVITYDOC} component={ActivityDoc} />
             <Stack.Screen name={PATHS.MAP} component={Map} />
           </>
@@ -44,6 +46,7 @@ export const Routes = () => {
           </>
         ) : (
           <>
+            <Stack.Screen name={PATHS.PERSONALDATADOC} component={PersonalDataDoc} />
             <Stack.Screen name={PATHS.LOGIN} component={Login} />
             <Stack.Screen name={PATHS.REGISTER} component={Register} />
             <Stack.Screen name={PATHS.REGISTER_PAT} component={RegisterPat} />
