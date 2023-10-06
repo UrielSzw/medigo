@@ -12,5 +12,6 @@ export const PATHS = {
   DOCINFOINPAT: 'docInfoPat',
   ACTIVITYDOC: 'activityDoc',
   ACTIVITYDOC: 'activityDoc',
-  PERSONALDATADOC: 'PersonalDataDoc'
+  PERSONALDATADOC: 'PersonalDataDoc',
+  MODIFYPERSONALDATADOC: 'ModifyPersonalDataDoc'
 };

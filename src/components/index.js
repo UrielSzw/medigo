@@ -16,4 +16,6 @@ export * from './Doctor/DoctorListItem/DoctorListItem.component';
 export * from './Doctor/FooterDoc/FooterDoc.component';
 export * from './Doctor/AccpetedPatient/AcceptedPatient.component';
 export * from './Patient/FooterPatient/FooterPatient.component';
-export * from './Doctor/PersonalDataDoc/PersonalData.component';
+export * from './Doctor/PersonalData/PersonalData.component';
+export * from './Doctor/ModifyPersonalData/ModifyPersonalData.component';
+

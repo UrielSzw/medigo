@@ -3,11 +3,11 @@ import {View} from 'react-native';
 import {
   FooterDoc,
   WelcomePerfilHeader,
-  PersonalData
+  ModifyPersonalData
 } from '../../../components';
-import {styles} from './PersonalDataDoc.styles';
+import {styles} from './ModifyPersonalData.styles';
 
-export const PersonalDataDoc = ({}) => {
+export const ModifyPersonalDataDoc = ({}) => {
 
   return (
     <View style={styles.wrapper}>
@@ -15,14 +15,7 @@ export const PersonalDataDoc = ({}) => {
         username="Dr.Joseph Brostito"
         email="fedepr2345@gmail.com"
       />
-      <PersonalData 
-        dni="1111111111" 
-        telefono="121312313213" 
-        especialidades={["Cardiología", "Dermatología", "Oftalmología"]}
-        precio="2500" 
-        nroMatricula="177777777" 
-        radioDeAccion="2"
-      />
+      <ModifyPersonalData/>
       <FooterDoc current="profile" />
     </View>
   );
