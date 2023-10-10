@@ -3,16 +3,17 @@ import {View} from 'react-native';
 import {
   FooterPatient,
   StyledButton,
+  StyledInput,
   StyledText,
   WelcomePerfilHeader,
 } from '../../../components';
 import {PersonalDataIcon} from '../../../assets';
 import {PATHS} from '../../../routes/paths';
-import {styles} from './PersonalData.styles';
+import {styles} from './ModifyData.styles';
 
-export const PersonalData = ({navigation}) => {
-  const handleBackProfile = () => {
-    navigation.navigate(PATHS.PERFILPATIENT);
+export const ModifyData = ({navigation}) => {
+  const handleBackPersonalData = () => {
+    navigation.navigate(PATHS.PERSONALDATA);
   };
 
   return (
@@ -24,23 +25,19 @@ export const PersonalData = ({navigation}) => {
             <PersonalDataIcon />
             <StyledText bold>Datos personales</StyledText>
           </View>
-          <StyledText color="grey" size="default">
-            DNI: 22222222
-          </StyledText>
-          <StyledText color="grey" size="default">
-            Telefono: 11 3333 3333
-          </StyledText>
+          <StyledInput
+            style={styles.inputStyle}
+            label="Email"
+            placeholder="joedoe@gmail.com"
+          />
         </View>
 
         <View style={styles.buttonsContainer}>
-          <StyledButton
-            onPress={handleBackProfile}
-            children="Modificar datos"
-          />
+          <StyledButton onPress={handleBackPersonalData} children="Confirmar" />
 
           <StyledButton
             variant="secondary"
-            onPress={handleBackProfile}
+            onPress={handleBackPersonalData}
             children="Volver"
           />
         </View>
