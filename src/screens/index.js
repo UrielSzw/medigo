@@ -13,5 +13,7 @@ export * from './Patient/DocInfoPat/DocInfoPat.screen';
 export * from './Patient/PersonalData/PersonalData.screen';
 export * from './Doctor/PersonalDataDoc/PersonalDataDoc.screen';
 export * from './Doctor/ModifyPersonalData/ModifyPersonalData.screen';
-
-
+export * from './Patient/ModifyData/ModifyData.screen';
+export * from './Patient/FamilyMembersPat/FamilyMembers.screen';
+export * from './Patient/FamilyMemberAct/FamilyMemberAct.screen';
+export * from './Patient/HelpPat/HelpPat.screen';

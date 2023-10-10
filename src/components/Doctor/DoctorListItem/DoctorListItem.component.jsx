@@ -1,10 +1,11 @@
 import React from 'react';
 import {View} from 'react-native';
 import {StyledText, UserDataItem, StyledButton} from '../../';
-import {useNavigation} from '@react-navigation/native';
+
 import {MoneyIcon, StarIcon} from '../../../assets';
-import {PATHS} from '../../../routes/paths';
+
 import {styles} from './DoctorListItem.styles';
+import {theme} from '../../../theme/theme';
 
 export const DoctorListItem = ({
   showTime,
@@ -16,13 +17,9 @@ export const DoctorListItem = ({
   name,
   category,
   logo,
+  onPress,
+  buttonText = 'Ver detalles',
 }) => {
-  const navigation = useNavigation();
-
-  const handleDocDetails = () => {
-    navigation.navigate(PATHS.DOCINFOINPAT);
-  };
-
   return (
     <View style={styles.wrapper}>
       <View style={styles.data}>
@@ -47,8 +44,11 @@ export const DoctorListItem = ({
           </View>
         </View>
       )}
-      <StyledButton onPress={handleDocDetails} variant="empty">
-        Ver detalles
+      <StyledButton
+        style={styles.styleButton}
+        onPress={onPress}
+        variant="empty">
+        {buttonText}
       </StyledButton>
     </View>
   );

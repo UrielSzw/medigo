@@ -18,4 +18,4 @@ export * from './Doctor/AccpetedPatient/AcceptedPatient.component';
 export * from './Patient/FooterPatient/FooterPatient.component';
 export * from './Doctor/PersonalData/PersonalData.component';
 export * from './Doctor/ModifyPersonalData/ModifyPersonalData.component';
-
+export * from './Common/DropdownInfo/DropdownInfo.component';

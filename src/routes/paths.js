@@ -11,7 +11,11 @@ export const PATHS = {
   ACTIVITYPAT: 'activityPat',
   DOCINFOINPAT: 'docInfoPat',
   ACTIVITYDOC: 'activityDoc',
-  ACTIVITYDOC: 'activityDoc',
   PERSONALDATADOC: 'PersonalDataDoc',
-  MODIFYPERSONALDATADOC: 'ModifyPersonalDataDoc'
+  MODIFYPERSONALDATADOC: 'ModifyPersonalDataDoc',
+  PERSONALDATA: 'personalDataPat',
+  MODIFYPATDATA: 'modifyDataPat',
+  FAMILYMEMBERS: 'familyMembersPat',
+  FAMILYMEMBERACTIVITY: 'familyMemberAct',
+  HELPPAT: 'helpPat',
 };
