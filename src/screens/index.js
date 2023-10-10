@@ -11,3 +11,7 @@ export * from './Patient/ProfilePat/ProfilePat.screen';
 export * from './Patient/ActivityPat/ActivityPat.screen';
 export * from './Patient/DocInfoPat/DocInfoPat.screen';
 export * from './Patient/PersonalData/PersonalData.screen';
+export * from './Patient/ModifyData/ModifyData.screen';
+export * from './Patient/FamilyMembersPat/FamilyMembers.screen';
+export * from './Patient/FamilyMemberAct/FamilyMemberAct.screen';
+export * from './Patient/HelpPat/HelpPat.screen';
