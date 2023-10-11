@@ -8,7 +8,11 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingTop: 10,
   },
+  body: {
+    flex: 1,
+  },
   buttonWrapper: {
+    flex: 2,
     paddingHorizontal: '15%',
   },
   adressButtonWrapper: {

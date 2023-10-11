@@ -15,6 +15,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 20,
     backgroundColor: theme.colors.white,
+    borderWidth: 1,
+    borderColor: 'rgba(134, 150, 187, 0.1)',
   },
   data: {
     paddingBottom: 20,

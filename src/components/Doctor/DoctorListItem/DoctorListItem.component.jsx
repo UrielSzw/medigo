@@ -1,11 +1,8 @@
 import React from 'react';
 import {View} from 'react-native';
 import {StyledText, UserDataItem, StyledButton} from '../../';
-
 import {MoneyIcon, StarIcon} from '../../../assets';
-
 import {styles} from './DoctorListItem.styles';
-import {theme} from '../../../theme/theme';
 
 export const DoctorListItem = ({
   showTime,

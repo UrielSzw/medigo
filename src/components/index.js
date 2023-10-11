@@ -19,3 +19,7 @@ export * from './Patient/FooterPatient/FooterPatient.component';
 export * from './Doctor/PersonalData/PersonalData.component';
 export * from './Doctor/ModifyPersonalData/ModifyPersonalData.component';
 export * from './Common/DropdownInfo/DropdownInfo.component';
+export * from './Patient/ChangeAdressModal/ChangeAdressModal.component';
+export * from './Patient/SubmitDoctorDataModal/SubmitDoctorDataModal.component';
+export * from './Patient/ListOfDoctors/ListOfDoctors.component';
+export * from './Patient/DoctorDetails/DoctorDetails.component';

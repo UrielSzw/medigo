@@ -1,16 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
-import {TextInput, TouchableOpacity, View} from 'react-native';
+import {ScrollView, TouchableOpacity, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch, useSelector} from 'react-redux';
 import {Controller, useForm} from 'react-hook-form';
 import {
+  ChangeAdressModal,
+  DoctorDetails,
+  DoctorListItem,
   DropdownSelect,
   FooterPatient,
+  ListOfDoctors,
   StyledButton,
   StyledInput,
   StyledModal,
   StyledText,
+  SubmitDoctorDataModal,
   WelcomeHeader,
 } from '../../../components';
 import {PencilIcon} from '../../../assets';
@@ -32,10 +37,14 @@ export const HomePat = () => {
   const [especialidad, setEspecialidad] = useState('Seleccione especialidad');
   const [especialidadModal, setEspecialidadModal] = useState(false);
   const [grupoFamiliarModal, setGrupoFamiliarModal] = useState(false);
+  const [filterModal, setFilterModal] = useState(false);
+  const [doctorDetailsModal, setDoctorDetailsModal] = useState(false);
   const [grupoFamiliar, setGrupoFamiliar] = useState(
     'Seleccione grupo familiar',
   );
+  const [filter, setFilter] = useState('Tiempo');
   const [addressPreview, setAddressPreview] = useState(userData.address);
+  const [listOfDoctorsState, setListOfDoctorsState] = useState(false);
 
   const onSubmitAdress = () => {
     setValue('address', addressPreview);
@@ -46,6 +55,8 @@ export const HomePat = () => {
   const onSubmit = data => {
     setValue('specialty', especialidad);
     setValue('familyGroup', grupoFamiliar);
+    setListOfDoctorsState(true);
+    setOpenMedicModal(false);
     console.log(data);
   };
 
@@ -53,103 +64,83 @@ export const HomePat = () => {
     setValue('address', addressPreview);
   }, []);
 
+  const handleViewMoreDetails = () => {
+    setDoctorDetailsModal(true);
+  };
+
   return (
     <View style={styles.wrapper}>
-      <View>
-        <TouchableOpacity
-          onPress={setOpenModal}
-          style={styles.adressButtonWrapper}>
-          <StyledText color="grey">{userData.address}</StyledText>
-          <PencilIcon style={styles.icon} />
-        </TouchableOpacity>
+      <View style={styles.body}>
+        {!listOfDoctorsState && (
+          <TouchableOpacity
+            onPress={setOpenModal}
+            style={styles.adressButtonWrapper}>
+            <StyledText color="grey">{userData.address}</StyledText>
+            <PencilIcon style={styles.icon} />
+          </TouchableOpacity>
+        )}
+
+        {listOfDoctorsState && (
+          <View style={styles.adressButtonWrapper}>
+            <StyledText color="grey">{userData.address}</StyledText>
+          </View>
+        )}
+
         <WelcomeHeader />
+
+        {listOfDoctorsState && (
+          <ListOfDoctors
+            handleViewMoreDetails={handleViewMoreDetails}
+            setFilterModal={setFilterModal}
+            especialidad={especialidad}
+          />
+        )}
       </View>
-      <View style={styles.buttonWrapper}>
-        <StyledButton variant="primary" onPress={setOpenMedicModal}>
-          Solicitar medico
-        </StyledButton>
-      </View>
+
+      {!listOfDoctorsState && (
+        <View style={styles.buttonWrapper}>
+          <StyledButton variant="primary" onPress={setOpenMedicModal}>
+            Solicitar medico
+          </StyledButton>
+        </View>
+      )}
+
       <FooterPatient current="home" />
       <StyledModal
         title="Ingresar informacion medica"
         content={
-          <KeyboardAwareScrollView
-            contentContainerStyle={styles.contentAskMedicWrapperScroll}>
-            <Controller
-              control={control}
-              name="motive"
-              render={({field}) => (
-                <StyledInput label="Motivo" field={field} name="motive" />
-              )}
-            />
-            <Controller
-              control={control}
-              name="symptoms"
-              render={({field}) => (
-                <StyledInput label="Sintomas" field={field} name="symptoms" />
-              )}
-            />
-            <View>
-              <StyledText>Especialidad</StyledText>
-              <StyledButton
-                variant="empty"
-                onPress={() => setEspecialidadModal(true)}>
-                {especialidad}
-              </StyledButton>
-            </View>
-
-            <View>
-              <StyledText>Miembro del grupo familiar</StyledText>
-              <StyledButton
-                variant="empty"
-                onPress={() => setGrupoFamiliarModal(true)}>
-                {grupoFamiliar}
-              </StyledButton>
-            </View>
-
-            <Controller
-              control={control}
-              name="address"
-              render={({field}) => (
-                <StyledInput label="Direccion" field={field} name="address" />
-              )}
-            />
-            <View style={styles.buttonsWrapper}>
-              <StyledButton onPress={handleSubmit(onSubmit)}>
-                Ver medicos disponibles
-              </StyledButton>
-
-              <StyledButton
-                variant="empty"
-                onPress={() => setOpenMedicModal(false)}>
-                Cancelar
-              </StyledButton>
-            </View>
-          </KeyboardAwareScrollView>
+          <SubmitDoctorDataModal
+            control={control}
+            especialidad={especialidad}
+            grupoFamiliar={grupoFamiliar}
+            setEspecialidadModal={setEspecialidadModal}
+            setGrupoFamiliarModal={setGrupoFamiliarModal}
+            handleSubmit={handleSubmit}
+            onSubmit={onSubmit}
+            setOpenMedicModal={setOpenMedicModal}
+          />
         }
         open={openMedicModal}
       />
       <StyledModal
         title="Cambiar direccion"
         content={
-          <View style={styles.contentWrapper}>
-            <StyledText>Direccion</StyledText>
-            <TextInput
-              placeholder={userData.address}
-              value={addressPreview}
-              onChangeText={text => setAddressPreview(text)}
-              style={styles.input}
-            />
-            <View>
-              <StyledButton onPress={onSubmitAdress}>Cambiar</StyledButton>
-
-              <StyledButton variant="empty" onPress={() => setOpenModal(false)}>
-                Cancelar
-              </StyledButton>
-            </View>
-          </View>
+          <ChangeAdressModal
+            userData={userData}
+            addressPreview={addressPreview}
+            setAddressPreview={setAddressPreview}
+            onSubmitAdress={onSubmitAdress}
+            setOpenModal={setOpenModal}
+          />
         }
         open={openModal}
+      />
+      <StyledModal
+        title="Informacion del medico"
+        content={
+          <DoctorDetails setDoctorDetailsModal={setDoctorDetailsModal} />
+        }
+        open={doctorDetailsModal}
       />
       <DropdownSelect
         dropdownValue={especialidad}
@@ -166,6 +157,14 @@ export const HomePat = () => {
         options={['Yo', 'Hijo', 'Esposo']}
         visible={grupoFamiliarModal}
         setVisible={setGrupoFamiliarModal}
+      />
+      <DropdownSelect
+        dropdownValue={filter}
+        setDropdownValue={setFilter}
+        title="Seleciona un grupoFamiliar"
+        options={['Precio', 'Tiempo', 'Calificacion']}
+        visible={filterModal}
+        setVisible={setFilterModal}
       />
     </View>
   );
