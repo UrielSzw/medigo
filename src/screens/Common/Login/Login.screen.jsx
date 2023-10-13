@@ -16,8 +16,8 @@ import {setUserData} from '../../../redux/user.slice';
 
 const USERS = [
   {
-    email: 'medico@gmail.com',
-    password: 'medico',
+    email: 'm',
+    password: 'm',
     type: 'doctor',
   },
   {
