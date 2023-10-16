@@ -13,6 +13,7 @@ import {MedigoLogoIcon} from '../../../assets';
 import {PATHS} from '../../../routes/paths';
 import {styles} from './Login.styles';
 import {setUserData} from '../../../redux/user.slice';
+import {apiUsuariosLogin, getUsers} from '../../../utils/api/userRoutes';
 
 const USERS = [
   {
@@ -32,21 +33,24 @@ export const Login = ({navigation}) => {
   const {control, handleSubmit} = useForm();
   const dispatch = useDispatch();
 
-  const onSubmit = data => {
-    if (data) {
-      const foundeUser = USERS.find(user => user.email === data.email);
-
-      if (foundeUser && foundeUser.password === data.password) {
-        dispatch(setUserData(foundeUser));
-
-        if (foundeUser.type === 'doctor') {
-          navigation.navigate(PATHS.HOMEDOCTOR);
-        } else {
-          navigation.navigate(PATHS.HOMEPATIENT);
-        }
-      }
+  const onSubmit = async data => {
+    try {
+      // const response = await apiUsuariosLogin({
+      //   username: data.email,
+      //   password: data.password,
+      // });
+      // const response = await fetch('http://192.168.0.139:3000/usuarios/1');
+      const response = await getUsers(1);
+      console.log('response', response);
+    } catch (e) {
+      console.log(e.message);
     }
   };
+  // if (foundeUser.type === 'doctor') {
+  //   navigation.navigate(PATHS.HOMEDOCTOR);
+  // } else {
+  //   navigation.navigate(PATHS.HOMEPATIENT);
+  // }
 
   const handleNavigateRegister = () => {
     navigation.navigate(PATHS.REGISTER);

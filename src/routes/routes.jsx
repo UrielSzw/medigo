@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {useSelector} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -19,10 +19,12 @@ import {
   ModifyPersonalDataDoc,
 } from '../screens';
 import {PATHS} from './paths';
+import {UserContext} from '../context/UserProvider';
 
 export const Routes = () => {
   const Stack = createNativeStackNavigator();
   const {userData} = useSelector(state => state.userReducer);
+  const {tokenUsuario} = useContext(UserContext);
 
   return (
     <NavigationContainer>
