@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from 'react';
 import {View, Linking} from 'react-native';
 import {
@@ -15,9 +16,10 @@ import {ClockIcon, DefaultProfile} from '../../../assets';
 import {styles} from './HomeDoc.styles';
 
 export const HomeDoc = ({navigation, route}) => {
-
- // var permisoDenegado = route.params ? route.params.permisoDenegado : undefined;
-  const [permisoDenegado, setPermisoDenegado] = useState(route.params ? route.params.permisoDenegado : undefined);
+  // var permisoDenegado = route.params ? route.params.permisoDenegado : undefined;
+  const [permisoDenegado, setPermisoDenegado] = useState(
+    route.params ? route.params.permisoDenegado : undefined,
+  );
   const [activo, setActivo] = useState(false);
   const [cuentaActivada, setCuentaActivada] = useState(false);
   const [acceptedPatient, setAcceptedPatient] = useState({});
@@ -45,7 +47,6 @@ export const HomeDoc = ({navigation, route}) => {
     if (permisoDenegado === false) {
       setActivo(false);
       setCuentaActivada(false);
-
     }
   }, [permisoDenegado]);
 
