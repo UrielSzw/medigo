@@ -48,6 +48,7 @@ export const Map = ({navigation}) => {
             getLocation();
           } else {
             console.log('Permiso de geolocalización denegado');
+            navigation.navigate(PATHS.HOMEDOCTOR, {permisoDenegado: false});
           }
         }
       } catch (error) {
@@ -68,7 +69,7 @@ export const Map = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.confirmLocation}>
-        <StyledText color="white">Confirma tu ubicación:</StyledText>
+        <StyledText color="white">Tu ubicación actual:</StyledText>
       </View>
       {currentLocation && (
         <MapView

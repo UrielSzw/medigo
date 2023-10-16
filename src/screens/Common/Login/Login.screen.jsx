@@ -17,8 +17,8 @@ import {apiUsuariosLogin, getUsers} from '../../../utils/api/userRoutes';
 
 const USERS = [
   {
-    email: 'medico@gmail.com',
-    password: 'medico',
+    email: 'm',
+    password: 'm',
     type: 'doctor',
   },
   {

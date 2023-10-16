@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from 'react';
 import {View, Linking} from 'react-native';
 import {
@@ -14,7 +15,11 @@ import {PATHS} from '../../../routes/paths';
 import {ClockIcon, DefaultProfile} from '../../../assets';
 import {styles} from './HomeDoc.styles';
 
-export const HomeDoc = ({navigation}) => {
+export const HomeDoc = ({navigation, route}) => {
+  // var permisoDenegado = route.params ? route.params.permisoDenegado : undefined;
+  const [permisoDenegado, setPermisoDenegado] = useState(
+    route.params ? route.params.permisoDenegado : undefined,
+  );
   const [activo, setActivo] = useState(false);
   const [cuentaActivada, setCuentaActivada] = useState(false);
   const [acceptedPatient, setAcceptedPatient] = useState({});
@@ -34,6 +39,19 @@ export const HomeDoc = ({navigation}) => {
   };
 
   useEffect(() => {
+    // Si el valor de la ruta cambia, actualiza el estado
+    setPermisoDenegado(route.params ? route.params.permisoDenegado : undefined);
+  }, [route.params]);
+
+  useEffect(() => {
+    if (permisoDenegado === false) {
+      setActivo(false);
+      setCuentaActivada(false);
+    }
+  }, [permisoDenegado]);
+
+  useEffect(() => {
+    console.log(permisoDenegado);
     if (count <= 0) {
       console.log('Cancelado la request');
     } else {
@@ -50,6 +68,7 @@ export const HomeDoc = ({navigation}) => {
     } else {
       setCuentaActivada(true);
       setActivo(true);
+      setPermisoDenegado(true);
       navigation.navigate(PATHS.MAP);
     }
     closeModal();
