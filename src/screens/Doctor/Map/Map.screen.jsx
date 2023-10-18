@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
@@ -88,7 +89,7 @@ export const Map = ({navigation}) => {
               longitude: currentLocation.longitude,
             }}
             title="Tu ubicación actual"
-            description="Descripción de tu ubicación"
+            description="Manten para mover"
             image={require('../../../assets/icons/pin_map.png')}
           />
         </MapView>

@@ -4,19 +4,12 @@ import {UserDataItem} from '../../Common/UserDataItem/UserDataItem.component';
 import {Rating} from '../../Common/Rating/Rating.component';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
-import {styles} from './PatientReview.styles';
+import {styles} from './DoctorReview.styles';
 
-const DOCTOR = {
-  time: '15',
-  price: '1700',
-  reviews: '(120 reseñas)',
-  rating: '4,8',
-  name: 'Jorge',
-  category: 'Clinico',
-  dni: '36985214',
-};
-
-export const PatientReview = ({doctor = DOCTOR, setDoctorReviewModal}) => {
+export const DoctorReview = ({
+  setPatientReviewModal,
+  handleSetActiveAfterEnd,
+}) => {
   const [rating, setRating] = useState(0);
   const [showError, setShowError] = useState(false);
 
@@ -25,7 +18,8 @@ export const PatientReview = ({doctor = DOCTOR, setDoctorReviewModal}) => {
       setShowError(true);
       return;
     }
-    setDoctorReviewModal(false);
+    setPatientReviewModal(false);
+    handleSetActiveAfterEnd();
   };
 
   useEffect(() => {
@@ -35,7 +29,7 @@ export const PatientReview = ({doctor = DOCTOR, setDoctorReviewModal}) => {
   }, [rating]);
   return (
     <View style={styles.wrapper}>
-      <UserDataItem name={doctor.name} category={doctor.category} />
+      <UserDataItem name="Jose" category="Paciente" />
       <Rating handleRating={setRating} />
       <View style={styles.textBox}>
         <StyledText style={styles.text}>Dejar comentario (opcional)</StyledText>

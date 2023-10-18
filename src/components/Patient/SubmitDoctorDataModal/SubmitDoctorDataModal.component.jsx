@@ -51,7 +51,7 @@ export const SubmitDoctorDataModal = ({
       <View>
         <StyledText>Especialidad</StyledText>
         <StyledButton
-          style={errors?.familyGroup && {borderColor: 'red'}}
+          style={errors?.specialty && {borderColor: 'red'}}
           variant="empty"
           onPress={() => setEspecialidadModal(true)}>
           {especialidad}

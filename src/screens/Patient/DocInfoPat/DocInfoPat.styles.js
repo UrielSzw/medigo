@@ -10,8 +10,13 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   infoDocContainer: {
+    justifyContent: 'space-between',
     gap: 50,
+    flex: 1,
     marginHorizontal: 20,
+  },
+  container: {
+    gap: 10,
   },
   detailsContainer: {
     flexDirection: 'row',
@@ -19,6 +24,7 @@ export const styles = StyleSheet.create({
     gap: 5,
   },
   userData: {
+    marginTop: 20,
     justifyContent: 'space-between',
   },
 });

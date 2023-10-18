@@ -1,16 +1,24 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import {theme} from '../../../theme/theme';
 
+const {height} = Dimensions.get('screen');
+
 export const styles = StyleSheet.create({
-  docInfoPatWrapper: {
-    backgroundColor: theme.colors.white,
+  container: {
     flex: 1,
-    paddingTop: 20,
-    gap: 20,
+    backgroundColor: theme.colors.white,
+  },
+  docInfoPatWrapper: {
+    height: height - 68,
     justifyContent: 'space-between',
+    paddingTop: 20,
+    flex: 1,
+    gap: 20,
   },
   infoDocContainer: {
     marginHorizontal: 20,
+    flex: 1,
+    justifyContent: 'space-between',
     gap: 200,
   },
   detailsContainer: {

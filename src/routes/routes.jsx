@@ -17,6 +17,12 @@ import {
   ActivityDoc,
   PersonalDataDoc,
   ModifyPersonalDataDoc,
+  PersonalData,
+  HelpPat,
+  FamilyMembers,
+  FamilyMemberAct,
+  ModifyData,
+  HelpDoc,
 } from '../screens';
 import {PATHS} from './paths';
 import {UserContext} from '../context/UserProvider';
@@ -46,6 +52,7 @@ export const Routes = () => {
             />
             <Stack.Screen name={PATHS.ACTIVITYDOC} component={ActivityDoc} />
             <Stack.Screen name={PATHS.MAP} component={Map} />
+            <Stack.Screen name={PATHS.HELPDOC} component={HelpDoc} />
           </>
         ) : userData.type === 'patient' ? (
           <>
@@ -53,6 +60,17 @@ export const Routes = () => {
             <Stack.Screen name={PATHS.PERFILPATIENT} component={ProfilePat} />
             <Stack.Screen name={PATHS.ACTIVITYPAT} component={ActivityPat} />
             <Stack.Screen name={PATHS.DOCINFOINPAT} component={DocInfoPat} />
+            <Stack.Screen name={PATHS.PERSONALDATA} component={PersonalData} />
+            <Stack.Screen name={PATHS.HELPPAT} component={HelpPat} />
+            <Stack.Screen
+              name={PATHS.FAMILYMEMBERS}
+              component={FamilyMembers}
+            />
+            <Stack.Screen
+              name={PATHS.FAMILYMEMBERACTIVITY}
+              component={FamilyMemberAct}
+            />
+            <Stack.Screen name={PATHS.MODIFYPATDATA} component={ModifyData} />
           </>
         ) : (
           <>

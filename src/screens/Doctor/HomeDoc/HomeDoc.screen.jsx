@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import {View, Linking} from 'react-native';
 import {
@@ -8,11 +8,11 @@ import {
   StyledButton,
   WelcomeHeader,
   PatientRequest,
-  Rating,
   AcceptedPatient,
+  PatientDetailsModal,
+  DoctorReview,
 } from '../../../components';
 import {PATHS} from '../../../routes/paths';
-import {ClockIcon, DefaultProfile} from '../../../assets';
 import {styles} from './HomeDoc.styles';
 
 export const HomeDoc = ({navigation, route}) => {
@@ -25,6 +25,8 @@ export const HomeDoc = ({navigation, route}) => {
   const [acceptedPatient, setAcceptedPatient] = useState({});
   const [openModal, setOpenModal] = useState(false);
   const [openModalDetail, setOpenModalDetail] = useState(false);
+  const [openModalErrorGeo, setOpenModalErrorGeo] = useState(false);
+  const [patientReviewModal, setPatientReviewModal] = useState(false);
   const [count, setCount] = useState(60);
 
   const openGoogleMaps = (
@@ -47,11 +49,11 @@ export const HomeDoc = ({navigation, route}) => {
     if (permisoDenegado === false) {
       setActivo(false);
       setCuentaActivada(false);
+      setOpenModalErrorGeo(true);
     }
   }, [permisoDenegado]);
 
   useEffect(() => {
-    console.log(permisoDenegado);
     if (count <= 0) {
       console.log('Cancelado la request');
     } else {
@@ -66,10 +68,10 @@ export const HomeDoc = ({navigation, route}) => {
       setCuentaActivada(false);
       setActivo(false);
     } else {
+      navigation.navigate(PATHS.MAP);
       setCuentaActivada(true);
       setActivo(true);
       setPermisoDenegado(true);
-      navigation.navigate(PATHS.MAP);
     }
     closeModal();
   };
@@ -81,6 +83,15 @@ export const HomeDoc = ({navigation, route}) => {
   const handleAcceptPatientRequest = () => {
     setOpenModalDetail(false);
     setActivo(false);
+    setAcceptedPatient({name: 'Nombre'});
+  };
+
+  const handleEndAppointment = () => {
+    setPatientReviewModal(true);
+  };
+
+  const handleSetActiveAfterEnd = () => {
+    setActivo(true);
     setAcceptedPatient({});
   };
 
@@ -94,13 +105,13 @@ export const HomeDoc = ({navigation, route}) => {
           <StyledText size="xl" bold={true} color={activo ? 'green' : 'red'}>
             {activo ? 'ACTIVO' : 'INACTIVO'}
           </StyledText>
-          {cuentaActivada && (
+          {activo && (
             <PatientRequest
               count={count}
               setOpenModalDetail={setOpenModalDetail}
             />
           )}
-          {!cuentaActivada && acceptedPatient && (
+          {!activo && acceptedPatient.name && (
             <AcceptedPatient
               onPress={() =>
                 openGoogleMaps(
@@ -115,9 +126,19 @@ export const HomeDoc = ({navigation, route}) => {
         </View>
       </View>
       <View style={styles.buttonWrapper}>
-        <StyledButton onPress={() => setOpenModal(true)}>
-          {cuentaActivada ? 'Desactivar cuenta' : 'Activar cuenta'}
-        </StyledButton>
+        {!acceptedPatient.name && (
+          <StyledButton onPress={() => setOpenModal(true)}>
+            {cuentaActivada ? 'Desactivar cuenta' : 'Activar cuenta'}
+          </StyledButton>
+        )}
+        {acceptedPatient.name && (
+          <View style={styles.buttonAccepted}>
+            <StyledButton onPress={handleEndAppointment}>
+              Finalizar
+            </StyledButton>
+            <StyledButton variant="secondary">Agregar notas</StyledButton>
+          </View>
+        )}
       </View>
       <FooterDoc current="home" />
       <StyledModal
@@ -153,57 +174,37 @@ export const HomeDoc = ({navigation, route}) => {
           </View>
         }
         content={
-          <View>
-            <View style={styles.dataWrapper}>
-              <View style={styles.nameWrapper}>
-                <DefaultProfile />
-                <View>
-                  <StyledText bold size="md">
-                    User
-                  </StyledText>
-                  <StyledText color="grey">Pacietne</StyledText>
-                </View>
-              </View>
-              <View style={styles.timeWrapper}>
-                <ClockIcon fill="#8696BB" style={styles.icon} />
-                <StyledText color="grey">15 m</StyledText>
-              </View>
-            </View>
-            <View style={styles.detailsWrapper}>
-              <Rating rating={4} readOnly />
-              <StyledText color="grey" size="default">
-                DNI: 22222222
-              </StyledText>
-              <StyledText color="grey" size="default">
-                Miembro familiar: Joe Doe
-              </StyledText>
-              <StyledText color="grey" size="default">
-                Ubicacion de atencion: Av Corrientes 4251
-              </StyledText>
-              <View>
-                <StyledText color="grey" size="default">
-                  Motivo:
-                </StyledText>
-                <StyledText color="grey" size="default">
-                  - Siento mucho dolor en el codo cuando me toco o hago algun
-                  movimiento leve
-                </StyledText>
-              </View>
-              <StyledText color="grey" size="default">
-                Sintomas: molestia en el codo
-              </StyledText>
-            </View>
-            <StyledButton onPress={handleAcceptPatientRequest}>
-              Acceptar
-            </StyledButton>
+          <PatientDetailsModal
+            handleAcceptPatientRequest={handleAcceptPatientRequest}
+            setOpenModalDetail={setOpenModalDetail}
+          />
+        }
+      />
+      <StyledModal
+        open={openModalErrorGeo}
+        title="Error de geolocalización"
+        content={
+          <View style={{gap: 40}}>
+            <StyledText style={{textAlign: 'center'}}>
+              Para poder acceptar clientes, debes permitir la geolocalización
+            </StyledText>
             <StyledButton
-              style={styles.button}
-              variant="secondary"
-              onPress={() => setOpenModalDetail(false)}>
-              Rechazar
+              variant="warning"
+              onPress={() => setOpenModalErrorGeo(false)}>
+              Cerrar
             </StyledButton>
           </View>
         }
+      />
+      <StyledModal
+        title="Calificar paciente"
+        content={
+          <DoctorReview
+            handleSetActiveAfterEnd={handleSetActiveAfterEnd}
+            setPatientReviewModal={setPatientReviewModal}
+          />
+        }
+        open={patientReviewModal}
       />
     </View>
   );

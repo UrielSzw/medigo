@@ -17,6 +17,10 @@ export const FamilyMembers = ({navigation}) => {
     navigation.navigate(PATHS.PERFILPATIENT);
   };
 
+  const handleNavigateActivity = () => {
+    navigation.navigate(PATHS.FAMILYMEMBERACTIVITY);
+  };
+
   return (
     <View style={styles.selectDocWrapper}>
       <WelcomePerfilHeader username="Joe Doe" email="joedoe@gmail.com" />
@@ -32,11 +36,15 @@ export const FamilyMembers = ({navigation}) => {
             buttonText="Ver actividad"
             name="Federico"
             category="Hijo"
+            onPress={handleNavigateActivity}
           />
         </View>
 
         <View style={styles.buttonsContainer}>
-          <StyledButton onPress={handleNavigateProfile} children="Confirmar" />
+          <StyledButton
+            onPress={handleNavigateProfile}
+            children="Modficar datos"
+          />
 
           <StyledButton
             variant="secondary"

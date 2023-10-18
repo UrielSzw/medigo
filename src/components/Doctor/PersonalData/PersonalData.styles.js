@@ -1,16 +1,16 @@
 import {StyleSheet} from 'react-native';
-import {theme} from '../../../theme/theme';
 
 export const styles = StyleSheet.create({
   infoDocContainer: {
-    marginHorizontal: 20,
-    gap: 120,
+    paddingTop: 50,
+    flex: 1,
+    justifyContent: 'space-between',
   },
   detailsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-    marginBottom: 20,
+    marginBottom: 10,
     paddingHorizontal: 20,
   },
   userData: {
@@ -22,5 +22,5 @@ export const styles = StyleSheet.create({
   },
   paddLeft: {
     paddingHorizontal: 20,
-  }
+  },
 });

@@ -20,11 +20,17 @@ export const ProfilePat = ({navigation}) => {
     navigation.navigate(PATHS.ACTIVITYPAT);
   };
 
-  const handleHelpPress = () => {};
+  const handleHelpPress = () => {
+    navigation.navigate(PATHS.HELPPAT);
+  };
 
-  const handleFamilyMembersPress = () => {};
+  const handleFamilyMembersPress = () => {
+    navigation.navigate(PATHS.FAMILYMEMBERS);
+  };
 
-  const handlePersonalDataPress = () => {};
+  const handlePersonalDataPress = () => {
+    navigation.navigate(PATHS.PERSONALDATA);
+  };
 
   return (
     <View style={styles.wrapper}>

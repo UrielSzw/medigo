@@ -1,13 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View} from 'react-native';
 import {
   FooterDoc,
   WelcomePerfilHeader,
-  ModifyPersonalData
+  ModifyPersonalData,
 } from '../../../components';
 import {styles} from './ModifyPersonalData.styles';
 
-export const ModifyPersonalDataDoc = ({}) => {
+export const ModifyPersonalDataDoc = () => {
+  const [hideFooter, setHideFooter] = useState(false);
 
   return (
     <View style={styles.wrapper}>
@@ -15,8 +16,8 @@ export const ModifyPersonalDataDoc = ({}) => {
         username="Dr.Joseph Brostito"
         email="fedepr2345@gmail.com"
       />
-      <ModifyPersonalData/>
-      <FooterDoc current="profile" />
+      <ModifyPersonalData setHideFooter={setHideFooter} />
+      {!hideFooter && <FooterDoc current="profile" />}
     </View>
   );
 };

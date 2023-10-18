@@ -1,13 +1,11 @@
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
-  body: {
-    alignItems: 'center',
-    paddingHorizontal: '10%',
-  },
   infoDocContainer: {
-    marginHorizontal: 20,
-    gap: 40,
+    gap: 5,
+    paddingTop: 40,
+    flex: 1,
+    justifyContent: 'space-between',
   },
   detailsContainer: {
     flexDirection: 'row',
@@ -22,8 +20,11 @@ export const styles = StyleSheet.create({
   },
   inputWrapper: {
     width: '100%',
-    height: 250,
+    height: 300,
     marginBottom: 50,
+  },
+  inputContent: {
+    marginHorizontal: '5%',
   },
   input: {
     marginBottom: 8,

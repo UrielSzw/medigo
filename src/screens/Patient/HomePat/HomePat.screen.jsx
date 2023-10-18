@@ -49,6 +49,7 @@ export const HomePat = () => {
   const [grupoFamiliarModal, setGrupoFamiliarModal] = useState(false);
   const [filterModal, setFilterModal] = useState(false);
   const [doctorDetailsModal, setDoctorDetailsModal] = useState(false);
+  const [doctorReviewModal, setDoctorReviewModal] = useState(false);
   const [grupoFamiliar, setGrupoFamiliar] = useState(
     'Seleccione grupo familiar',
   );
@@ -56,6 +57,7 @@ export const HomePat = () => {
   const [addressPreview, setAddressPreview] = useState(userData.address);
   const [listOfDoctorsState, setListOfDoctorsState] = useState(false);
   const [appointmentState, setAppointmentState] = useState(false);
+  const [doctorDetails, setDoctorDetails] = useState(undefined);
 
   const onSubmitAdress = () => {
     setValue('address', addressPreview);
@@ -99,7 +101,8 @@ export const HomePat = () => {
     setValue('address', addressPreview);
   }, []);
 
-  const handleViewMoreDetails = () => {
+  const handleViewMoreDetails = doctor => {
+    setDoctorDetails(doctor);
     setDoctorDetailsModal(true);
   };
 
@@ -135,13 +138,14 @@ export const HomePat = () => {
 
         {listOfDoctorsState && (
           <ListOfDoctors
+            filter={filter}
             handleViewMoreDetails={handleViewMoreDetails}
             setFilterModal={setFilterModal}
             especialidad={especialidad}
           />
         )}
 
-        {appointmentState && <AppointmentConfirmed />}
+        {appointmentState && <AppointmentConfirmed doctor={doctorDetails} />}
       </View>
 
       {!listOfDoctorsState && !appointmentState && (
@@ -187,6 +191,7 @@ export const HomePat = () => {
         title="Informacion del medico"
         content={
           <DoctorDetails
+            doctor={doctorDetails}
             setOpenWaiting={setOpenWaiting}
             setDoctorDetailsModal={setDoctorDetailsModal}
           />
@@ -195,8 +200,13 @@ export const HomePat = () => {
       />
       <StyledModal
         title="Calificar medico"
-        content={<PatientReview />}
-        open={false}
+        content={
+          <PatientReview
+            doctor={doctorDetails}
+            setDoctorReviewModal={setDoctorReviewModal}
+          />
+        }
+        open={doctorReviewModal}
       />
       <DropdownSelect
         dropdownValue={especialidad}

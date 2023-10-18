@@ -18,6 +18,7 @@ export const styles = StyleSheet.create({
   footer: {
     borderTopWidth: 1,
     borderColor: theme.colors.grey,
+    pointerEvents: 'none',
   },
   confirmLocation: {
     position: 'absolute',

@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
@@ -5,12 +6,17 @@ import {ClockIcon, DefaultProfile} from '../../../assets';
 import {styles} from './AppointmentConfirmed.styles';
 import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
 
-export const AppointmentConfirmed = ({
-  logo,
-  name = 'Doctor',
-  category = 'Clinico',
-  time = '15',
-}) => {
+const DOCTOR = {
+  time: '15',
+  price: '1700',
+  reviews: '(120 reseñas)',
+  rating: '4,8',
+  name: 'Jorge',
+  category: 'Clinico',
+  dni: '36985214',
+};
+
+export const AppointmentConfirmed = ({logo, doctor = DOCTOR}) => {
   const [count, setCount] = useState(120);
   const [disabled, setDisabled] = useState(false);
 
@@ -36,14 +42,14 @@ export const AppointmentConfirmed = ({
             {logo ? logo : <DefaultProfile />}
             <View>
               <StyledText color="white" bold size="md">
-                {name}
+                {doctor.name}
               </StyledText>
-              <StyledText color="white">{category}</StyledText>
+              <StyledText color="white">{doctor.category}</StyledText>
             </View>
           </View>
           <View style={styles.time}>
             <ClockIcon fill="#FFF" style={styles.icon} />
-            <StyledText color="white">{time} m</StyledText>
+            <StyledText color="white">{doctor.time} m</StyledText>
           </View>
         </View>
       </View>
@@ -51,7 +57,10 @@ export const AppointmentConfirmed = ({
         <StyledText color="grey">
           Tiempo restante para cancelar: 2 minutos
         </StyledText>
-        <StyledButton disabled={disabled} variant="warning">
+        <StyledButton
+          style={{opacity: disabled ? 0.3 : 1}}
+          disabled={disabled}
+          variant="warning">
           Cancelar
         </StyledButton>
       </View>

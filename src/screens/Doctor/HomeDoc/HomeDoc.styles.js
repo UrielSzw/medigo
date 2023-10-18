@@ -29,9 +29,12 @@ export const styles = StyleSheet.create({
   },
   buttonWrapper: {
     flex: 1,
-    paddingHorizontal: '15%',
+    paddingHorizontal: '10%',
     marginBottom: 40,
     justifyContent: 'flex-end',
+  },
+  buttonAccepted: {
+    gap: 10,
   },
   contentWrapper: {
     justifyContent: 'space-between',

@@ -15,6 +15,10 @@ export const PersonalData = ({navigation}) => {
     navigation.navigate(PATHS.PERFILPATIENT);
   };
 
+  const handleModifyData = () => {
+    navigation.navigate(PATHS.MODIFYPATDATA);
+  };
+
   return (
     <View style={styles.docInfoPatWrapper}>
       <WelcomePerfilHeader username="Joe Doe" email="joedoe@gmail.com" />
@@ -33,10 +37,7 @@ export const PersonalData = ({navigation}) => {
         </View>
 
         <View style={styles.buttonsContainer}>
-          <StyledButton
-            onPress={handleBackProfile}
-            children="Modificar datos"
-          />
+          <StyledButton onPress={handleModifyData} children="Modificar datos" />
 
           <StyledButton
             variant="secondary"
@@ -45,7 +46,7 @@ export const PersonalData = ({navigation}) => {
           />
         </View>
       </View>
-      <FooterPatient />
+      <FooterPatient current="profile" />
     </View>
   );
 };

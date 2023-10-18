@@ -10,6 +10,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   infoDocContainer: {
+    justifyContent: 'space-between',
+    flex: 1,
     marginHorizontal: 20,
     gap: 200,
   },

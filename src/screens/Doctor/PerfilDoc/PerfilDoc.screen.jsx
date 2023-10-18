@@ -15,9 +15,13 @@ export const PerfilDoc = ({navigation}) => {
     navigation.navigate(PATHS.ACTIVITYDOC);
   };
 
-  const handleDatosPersonalesPress = () => {};
+  const handleDatosPersonalesPress = () => {
+    navigation.navigate(PATHS.PERSONALDATADOC);
+  };
 
-  const handleAyudaPress = () => {};
+  const handleAyudaPress = () => {
+    navigation.navigate(PATHS.HELPDOC);
+  };
 
   return (
     <View style={styles.wrapper}>

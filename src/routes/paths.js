@@ -18,4 +18,5 @@ export const PATHS = {
   FAMILYMEMBERS: 'familyMembersPat',
   FAMILYMEMBERACTIVITY: 'familyMemberAct',
   HELPPAT: 'helpPat',
+  HELPDOC: 'helpDoc',
 };

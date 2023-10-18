@@ -2,7 +2,7 @@ import React from 'react';
 import {View} from 'react-native';
 import {
   DoctorListItem,
-  FooterPatient,
+  FooterDoc,
   StyledButton,
   StyledText,
   WelcomePerfilHeader,
@@ -33,7 +33,7 @@ export const ActivityDoc = ({navigation}) => {
           <StyledButton onPress={handleNavigateProfile} children="Volver" />
         </View>
       </View>
-      <FooterPatient current="profile" />
+      <FooterDoc current="profile" />
     </View>
   );
 };
