@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: '5%',
   },
   input: {
-    marginBottom: 25,
+    marginBottom: 10,
   },
   footerWrapper: {
     marginTop: 20,

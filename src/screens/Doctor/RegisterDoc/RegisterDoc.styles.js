@@ -6,26 +6,27 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     flex: 1,
   },
+  body: {
+    flex: 1,
+    paddingHorizontal: '5%',
+  },
   bodyWrapper: {
     width: '100%',
-    height: 370,
-    paddingHorizontal: '5%',
-    marginBottom: 50,
+    height: 300,
   },
   input: {
     marginBottom: 5,
   },
   footerWrapper: {
     marginTop: 20,
-    marginBottom: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
     gap: 5,
   },
   logo: {
     position: 'relative',
-    bottom: 15,
+    bottom: 2,
     alignSelf: 'center',
+  },
+  secondaryButtonText: {
+    color: theme.colors.blue,
   },
 });

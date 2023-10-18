@@ -5,7 +5,7 @@ import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {styles} from './WaitingModal.styles';
 
 export const WaitingModal = ({visible, setVisible}) => {
-  const [count, setCount] = useState(60);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     if (count <= 0) {
@@ -16,6 +16,12 @@ export const WaitingModal = ({visible, setVisible}) => {
       }, 1000);
     }
   }, [count]);
+
+  useEffect(() => {
+    if (visible) {
+      setCount(60);
+    }
+  }, [visible]);
 
   return (
     <Modal visible={visible} transparent>

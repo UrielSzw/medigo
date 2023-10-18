@@ -1,29 +1,38 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
-import {ScrollView, TouchableOpacity, View} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {TouchableOpacity, View, TextInput} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Controller, useForm} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import {
+  AppointmentConfirmed,
   ChangeAdressModal,
   DoctorDetails,
-  DoctorListItem,
   DropdownSelect,
   FooterPatient,
   ListOfDoctors,
+  PatientReview,
+  Rating,
   StyledButton,
-  StyledInput,
   StyledModal,
   StyledText,
   SubmitDoctorDataModal,
+  UserDataItem,
   WelcomeHeader,
 } from '../../../components';
 import {PencilIcon} from '../../../assets';
 import {setUserData} from '../../../redux/user.slice';
 import {styles} from './HomePat.styles';
+import {WaitingModal} from '../../../components/Patient/WaitingModal/WaitingModal.component';
 
 export const HomePat = () => {
-  const {control, handleSubmit, setValue} = useForm({
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    setError,
+    clearErrors,
+    formState: {errors},
+  } = useForm({
     address: '',
     motive: '',
     symptoms: '',
@@ -34,6 +43,7 @@ export const HomePat = () => {
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
   const [openMedicModal, setOpenMedicModal] = useState(false);
+  const [openWaiting, setOpenWaiting] = useState(false);
   const [especialidad, setEspecialidad] = useState('Seleccione especialidad');
   const [especialidadModal, setEspecialidadModal] = useState(false);
   const [grupoFamiliarModal, setGrupoFamiliarModal] = useState(false);
@@ -45,6 +55,7 @@ export const HomePat = () => {
   const [filter, setFilter] = useState('Tiempo');
   const [addressPreview, setAddressPreview] = useState(userData.address);
   const [listOfDoctorsState, setListOfDoctorsState] = useState(false);
+  const [appointmentState, setAppointmentState] = useState(false);
 
   const onSubmitAdress = () => {
     setValue('address', addressPreview);
@@ -53,11 +64,35 @@ export const HomePat = () => {
   };
 
   const onSubmit = data => {
+    if (especialidad === 'Seleccione especialidad') {
+      setError('specialty', {
+        type: 'manual',
+        message: 'La especialidad es obligatoria',
+      });
+
+      if (grupoFamiliar === 'Seleccione grupo familiar') {
+        setError('familyGroup', {
+          type: 'manual',
+          message: 'El grupo familiar es obligatorio',
+        });
+      }
+
+      return;
+    }
+
+    if (grupoFamiliar === 'Seleccione grupo familiar') {
+      setError('familyGroup', {
+        type: 'manual',
+        message: 'El grupo familiar es obligatorio',
+      });
+      return;
+    }
+
     setValue('specialty', especialidad);
     setValue('familyGroup', grupoFamiliar);
     setListOfDoctorsState(true);
     setOpenMedicModal(false);
-    console.log(data);
+    console.log(data, especialidad, grupoFamiliar);
   };
 
   useEffect(() => {
@@ -68,10 +103,19 @@ export const HomePat = () => {
     setDoctorDetailsModal(true);
   };
 
+  useEffect(() => {
+    if (grupoFamiliar !== 'Seleccione grupo familiar') {
+      clearErrors('familyGroup');
+    }
+    if (especialidad !== 'Seleccione especialidad') {
+      clearErrors('specialty');
+    }
+  }, [grupoFamiliar, especialidad]);
+
   return (
     <View style={styles.wrapper}>
       <View style={styles.body}>
-        {!listOfDoctorsState && (
+        {!listOfDoctorsState && !appointmentState && (
           <TouchableOpacity
             onPress={setOpenModal}
             style={styles.adressButtonWrapper}>
@@ -80,11 +124,12 @@ export const HomePat = () => {
           </TouchableOpacity>
         )}
 
-        {listOfDoctorsState && (
-          <View style={styles.adressButtonWrapper}>
-            <StyledText color="grey">{userData.address}</StyledText>
-          </View>
-        )}
+        {listOfDoctorsState ||
+          (appointmentState && (
+            <View style={styles.adressButtonWrapper}>
+              <StyledText color="grey">{userData.address}</StyledText>
+            </View>
+          ))}
 
         <WelcomeHeader />
 
@@ -95,22 +140,25 @@ export const HomePat = () => {
             especialidad={especialidad}
           />
         )}
+
+        {appointmentState && <AppointmentConfirmed />}
       </View>
 
-      {!listOfDoctorsState && (
+      {!listOfDoctorsState && !appointmentState && (
         <View style={styles.buttonWrapper}>
           <StyledButton variant="primary" onPress={setOpenMedicModal}>
             Solicitar medico
           </StyledButton>
         </View>
       )}
-
       <FooterPatient current="home" />
+
       <StyledModal
         title="Ingresar informacion medica"
         content={
           <SubmitDoctorDataModal
             control={control}
+            errors={errors}
             especialidad={especialidad}
             grupoFamiliar={grupoFamiliar}
             setEspecialidadModal={setEspecialidadModal}
@@ -138,9 +186,17 @@ export const HomePat = () => {
       <StyledModal
         title="Informacion del medico"
         content={
-          <DoctorDetails setDoctorDetailsModal={setDoctorDetailsModal} />
+          <DoctorDetails
+            setOpenWaiting={setOpenWaiting}
+            setDoctorDetailsModal={setDoctorDetailsModal}
+          />
         }
         open={doctorDetailsModal}
+      />
+      <StyledModal
+        title="Calificar medico"
+        content={<PatientReview />}
+        open={false}
       />
       <DropdownSelect
         dropdownValue={especialidad}
@@ -166,6 +222,7 @@ export const HomePat = () => {
         visible={filterModal}
         setVisible={setFilterModal}
       />
+      <WaitingModal visible={openWaiting} setVisible={setOpenWaiting} />
     </View>
   );
 };

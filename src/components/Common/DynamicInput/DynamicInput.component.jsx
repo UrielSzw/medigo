@@ -1,12 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Controller, useFieldArray} from 'react-hook-form';
 import {TouchableOpacity, View} from 'react-native';
 import {StyledInput} from '../StyledInput/StyledInput.component';
 import {StyledText} from '../StyledText/StyledText.component';
 import {styles} from '../DynamicInput/DynamicInput.styles';
 
-export const DynamicInput = ({control}) => {
+export const DynamicInput = ({control, errors}) => {
   const {append, fields, remove} = useFieldArray({
     control: control,
     name: 'family',
@@ -37,16 +37,39 @@ export const DynamicInput = ({control}) => {
             control={control}
             name={`family[${index}].name`}
             render={({field}) => (
-              <StyledInput field={field} style={{marginBottom: 10}} />
+              <StyledInput
+                error={
+                  errors.family ? errors?.family[index]?.name?.message : null
+                }
+                field={field}
+                style={{marginBottom: 10}}
+              />
             )}
+            rules={{
+              required: 'El nombre completo es obligatorio',
+            }}
           />
           <StyledText>DNI</StyledText>
           <Controller
             control={control}
             name={`family[${index}].dni`}
             render={({field}) => (
-              <StyledInput field={field} style={{marginBottom: 10}} />
+              <StyledInput
+                keyboardType="numeric"
+                error={
+                  errors.family ? errors?.family[index]?.dni?.message : null
+                }
+                field={field}
+                style={{marginBottom: 10}}
+              />
             )}
+            rules={{
+              required: 'El DNI es obligatorio',
+              pattern: {
+                value: /^\d{8}$/,
+                message: 'DNI inválido (debe contener 8 dígitos)',
+              },
+            }}
           />
         </View>
       ))}

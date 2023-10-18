@@ -24,7 +24,7 @@ import {UserContext} from '../context/UserProvider';
 export const Routes = () => {
   const Stack = createNativeStackNavigator();
   const {userData} = useSelector(state => state.userReducer);
-  const {tokenUsuario} = useContext(UserContext);
+  // const {tokenUsuario} = useContext(UserContext);
 
   return (
     <NavigationContainer>

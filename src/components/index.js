@@ -23,3 +23,5 @@ export * from './Patient/ChangeAdressModal/ChangeAdressModal.component';
 export * from './Patient/SubmitDoctorDataModal/SubmitDoctorDataModal.component';
 export * from './Patient/ListOfDoctors/ListOfDoctors.component';
 export * from './Patient/DoctorDetails/DoctorDetails.component';
+export * from './Patient/AppointmentConfirmed/AppointmentConfirmed.component';
+export * from './Patient/PatientReview/PatientReview.component';

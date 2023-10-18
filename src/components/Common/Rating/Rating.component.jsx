@@ -5,7 +5,7 @@ import {StyledText} from '../StyledText/StyledText.component';
 import {StarFilledIcon, StarOutlinedIcon} from '../../../assets';
 import {styles} from './Rating.styles';
 
-export const Rating = ({rating = 0, readOnly}) => {
+export const Rating = ({rating = 0, readOnly, handleRating}) => {
   const emptyArray = Array(5).fill(0);
   const [ratingArray, setRatingArray] = useState([]);
 
@@ -43,6 +43,7 @@ export const Rating = ({rating = 0, readOnly}) => {
 
   const handleStarSeleceted = index => {
     setRating(index + 1);
+    handleRating(index + 1);
   };
 
   return (

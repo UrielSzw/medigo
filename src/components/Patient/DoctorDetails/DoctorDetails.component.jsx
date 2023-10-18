@@ -6,7 +6,7 @@ import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {styles} from './DoctorDetails.styles';
 import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
 
-export const DoctorDetails = ({setDoctorDetailsModal}) => {
+export const DoctorDetails = ({setDoctorDetailsModal, setOpenWaiting}) => {
   return (
     <View>
       <UserDataItem showTime time={'15'} name={'Nombre'} category={'Clinico'} />
@@ -26,7 +26,9 @@ export const DoctorDetails = ({setDoctorDetailsModal}) => {
         <StyledText color="grey">Especialidad: Clinico</StyledText>
       </View>
       <View style={styles.actions}>
-        <StyledButton>Solicitar medico</StyledButton>
+        <StyledButton onPress={() => setOpenWaiting(true)}>
+          Solicitar medico
+        </StyledButton>
         <StyledButton
           variant="empty"
           onPress={() => setDoctorDetailsModal(false)}>

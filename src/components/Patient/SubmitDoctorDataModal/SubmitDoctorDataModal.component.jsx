@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {Controller} from 'react-hook-form';
 import {View} from 'react-native';
@@ -16,6 +17,7 @@ export const SubmitDoctorDataModal = ({
   handleSubmit,
   onSubmit,
   setOpenMedicModal,
+  errors,
 }) => {
   return (
     <KeyboardAwareScrollView
@@ -24,40 +26,70 @@ export const SubmitDoctorDataModal = ({
         control={control}
         name="motive"
         render={({field}) => (
-          <StyledInput label="Motivo" field={field} name="motive" />
+          <StyledInput
+            error={errors.motive?.message}
+            label="Motivo"
+            field={field}
+            name="motive"
+          />
         )}
+        rules={{required: 'El motivo es obligatorio'}}
       />
       <Controller
         control={control}
         name="symptoms"
         render={({field}) => (
-          <StyledInput label="Sintomas" field={field} name="symptoms" />
+          <StyledInput
+            error={errors.symptoms?.message}
+            label="Sintomas"
+            field={field}
+            name="symptoms"
+          />
         )}
+        rules={{required: 'Los sintomas son obligatorios'}}
       />
       <View>
         <StyledText>Especialidad</StyledText>
         <StyledButton
+          style={errors?.familyGroup && {borderColor: 'red'}}
           variant="empty"
           onPress={() => setEspecialidadModal(true)}>
           {especialidad}
         </StyledButton>
+        {errors?.specialty && (
+          <StyledText size="sm" color="red">
+            {errors?.specialty.message}
+          </StyledText>
+        )}
       </View>
 
       <View>
         <StyledText>Miembro del grupo familiar</StyledText>
         <StyledButton
+          style={errors?.familyGroup && {borderColor: 'red'}}
           variant="empty"
           onPress={() => setGrupoFamiliarModal(true)}>
           {grupoFamiliar}
         </StyledButton>
+        {errors?.familyGroup && (
+          <StyledText size="sm" color="red">
+            {errors?.familyGroup.message}
+          </StyledText>
+        )}
       </View>
 
       <Controller
         control={control}
         name="address"
         render={({field}) => (
-          <StyledInput label="Direccion" field={field} name="address" />
+          <StyledInput
+            error={errors.address?.message}
+            label="Direccion"
+            field={field}
+            name="address"
+          />
         )}
+        rules={{required: 'La dirección es obligatoria'}}
       />
       <View style={styles.buttonsWrapper}>
         <StyledButton onPress={handleSubmit(onSubmit)}>

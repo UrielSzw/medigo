@@ -17,8 +17,8 @@ import {apiUsuariosLogin, getUsers} from '../../../utils/api/userRoutes';
 
 const USERS = [
   {
-    email: 'm',
-    password: 'm',
+    email: 'medico@gmail.com',
+    password: 'medico',
     type: 'doctor',
   },
   {
@@ -30,27 +30,43 @@ const USERS = [
 ];
 
 export const Login = ({navigation}) => {
-  const {control, handleSubmit} = useForm();
+  const {
+    control,
+    handleSubmit,
+    setError,
+    formState: {errors},
+  } = useForm();
   const dispatch = useDispatch();
 
   const onSubmit = async data => {
-    try {
-      // const response = await apiUsuariosLogin({
-      //   username: data.email,
-      //   password: data.password,
-      // });
-      // const response = await fetch('http://192.168.0.139:3000/usuarios/1');
-      const response = await getUsers(1);
-      console.log('response', response);
-    } catch (e) {
-      console.log(e.message);
+    if (data) {
+      const foundUser = USERS.find(user => user.email === data.email);
+
+      if (!foundUser) {
+        setError('email', {
+          type: 'manual',
+          message: 'El correo electrónico no está registrado',
+        });
+        return;
+      }
+
+      if (foundUser.password !== data.password) {
+        setError('password', {
+          type: 'manual',
+          message: 'La contraseña es incorrecta',
+        });
+        return;
+      }
+
+      dispatch(setUserData(foundUser));
+
+      if (foundUser.type === 'doctor') {
+        navigation.navigate(PATHS.HOMEDOCTOR);
+      } else {
+        navigation.navigate(PATHS.HOMEPATIENT);
+      }
     }
   };
-  // if (foundeUser.type === 'doctor') {
-  //   navigation.navigate(PATHS.HOMEDOCTOR);
-  // } else {
-  //   navigation.navigate(PATHS.HOMEPATIENT);
-  // }
 
   const handleNavigateRegister = () => {
     navigation.navigate(PATHS.REGISTER);
@@ -63,18 +79,27 @@ export const Login = ({navigation}) => {
         <Controller
           control={control}
           name="email"
+          rules={{
+            required: 'El correo electrónico es obligatorio',
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: 'Correo electrónico inválido',
+            },
+          }}
           render={({field}) => (
             <StyledInput
               field={field}
               name="email"
               label="Email"
               style={styles.input}
+              error={errors.email?.message}
             />
           )}
         />
         <Controller
           control={control}
           name="password"
+          rules={{required: 'La contraseña es obligatoria'}}
           render={({field}) => (
             <StyledInput
               field={field}
@@ -82,6 +107,7 @@ export const Login = ({navigation}) => {
               secureTextEntry
               label="Contraseña"
               style={styles.input}
+              error={errors.password?.message}
             />
           )}
         />
