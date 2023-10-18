@@ -27,3 +27,4 @@ export * from './Patient/AppointmentConfirmed/AppointmentConfirmed.component';
 export * from './Patient/PatientReview/PatientReview.component';
 export * from './Doctor/PatientDetailsModal/PatientDetailsModal.component';
 export * from './Doctor/DoctorReview/DoctorReview.component';
+export * from './Doctor/AddNotesModal/AddNotesModal.component';

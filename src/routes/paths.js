@@ -10,6 +10,7 @@ export const PATHS = {
   PERFILPATIENT: 'perfilPat',
   ACTIVITYPAT: 'activityPat',
   DOCINFOINPAT: 'docInfoPat',
+  PATINFOINDOC: 'patInfoDoc',
   ACTIVITYDOC: 'activityDoc',
   PERSONALDATADOC: 'PersonalDataDoc',
   MODIFYPERSONALDATADOC: 'ModifyPersonalDataDoc',

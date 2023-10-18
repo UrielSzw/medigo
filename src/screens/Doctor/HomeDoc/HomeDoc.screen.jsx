@@ -11,12 +11,12 @@ import {
   AcceptedPatient,
   PatientDetailsModal,
   DoctorReview,
+  AddNotesModal,
 } from '../../../components';
 import {PATHS} from '../../../routes/paths';
 import {styles} from './HomeDoc.styles';
 
 export const HomeDoc = ({navigation, route}) => {
-  // var permisoDenegado = route.params ? route.params.permisoDenegado : undefined;
   const [permisoDenegado, setPermisoDenegado] = useState(
     route.params ? route.params.permisoDenegado : undefined,
   );
@@ -27,6 +27,7 @@ export const HomeDoc = ({navigation, route}) => {
   const [openModalDetail, setOpenModalDetail] = useState(false);
   const [openModalErrorGeo, setOpenModalErrorGeo] = useState(false);
   const [patientReviewModal, setPatientReviewModal] = useState(false);
+  const [notesModal, setNotesModal] = useState(false);
   const [count, setCount] = useState(60);
 
   const openGoogleMaps = (
@@ -90,6 +91,10 @@ export const HomeDoc = ({navigation, route}) => {
     setPatientReviewModal(true);
   };
 
+  const handleAddNotes = () => {
+    setNotesModal(true);
+  };
+
   const handleSetActiveAfterEnd = () => {
     setActivo(true);
     setAcceptedPatient({});
@@ -136,7 +141,9 @@ export const HomeDoc = ({navigation, route}) => {
             <StyledButton onPress={handleEndAppointment}>
               Finalizar
             </StyledButton>
-            <StyledButton variant="secondary">Agregar notas</StyledButton>
+            <StyledButton variant="secondary" onPress={handleAddNotes}>
+              Agregar notas
+            </StyledButton>
           </View>
         )}
       </View>
@@ -205,6 +212,11 @@ export const HomeDoc = ({navigation, route}) => {
           />
         }
         open={patientReviewModal}
+      />
+      <StyledModal
+        title="Agregar Notas"
+        content={<AddNotesModal setNotesModal={setNotesModal} />}
+        open={notesModal}
       />
     </View>
   );

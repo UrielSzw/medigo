@@ -18,3 +18,4 @@ export * from './Patient/FamilyMembersPat/FamilyMembers.screen';
 export * from './Patient/FamilyMemberAct/FamilyMemberAct.screen';
 export * from './Patient/HelpPat/HelpPat.screen';
 export * from './Doctor/HelpDoc/HelpDoc.screen';
+export * from './Doctor/PatInfoDoc/PatInfoDoc.component';

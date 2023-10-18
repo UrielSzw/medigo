@@ -16,10 +16,17 @@ export const ActivityDoc = ({navigation}) => {
     navigation.navigate(PATHS.PERFILDOCTOR);
   };
 
+  const handlePatDetails = () => {
+    navigation.navigate(PATHS.PATINFOINDOC);
+  };
+
   return (
     <View style={styles.selectDocWrapper}>
       <View style={styles.selectDocContainer}>
-        <WelcomePerfilHeader username="Joe Doe" email="joedoe@gmail.com" />
+        <WelcomePerfilHeader
+          username="Dr Joseph Brostito"
+          email="fedepr2345@gmail.com"
+        />
 
         <View style={styles.nearDocsContainer}>
           <View style={styles.activityContainer}>
@@ -28,8 +35,16 @@ export const ActivityDoc = ({navigation}) => {
               Actividad
             </StyledText>
           </View>
-          <DoctorListItem name="Joe Doe" category="Paciente" />
-          <DoctorListItem name="Jane Doe" category="Paciente" />
+          <DoctorListItem
+            onPress={handlePatDetails}
+            name="Joe Doe"
+            category="Paciente"
+          />
+          <DoctorListItem
+            onPress={handlePatDetails}
+            name="Jane Doe"
+            category="Paciente"
+          />
           <StyledButton onPress={handleNavigateProfile} children="Volver" />
         </View>
       </View>
