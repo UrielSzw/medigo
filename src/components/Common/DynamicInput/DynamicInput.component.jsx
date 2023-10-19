@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Controller, useFieldArray} from 'react-hook-form';
 import {TouchableOpacity, View} from 'react-native';
 import {StyledInput} from '../StyledInput/StyledInput.component';
@@ -9,11 +9,11 @@ import {styles} from '../DynamicInput/DynamicInput.styles';
 export const DynamicInput = ({control, errors}) => {
   const {append, fields, remove} = useFieldArray({
     control: control,
-    name: 'family',
+    name: 'grupoFamiliar',
   });
 
   const addInputField = () => {
-    append({name: '', dni: ''});
+    append({nombre: '', apellido: '', sexo: '', fechaNacimiento: ''});
   };
 
   const delField = index => {
@@ -32,44 +32,97 @@ export const DynamicInput = ({control, errors}) => {
               </TouchableOpacity>
             )}
           </View>
-          <StyledText>Nombre Completo</StyledText>
           <Controller
             control={control}
-            name={`family[${index}].name`}
-            render={({field}) => (
-              <StyledInput
-                error={
-                  errors.family ? errors?.family[index]?.name?.message : null
-                }
-                field={field}
-                style={{marginBottom: 10}}
-              />
-            )}
+            name={`grupoFamiliar[${index}].nombre`}
             rules={{
-              required: 'El nombre completo es obligatorio',
+              required: 'El nombre es obligatorio',
             }}
-          />
-          <StyledText>DNI</StyledText>
-          <Controller
-            control={control}
-            name={`family[${index}].dni`}
             render={({field}) => (
               <StyledInput
-                keyboardType="numeric"
+                label="Nombre"
                 error={
-                  errors.family ? errors?.family[index]?.dni?.message : null
+                  errors.grupoFamiliar
+                    ? errors?.grupoFamiliar[index]?.nombre?.message
+                    : null
                 }
                 field={field}
                 style={{marginBottom: 10}}
               />
             )}
+          />
+          <Controller
+            control={control}
+            name={`grupoFamiliar[${index}].apellido`}
             rules={{
-              required: 'El DNI es obligatorio',
-              pattern: {
-                value: /^\d{8}$/,
-                message: 'DNI inválido (debe contener 8 dígitos)',
+              required: 'El apellido es obligatorio',
+            }}
+            render={({field}) => (
+              <StyledInput
+                label="Apellido"
+                error={
+                  errors.grupoFamiliar
+                    ? errors?.grupoFamiliar[index]?.apellido?.message
+                    : null
+                }
+                field={field}
+                style={{marginBottom: 10}}
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name={`grupoFamiliar[${index}].sexo`}
+            rules={{
+              required: 'El sexo es obligatorio',
+              validate: {
+                validSex: value =>
+                  ['M', 'F', 'O'].includes(value) || 'Ingresa M, F o O',
               },
             }}
+            render={({field}) => (
+              <StyledInput
+                label="Sexo (M / F / O)"
+                error={
+                  errors.grupoFamiliar
+                    ? errors?.grupoFamiliar[index]?.sexo?.message
+                    : null
+                }
+                field={field}
+                style={{marginBottom: 10}}
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name={`grupoFamiliar[${index}].fechaNacimiento`}
+            rules={{
+              required: 'La fecha de nacimiento es obligatoria',
+              validate: {
+                validDate: value => {
+                  if (!value) {
+                    return true;
+                  }
+                  const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+                  if (!datePattern.test(value)) {
+                    return 'El formato de fecha no es válido (YYYY-MM-DD)';
+                  }
+                  return true;
+                },
+              },
+            }}
+            render={({field}) => (
+              <StyledInput
+                label="Fecha de nacimiento (YYYY-MM-DD)"
+                error={
+                  errors.grupoFamiliar
+                    ? errors?.grupoFamiliar[index]?.fechaNacimiento?.message
+                    : null
+                }
+                field={field}
+                style={{marginBottom: 10}}
+              />
+            )}
           />
         </View>
       ))}

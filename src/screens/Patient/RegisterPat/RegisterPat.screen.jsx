@@ -36,17 +36,89 @@ export const RegisterPat = ({navigation}) => {
           <ScrollView style={styles.inputWrapper}>
             <Controller
               control={control}
-              name="fullName"
+              name="nombre"
               rules={{
-                required: 'El nombre completo es obligatorio',
+                required: 'El nombre es obligatorio',
               }}
               render={({field}) => (
                 <StyledInput
                   field={field}
-                  label="Nombre completo"
+                  label="Nombre"
                   style={styles.input}
-                  name="fullName"
-                  error={errors.fullName?.message}
+                  name="nombre"
+                  error={errors.nombre?.message}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="apellido"
+              rules={{
+                required: 'El apellido es obligatorio',
+              }}
+              render={({field}) => (
+                <StyledInput
+                  field={field}
+                  label="Apellido"
+                  style={styles.input}
+                  name="apellido"
+                  error={errors.apellido?.message}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="sexo"
+              rules={{
+                required: 'El sexo es obligatorio',
+                validate: {
+                  validSex: value =>
+                    ['M', 'F', 'O'].includes(value) || 'Ingresa M, F o O',
+                },
+              }}
+              render={({field}) => (
+                <StyledInput
+                  field={field}
+                  label="Sexo (M / F / O)"
+                  style={styles.input}
+                  name="sexo"
+                  error={errors.sexo?.message}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="fechaNacimiento"
+              rules={{
+                required: 'La fecha de nacimiento es obligatoria',
+              }}
+              render={({field}) => (
+                <StyledInput
+                  field={field}
+                  label="Fecha de nacimiento"
+                  style={styles.input}
+                  name="fechaNacimiento"
+                  error={errors.fechaNacimiento?.message}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="username"
+              rules={{
+                required: 'El correo electrónico es obligatorio',
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: 'Correo electrónico inválido',
+                },
+              }}
+              render={({field}) => (
+                <StyledInput
+                  label="Email"
+                  style={styles.input}
+                  field={field}
+                  name="username"
+                  error={errors.username?.message}
                 />
               )}
             />
@@ -67,6 +139,27 @@ export const RegisterPat = ({navigation}) => {
                   field={field}
                   name="password"
                   error={errors.password?.message}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="telefono"
+              rules={{
+                required: 'El teléfono es obligatorio',
+                pattern: {
+                  value: /^[0-9]{9,10}$/,
+                  message: 'Número de teléfono inválido',
+                },
+              }}
+              render={({field}) => (
+                <StyledInput
+                  label="Teléfono"
+                  keyboardType="numeric"
+                  style={styles.input}
+                  field={field}
+                  name="telefono"
+                  error={errors.telefono?.message}
                 />
               )}
             />
@@ -93,28 +186,7 @@ export const RegisterPat = ({navigation}) => {
             />
             <Controller
               control={control}
-              name="phone"
-              rules={{
-                required: 'El teléfono es obligatorio',
-                pattern: {
-                  value: /^[0-9]{9,10}$/,
-                  message: 'Número de teléfono inválido',
-                },
-              }}
-              render={({field}) => (
-                <StyledInput
-                  label="Teléfono"
-                  keyboardType="numeric"
-                  style={styles.input}
-                  field={field}
-                  name="phone"
-                  error={errors.phone?.message}
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="address"
+              name="direccion"
               rules={{
                 required: 'La dirección es obligatoria',
               }}
@@ -123,28 +195,8 @@ export const RegisterPat = ({navigation}) => {
                   label="Dirección"
                   style={styles.input}
                   field={field}
-                  name="address"
-                  error={errors.address?.message}
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="email"
-              rules={{
-                required: 'El correo electrónico es obligatorio',
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: 'Correo electrónico inválido',
-                },
-              }}
-              render={({field}) => (
-                <StyledInput
-                  label="Email"
-                  style={styles.input}
-                  field={field}
-                  name="email"
-                  error={errors.email?.message}
+                  name="direccion"
+                  error={errors.direccion?.message}
                 />
               )}
             />

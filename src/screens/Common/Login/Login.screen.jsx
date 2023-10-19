@@ -40,30 +40,34 @@ export const Login = ({navigation}) => {
 
   const onSubmit = async data => {
     if (data) {
-      const foundUser = USERS.find(user => user.email === data.email);
+      try {
+        const foundUser = USERS.find(user => user.email === data.username);
 
-      if (!foundUser) {
-        setError('email', {
-          type: 'manual',
-          message: 'El correo electrónico no está registrado',
-        });
-        return;
-      }
+        if (!foundUser) {
+          setError('username', {
+            type: 'manual',
+            message: 'El correo electrónico no está registrado',
+          });
+          return;
+        }
 
-      if (foundUser.password !== data.password) {
-        setError('password', {
-          type: 'manual',
-          message: 'La contraseña es incorrecta',
-        });
-        return;
-      }
+        if (foundUser.password !== data.password) {
+          setError('password', {
+            type: 'manual',
+            message: 'La contraseña es incorrecta',
+          });
+          return;
+        }
 
-      dispatch(setUserData(foundUser));
+        dispatch(setUserData(foundUser));
 
-      if (foundUser.type === 'doctor') {
-        navigation.navigate(PATHS.HOMEDOCTOR);
-      } else {
-        navigation.navigate(PATHS.HOMEPATIENT);
+        if (foundUser.type === 'doctor') {
+          navigation.navigate(PATHS.HOMEDOCTOR);
+        } else {
+          navigation.navigate(PATHS.HOMEPATIENT);
+        }
+      } catch (e) {
+        console.log(e);
       }
     }
   };
@@ -78,7 +82,7 @@ export const Login = ({navigation}) => {
       <View style={styles.bodyWrapper}>
         <Controller
           control={control}
-          name="email"
+          name="username"
           rules={{
             required: 'El correo electrónico es obligatorio',
             pattern: {
@@ -89,10 +93,10 @@ export const Login = ({navigation}) => {
           render={({field}) => (
             <StyledInput
               field={field}
-              name="email"
+              name="username"
               label="Email"
               style={styles.input}
-              error={errors.email?.message}
+              error={errors.username?.message}
             />
           )}
         />
