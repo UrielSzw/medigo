@@ -7,6 +7,22 @@ import {styles} from './WaitingModal.styles';
 export const WaitingModal = ({visible, setVisible}) => {
   const [count, setCount] = useState(0);
 
+  const handleDoctorRequestWait = async () => {
+    try {
+      //Consultar estado de request
+      const requestDoctor = 'requestDoctorWait()';
+      if (requestDoctor === 'exito') {
+        console.log('exito');
+        setVisible(false);
+      } else if (requestDoctor === 'fallo') {
+        console.log('fallo');
+        setVisible(false);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
     if (count <= 0) {
       setVisible(false);
@@ -14,6 +30,10 @@ export const WaitingModal = ({visible, setVisible}) => {
       setTimeout(() => {
         setCount(count - 1);
       }, 1000);
+
+      if (count % 10 === 0) {
+        handleDoctorRequestWait();
+      }
     }
   }, [count]);
 

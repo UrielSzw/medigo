@@ -21,7 +21,14 @@ export const RegisterPat = ({navigation}) => {
   } = useForm();
 
   const onSubmit = data => {
-    console.log(data);
+    if (data) {
+      try {
+        console.log(data);
+        navigation.navigate(PATHS.LOGIN);
+      } catch (e) {
+        console.log(e);
+      }
+    }
   };
 
   const handleNavigateRegister = () => {
@@ -91,11 +98,57 @@ export const RegisterPat = ({navigation}) => {
               name="fechaNacimiento"
               rules={{
                 required: 'La fecha de nacimiento es obligatoria',
+                validate: {
+                  validDate: value => {
+                    if (!value) {
+                      return 'La fecha de nacimiento es obligatoria';
+                    }
+                    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+                    if (!datePattern.test(value)) {
+                      return 'El formato de fecha no es válido (YYYY-MM-DD)';
+                    }
+
+                    const parts = value.split('-');
+                    const year = parseInt(parts[0], 10);
+                    const month = parseInt(parts[1], 10);
+                    const day = parseInt(parts[2], 10);
+
+                    if (
+                      isNaN(year) ||
+                      isNaN(month) ||
+                      isNaN(day) ||
+                      month < 1 ||
+                      month > 12 ||
+                      day < 1 ||
+                      day > 31
+                    ) {
+                      return 'La fecha no es válida';
+                    }
+
+                    const currentDate = new Date();
+
+                    const eighteenYearsAgo =
+                      currentDate.getFullYear() - 18 < year;
+
+                    const oneHundredTwentyYearsAgo =
+                      year >= currentDate.getFullYear() - 120;
+
+                    if (eighteenYearsAgo) {
+                      return 'Debe ser mayor de 18 años';
+                    }
+
+                    if (!oneHundredTwentyYearsAgo) {
+                      return 'Debe ser menor de 120 años';
+                    }
+
+                    return true;
+                  },
+                },
               }}
               render={({field}) => (
                 <StyledInput
                   field={field}
-                  label="Fecha de nacimiento"
+                  label="Fecha de nacimiento (YYYY-MM-DD)"
                   style={styles.input}
                   name="fechaNacimiento"
                   error={errors.fechaNacimiento?.message}
@@ -208,7 +261,7 @@ export const RegisterPat = ({navigation}) => {
           <StyledButton
             style={styles.principalButton}
             onPress={handleSubmit(onSubmit)}>
-            Siguiente
+            Registrarse
           </StyledButton>
           <TouchableOpacity onPress={handleNavigateRegister}>
             <StyledText color="blue">Volver</StyledText>

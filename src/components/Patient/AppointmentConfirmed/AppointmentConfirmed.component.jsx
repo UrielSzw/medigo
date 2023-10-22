@@ -16,9 +16,27 @@ const DOCTOR = {
   dni: '36985214',
 };
 
-export const AppointmentConfirmed = ({logo, doctor = DOCTOR}) => {
+export const AppointmentConfirmed = ({
+  logo,
+  doctor = DOCTOR,
+  setAppointmentState,
+  setDoctorDetails,
+}) => {
   const [count, setCount] = useState(120);
   const [disabled, setDisabled] = useState(false);
+
+  const handleCancelAppoinment = async () => {
+    try {
+      const cancelRequest = 'cancelRequestEndpoint()';
+
+      if (cancelRequest) {
+        setAppointmentState(false);
+        setDoctorDetails(undefined);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   useEffect(() => {
     if (count <= 0) {
@@ -60,7 +78,8 @@ export const AppointmentConfirmed = ({logo, doctor = DOCTOR}) => {
         <StyledButton
           style={{opacity: disabled ? 0.3 : 1}}
           disabled={disabled}
-          variant="warning">
+          variant="warning"
+          onPress={handleCancelAppoinment}>
           Cancelar
         </StyledButton>
       </View>

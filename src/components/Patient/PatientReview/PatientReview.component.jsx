@@ -7,25 +7,36 @@ import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
 import {styles} from './PatientReview.styles';
 
 const DOCTOR = {
-  time: '15',
-  price: '1700',
-  reviews: '(120 reseñas)',
-  rating: '4,8',
-  name: 'Jorge',
-  category: 'Clinico',
-  dni: '36985214',
+  nroMatricula: '36985214',
+  nombre: 'Jorge',
+  apellido: 'ApellidoJorge',
+  especialidad: 'Clinico',
+  tiempo: '15',
+  precio: '1700',
+  valoracion: '4,8',
+  resenas: '(120 reseñas)',
+  comentarios: [],
 };
 
 export const PatientReview = ({doctor = DOCTOR, setDoctorReviewModal}) => {
   const [rating, setRating] = useState(0);
   const [showError, setShowError] = useState(false);
 
-  const handlePress = () => {
-    if (rating === 0) {
-      setShowError(true);
-      return;
+  const handlePress = async () => {
+    try {
+      if (rating === 0) {
+        setShowError(true);
+        return;
+      }
+
+      const endAppointment = 'endAppointmentEndpoint({ valoracion : rating })';
+
+      if (endAppointment) {
+        setDoctorReviewModal(false);
+      }
+    } catch (e) {
+      console.log(e);
     }
-    setDoctorReviewModal(false);
   };
 
   useEffect(() => {
@@ -35,7 +46,10 @@ export const PatientReview = ({doctor = DOCTOR, setDoctorReviewModal}) => {
   }, [rating]);
   return (
     <View style={styles.wrapper}>
-      <UserDataItem name={doctor.name} category={doctor.category} />
+      <UserDataItem
+        name={`${doctor.nombre} ${doctor.apellido}`}
+        category={doctor.especialidad}
+      />
       <Rating handleRating={setRating} />
       <View style={styles.textBox}>
         <StyledText style={styles.text}>Dejar comentario (opcional)</StyledText>

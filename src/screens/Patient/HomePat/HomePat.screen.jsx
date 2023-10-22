@@ -32,13 +32,8 @@ export const HomePat = () => {
     setError,
     clearErrors,
     formState: {errors},
-  } = useForm({
-    address: '',
-    motive: '',
-    symptoms: '',
-    specialty: '',
-    familyGroup: '',
-  });
+  } = useForm();
+
   const {userData} = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
@@ -49,25 +44,25 @@ export const HomePat = () => {
   const [grupoFamiliarModal, setGrupoFamiliarModal] = useState(false);
   const [filterModal, setFilterModal] = useState(false);
   const [doctorDetailsModal, setDoctorDetailsModal] = useState(false);
-  const [doctorReviewModal, setDoctorReviewModal] = useState(false);
+  const [doctorReviewModal, setDoctorReviewModal] = useState(false); // Cambiar a true para evaluar vista del modal de Review
   const [grupoFamiliar, setGrupoFamiliar] = useState(
     'Seleccione grupo familiar',
   );
   const [filter, setFilter] = useState('Tiempo');
   const [addressPreview, setAddressPreview] = useState(userData.address);
   const [listOfDoctorsState, setListOfDoctorsState] = useState(false);
-  const [appointmentState, setAppointmentState] = useState(false);
+  const [appointmentState, setAppointmentState] = useState(false); // Cambiar a true para evaluar vista de consulta en sesion
   const [doctorDetails, setDoctorDetails] = useState(undefined);
 
   const onSubmitAdress = () => {
-    setValue('address', addressPreview);
+    setValue('direccion', addressPreview);
     dispatch(setUserData({address: addressPreview}));
     setOpenModal(false);
   };
 
   const onSubmit = data => {
     if (especialidad === 'Seleccione especialidad') {
-      setError('specialty', {
+      setError('especialidad', {
         type: 'manual',
         message: 'La especialidad es obligatoria',
       });
@@ -90,15 +85,30 @@ export const HomePat = () => {
       return;
     }
 
-    setValue('specialty', especialidad);
+    setValue('especialidad', especialidad);
     setValue('familyGroup', grupoFamiliar);
-    setListOfDoctorsState(true);
-    setOpenMedicModal(false);
-    console.log(data, especialidad, grupoFamiliar);
+
+    try {
+      const formData = {
+        sintomas: data.sintomas,
+        motivo: data.motivo,
+        especialidad: especialidad,
+        latitud: '10',
+        longitud: '15',
+        nombre: 'nombre',
+        apellido: 'apellido',
+        direccion: data.direccion,
+      };
+      setListOfDoctorsState(true);
+      setOpenMedicModal(false);
+      console.log(formData);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
-    setValue('address', addressPreview);
+    setValue('direccion', addressPreview);
   }, []);
 
   const handleViewMoreDetails = doctor => {
@@ -106,14 +116,67 @@ export const HomePat = () => {
     setDoctorDetailsModal(true);
   };
 
+  const handleRequestDoctor = () => {
+    try {
+      //Solicitar medico con numero de matricula
+      const requestDoctor = 'requestDoctorEndpoint(doctor.nroMatricula)';
+      if (requestDoctor) {
+        setDoctorDetailsModal(false);
+        setOpenWaiting(true);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
     if (grupoFamiliar !== 'Seleccione grupo familiar') {
       clearErrors('familyGroup');
     }
     if (especialidad !== 'Seleccione especialidad') {
-      clearErrors('specialty');
+      clearErrors('especialidad');
     }
   }, [grupoFamiliar, especialidad]);
+
+  // LOGICA PARA EL LLAMADO CADA 20 SEGUNDOS PARA SABER SI FINALIZO LA CONSULTA
+  const [running, setRunning] = useState(false);
+  const handleEndOfAppointment = async () => {
+    try {
+      const endAppointment = 'endAppointmentEndpoint()';
+      if (endAppointment === 'finalizo') {
+        console.log('finalizo');
+        setRunning(false);
+        setDoctorReviewModal(true);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    let intervalId;
+
+    const startInterval = () => {
+      intervalId = setInterval(() => {
+        // Tu función a ejecutar cada 20 segundos
+        handleEndOfAppointment();
+        console.log('La función se ejecutará cada 20 segundos');
+
+        // Comprueba si la variable booleana cambió
+        if (!running) {
+          clearInterval(intervalId); // Detén el intervalo
+        }
+      }, 20000); // 20 segundos en milisegundos
+    };
+
+    if (running) {
+      startInterval(); // Inicia el intervalo cuando el componente se monta
+    }
+
+    return () => {
+      setRunning(false); // Cambia la variable booleana a false cuando el componente se desmonta
+      clearInterval(intervalId); // Asegúrate de detener el intervalo al desmontar el componente
+    };
+  }, [running]);
 
   return (
     <View style={styles.wrapper}>
@@ -127,12 +190,11 @@ export const HomePat = () => {
           </TouchableOpacity>
         )}
 
-        {listOfDoctorsState ||
-          (appointmentState && (
-            <View style={styles.adressButtonWrapper}>
-              <StyledText color="grey">{userData.address}</StyledText>
-            </View>
-          ))}
+        {(listOfDoctorsState || appointmentState) && (
+          <View style={styles.adressButtonWrapper}>
+            <StyledText color="grey">{userData.address}</StyledText>
+          </View>
+        )}
 
         <WelcomeHeader />
 
@@ -145,7 +207,13 @@ export const HomePat = () => {
           />
         )}
 
-        {appointmentState && <AppointmentConfirmed doctor={doctorDetails} />}
+        {appointmentState && (
+          <AppointmentConfirmed
+            setAppointmentState={setAppointmentState}
+            setDoctorDetails={setDoctorDetails}
+            doctor={doctorDetails}
+          />
+        )}
       </View>
 
       {!listOfDoctorsState && !appointmentState && (
@@ -192,7 +260,7 @@ export const HomePat = () => {
         content={
           <DoctorDetails
             doctor={doctorDetails}
-            setOpenWaiting={setOpenWaiting}
+            handleRequestDoctor={handleRequestDoctor}
             setDoctorDetailsModal={setDoctorDetailsModal}
           />
         }

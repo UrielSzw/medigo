@@ -8,34 +8,36 @@ import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
 
 export const DoctorDetails = ({
   setDoctorDetailsModal,
-  setOpenWaiting,
+  handleRequestDoctor,
   doctor,
 }) => {
   return (
     <View>
       <UserDataItem
         showTime
-        time={doctor.time}
-        name={doctor.name}
-        category={doctor.category}
+        time={doctor.tiempo}
+        name={`${doctor.nombre} ${doctor.apellido}`}
+        category={doctor.especialidad}
       />
       <View style={styles.info}>
         <View style={styles.infoReviews}>
           <StarIcon />
-          <StyledText color="orange">{doctor.rating}</StyledText>
-          <StyledText color="orange"> {doctor.reviews}</StyledText>
+          <StyledText color="orange">{doctor.valoracion}</StyledText>
+          <StyledText color="orange"> {doctor.resenas}</StyledText>
         </View>
         <View style={styles.infoPrice}>
           <MoneyIcon />
-          <StyledText color="blue">{doctor.price}</StyledText>
+          <StyledText color="blue">{doctor.precio}</StyledText>
         </View>
       </View>
       <View style={styles.details}>
-        <StyledText color="grey">DNI: {doctor.dni}</StyledText>
-        <StyledText color="grey">Especialidad: {doctor.category}</StyledText>
+        <StyledText color="grey">Matricula: {doctor.nroMatricula}</StyledText>
+        <StyledText color="grey">
+          Especialidad: {doctor.especialidad}
+        </StyledText>
       </View>
       <View style={styles.actions}>
-        <StyledButton onPress={() => setOpenWaiting(true)}>
+        <StyledButton onPress={handleRequestDoctor}>
           Solicitar medico
         </StyledButton>
         <StyledButton

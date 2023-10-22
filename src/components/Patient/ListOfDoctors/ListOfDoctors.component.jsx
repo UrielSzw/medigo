@@ -7,40 +7,48 @@ import {FilterIcon} from '../../../assets';
 
 const DOCTORS_LIST = [
   {
-    time: '15',
-    price: '1700',
-    reviews: '(120 reseñas)',
-    rating: '4,8',
-    name: 'Jorge',
-    category: 'Clinico',
-    dni: '36985214',
+    nroMatricula: '36985214',
+    nombre: 'Jorge',
+    apellido: 'ApellidoJorge',
+    especialidad: 'Clinico',
+    tiempo: '15',
+    precio: '1700',
+    valoracion: '4,8',
+    resenas: '(120 reseñas)',
+    comentarios: [],
   },
   {
-    time: '22',
-    price: '1700',
-    reviews: '(10 reseñas)',
-    rating: '3,5',
-    name: 'Fernando ',
-    category: 'Clinico',
-    dni: '15486532',
+    nroMatricula: '15486532',
+    nombre: 'Fernando',
+    apellido: 'ApellidoFernando',
+    especialidad: 'Clinico',
+    tiempo: '22',
+    precio: '1700',
+    valoracion: '3,5',
+    resenas: '(10 reseñas)',
+    comentarios: [],
   },
   {
-    time: '45',
-    price: '3300',
-    reviews: '(1 reseñas)',
-    rating: '4',
-    name: 'Raul ',
-    category: 'Clinico',
-    dni: '23124556',
+    nroMatricula: '23124556',
+    nombre: 'Raul',
+    apellido: 'ApellidoRaul',
+    especialidad: 'Clinico',
+    tiempo: '45',
+    precio: '3300',
+    valoracion: '4',
+    resenas: '(1 reseñas)',
+    comentarios: [],
   },
   {
-    time: '27',
-    price: '1200',
-    reviews: '(0 reseñas)',
-    rating: 'n/a',
-    name: 'Mariano ',
-    category: 'Clinico',
-    dni: '75326895',
+    nroMatricula: '75326895',
+    nombre: 'Mariano',
+    apellido: 'ApellidoMariano',
+    especialidad: 'Clinico',
+    tiempo: '27',
+    precio: '1200',
+    valoracion: 'n/a',
+    resenas: '(0 reseñas)',
+    comentarios: [],
   },
 ];
 
@@ -56,16 +64,18 @@ export const ListOfDoctors = ({
     switch (filterParam) {
       case 'Precio':
         return DOCTORS_LIST.slice().sort(
-          (a, b) => parseInt(a.price, 10) - parseInt(b.price, 10),
+          (a, b) => parseInt(a.precio, 10) - parseInt(b.precio, 10),
         );
       case 'Tiempo':
         return DOCTORS_LIST.slice().sort(
-          (a, b) => parseInt(a.time, 10) - parseInt(b.time, 10),
+          (a, b) => parseInt(a.tiempo, 10) - parseInt(b.tiempo, 10),
         );
       case 'Calificacion':
         return DOCTORS_LIST.slice().sort((a, b) => {
-          const ratingA = a.rating === 'n/a' ? -1 : parseFloat(a.rating);
-          const ratingB = b.rating === 'n/a' ? -1 : parseFloat(b.rating);
+          const ratingA =
+            a.valoracion === 'n/a' ? -1 : parseFloat(a.valoracion);
+          const ratingB =
+            b.valoracion === 'n/a' ? -1 : parseFloat(b.valoracion);
           return ratingB - ratingA;
         });
       default:
@@ -101,12 +111,12 @@ export const ListOfDoctors = ({
             key={index}
             showTime
             showInfo
-            name={doctor.name}
-            time={doctor.time}
-            price={doctor.price}
-            reviews={doctor.reviews}
-            rating={doctor.rating}
-            category={doctor.category}
+            name={`${doctor.nombre} ${doctor.apellido}`}
+            time={doctor.tiempo}
+            price={doctor.precio}
+            reviews={doctor.resenas}
+            rating={doctor.valoracion}
+            category={doctor.especialidad}
             onPress={() => handleViewMoreDetails(doctor)}
           />
         ))}

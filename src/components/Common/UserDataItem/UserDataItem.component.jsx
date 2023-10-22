@@ -19,7 +19,7 @@ export const UserDataItem = ({
       <View style={styles.dataWrapper}>
         {logo ? logo : <DefaultProfile />}
         <View>
-          <StyledText bold size="md">
+          <StyledText bold size={name.length > 15 ? 's' : 'md'}>
             {name}
           </StyledText>
           <StyledText color="grey">{category}</StyledText>

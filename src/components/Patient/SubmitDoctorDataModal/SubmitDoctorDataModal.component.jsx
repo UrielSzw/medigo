@@ -24,26 +24,26 @@ export const SubmitDoctorDataModal = ({
       contentContainerStyle={styles.contentAskMedicWrapperScroll}>
       <Controller
         control={control}
-        name="motive"
+        name="motivo"
         render={({field}) => (
           <StyledInput
-            error={errors.motive?.message}
+            error={errors.motivo?.message}
             label="Motivo"
             field={field}
-            name="motive"
+            name="motivo"
           />
         )}
         rules={{required: 'El motivo es obligatorio'}}
       />
       <Controller
         control={control}
-        name="symptoms"
+        name="sintomas"
         render={({field}) => (
           <StyledInput
-            error={errors.symptoms?.message}
+            error={errors.sintomas?.message}
             label="Sintomas"
             field={field}
-            name="symptoms"
+            name="sintomas"
           />
         )}
         rules={{required: 'Los sintomas son obligatorios'}}
@@ -51,14 +51,14 @@ export const SubmitDoctorDataModal = ({
       <View>
         <StyledText>Especialidad</StyledText>
         <StyledButton
-          style={errors?.specialty && {borderColor: 'red'}}
+          style={errors?.especialidad && {borderColor: 'red'}}
           variant="empty"
           onPress={() => setEspecialidadModal(true)}>
           {especialidad}
         </StyledButton>
-        {errors?.specialty && (
+        {errors?.especialidad && (
           <StyledText size="sm" color="red">
-            {errors?.specialty.message}
+            {errors?.especialidad.message}
           </StyledText>
         )}
       </View>
@@ -80,13 +80,13 @@ export const SubmitDoctorDataModal = ({
 
       <Controller
         control={control}
-        name="address"
+        name="direccion"
         render={({field}) => (
           <StyledInput
-            error={errors.address?.message}
+            error={errors.direccion?.message}
             label="Direccion"
             field={field}
-            name="address"
+            name="direccion"
           />
         )}
         rules={{required: 'La dirección es obligatoria'}}
