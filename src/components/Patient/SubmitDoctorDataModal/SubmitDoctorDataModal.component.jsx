@@ -89,7 +89,16 @@ export const SubmitDoctorDataModal = ({
             name="direccion"
           />
         )}
-        rules={{required: 'La dirección es obligatoria'}}
+        rules={{
+          required: 'La dirección es obligatoria',
+          validate: value => {
+            const words = value.split(' ');
+            if (words.length < 4) {
+              return 'El formato de la dirección debe verse así: "Calle altura barrio ciudad" (ejemplo: "Av Rivadavia 5500 Caballito CABA")';
+            }
+            return true;
+          },
+        }}
       />
       <View style={styles.buttonsWrapper}>
         <StyledButton onPress={handleSubmit(onSubmit)}>

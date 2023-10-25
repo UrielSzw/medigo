@@ -20,7 +20,7 @@ export const RegisterPat = ({navigation}) => {
     formState: {errors},
   } = useForm();
 
-  const onSubmit = data => {
+  const onSubmit = async data => {
     if (data) {
       try {
         console.log(data);

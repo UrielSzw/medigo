@@ -60,7 +60,7 @@ export const HomePat = () => {
     setOpenModal(false);
   };
 
-  const onSubmit = data => {
+  const onSubmit = async data => {
     if (especialidad === 'Seleccione especialidad') {
       setError('especialidad', {
         type: 'manual',
@@ -89,21 +89,45 @@ export const HomePat = () => {
     setValue('familyGroup', grupoFamiliar);
 
     try {
-      const formData = {
-        sintomas: data.sintomas,
-        motivo: data.motivo,
-        especialidad: especialidad,
-        latitud: '10',
-        longitud: '15',
-        nombre: 'nombre',
-        apellido: 'apellido',
-        direccion: data.direccion,
-      };
-      setListOfDoctorsState(true);
-      setOpenMedicModal(false);
-      console.log(formData);
-    } catch (e) {
-      console.log(e);
+      const inputAddress = 'Av+Corrientes+5300+CABA';
+
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search.php?q=${inputAddress}&format=jsonv2`,
+      );
+      const locationData = await response.json();
+
+      if (locationData && locationData.length > 0) {
+        // Si se encontró una ubicación, toma la primera coincidencia
+        const latitude = locationData[0].boundingbox[0];
+        const longitude = locationData[0].boundingbox[2];
+
+        setValue('direccion', data.direccion);
+        setValue('especialidad', especialidad);
+        setValue('familyGroup', grupoFamiliar);
+
+        const formData = {
+          sintomas: data.sintomas,
+          motivo: data.motivo,
+          especialidad: especialidad,
+          latitud: latitude,
+          longitud: longitude,
+          nombre: 'nombre',
+          apellido: 'apellido',
+          direccion: data.direccion,
+        };
+
+        setListOfDoctorsState(true);
+        setOpenMedicModal(false);
+        console.log(formData);
+      } else {
+        // No se encontró una ubicación, maneja el error o muestra un mensaje
+        setError('direccion', {
+          type: 'manual',
+          message: 'Dirección no encontrada',
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

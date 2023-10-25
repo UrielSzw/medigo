@@ -34,20 +34,21 @@ export const ModifyPersonalData = ({setHideFooter}) => {
   }, []);
 
   const navigation = useNavigation();
-  const telefono = '121312313213',
-    especialidades = 'Cardiología, Dermatología, ...',
-    precio = '2500',
-    nroMatricula = '177777777',
-    radioDeAccion = '2';
-
   const {
     control,
     handleSubmit,
     formState: {errors},
   } = useForm();
 
-  const onSubmit = data => {
-    console.log(data);
+  const onSubmit = async data => {
+    if (data) {
+      try {
+        console.log(data);
+        navigation.navigate(PATHS.PERSONALDATADOC);
+      } catch (e) {
+        console.log(e);
+      }
+    }
   };
 
   const handleBackActivity = () => {
@@ -65,8 +66,67 @@ export const ModifyPersonalData = ({setHideFooter}) => {
         style={styles.inputWrapper}>
         <Controller
           control={control}
+          name="sexo"
+          rules={{
+            required: 'El sexo es obligatorio',
+            validate: {
+              validSex: value =>
+                ['M', 'F', 'O'].includes(value) || 'Ingresa M, F o O',
+            },
+          }}
+          render={({field}) => (
+            <StyledInput
+              field={field}
+              label="Sexo (M / F / O)"
+              style={styles.input}
+              name="sexo"
+              error={errors.sexo?.message}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="username"
+          rules={{
+            required: 'El correo electrónico es obligatorio',
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: 'Correo electrónico inválido',
+            },
+          }}
+          render={({field}) => (
+            <StyledInput
+              label="Email"
+              style={styles.input}
+              field={field}
+              name="username"
+              error={errors.username?.message}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="password"
+          rules={{
+            required: 'La contraseña es obligatoria',
+            minLength: {
+              value: 6,
+              message: 'La contraseña debe tener al menos 6 caracteres',
+            },
+          }}
+          render={({field}) => (
+            <StyledInput
+              label="Contraseña"
+              style={styles.input}
+              field={field}
+              name="password"
+              error={errors.password?.message}
+            />
+          )}
+        />
+        <Controller
+          control={control}
           name="telefono"
-          defaultValue={telefono}
           rules={{
             required: 'El teléfono es obligatorio',
             pattern: {
@@ -76,9 +136,10 @@ export const ModifyPersonalData = ({setHideFooter}) => {
           }}
           render={({field}) => (
             <StyledInput
-              field={field}
-              label="Telefono"
+              label="Teléfono"
+              keyboardType="numeric"
               style={styles.input}
+              field={field}
               name="telefono"
               error={errors.telefono?.message}
             />
@@ -86,58 +147,54 @@ export const ModifyPersonalData = ({setHideFooter}) => {
         />
         <Controller
           control={control}
-          name="especialidades"
-          defaultValue={especialidades}
+          name="direccion"
           rules={{
-            required: 'Las especialidades son obligatorias',
+            required: 'La dirección es obligatoria',
           }}
           render={({field}) => (
             <StyledInput
-              field={field}
-              label="Especialidades"
+              label="Dirección"
               style={styles.input}
-              name="especialidades"
-              error={errors.especialidades?.message}
+              field={field}
+              name="direccion"
+              error={errors.direccion?.message}
             />
           )}
         />
         <Controller
           control={control}
-          name="dni"
-          defaultValue={''}
+          name="especialidad"
           rules={{
-            required: 'El DNI es obligatorio',
-            pattern: {
-              value: /^\d{8}$/,
-              message: 'DNI inválido (debe contener 8 dígitos)',
-            },
+            required: 'La especialidad es obligatoria',
           }}
           render={({field}) => (
             <StyledInput
-              field={field}
-              label="DNI"
+              label="Especialidad"
               style={styles.input}
-              name="dni"
-              error={errors.dni?.message}
+              field={field}
+              name="especialidad"
+              error={errors.especialidad?.message}
             />
           )}
         />
         <Controller
           control={control}
           name="precio"
-          defaultValue={precio}
           rules={{
             required: 'El precio es obligatorio',
-            pattern: {
-              value: /^\d+$/,
-              message: 'Precio inválido (debe ser un número entero)',
+            validate: {
+              isNumber: value =>
+                !isNaN(parseFloat(value)) || 'El precio debe ser un número',
+              greaterThan1000: value =>
+                parseFloat(value) >= 1000 || 'El precio debe ser mayor a 1000',
             },
           }}
           render={({field}) => (
             <StyledInput
-              field={field}
               label="Precio"
               style={styles.input}
+              keyboardType="numeric"
+              field={field}
               name="precio"
               error={errors.precio?.message}
             />
@@ -145,39 +202,23 @@ export const ModifyPersonalData = ({setHideFooter}) => {
         />
         <Controller
           control={control}
-          name="nroMatricula"
-          defaultValue={nroMatricula}
-          rules={{
-            required: 'El número de matrícula es obligatorio',
-          }}
-          render={({field}) => (
-            <StyledInput
-              field={field}
-              label="Numero de Matricula"
-              style={styles.input}
-              name="nroMatricula"
-              error={errors.nroMatricula?.message}
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name="radioDeAccion"
-          defaultValue={radioDeAccion}
+          name="radioAccion"
           rules={{
             required: 'El radio de acción es obligatorio',
-            pattern: {
-              value: /^\d+$/,
-              message: 'Radio de acción inválido (debe ser un número entero)',
+            validate: {
+              isNumber: value =>
+                !isNaN(parseFloat(value)) ||
+                'El radio de acción debe ser un número',
             },
           }}
           render={({field}) => (
             <StyledInput
-              field={field}
-              label="Radio de Accion (km)"
+              label="Radio de acción (KM)"
               style={styles.input}
-              name="radioDeAccion"
-              error={errors.radioDeAccion?.message}
+              keyboardType="numeric"
+              field={field}
+              name="radioAccion"
+              error={errors.radioAccion?.message}
             />
           )}
         />
