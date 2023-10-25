@@ -16,14 +16,4 @@ const apiUsuariosLogin = async usuario => {
   }
 };
 
-const getUsers = async id => {
-  try {
-    const response = await api.get(`${rutaUsuarios}/1`);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
-
-export {apiUsuariosLogin, getUsers, rutaUsuarios};
+export {apiUsuariosLogin};

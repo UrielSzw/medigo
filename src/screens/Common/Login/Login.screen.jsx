@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {View, TouchableOpacity} from 'react-native';
 import {Controller, useForm} from 'react-hook-form';
@@ -13,27 +13,12 @@ import {MedigoLogoIcon} from '../../../assets';
 import {PATHS} from '../../../routes/paths';
 import {styles} from './Login.styles';
 import {setUserData} from '../../../redux/user.slice';
-import {apiUsuariosLogin, getUsers} from '../../../utils/api/userRoutes';
-
-const USERS = [
-  {
-    email: 'medico@gmail.com',
-    password: 'medico',
-    type: 'doctor',
-  },
-  {
-    email: 'user@gmail.com',
-    password: 'user',
-    type: 'patient',
-    address: 'Av. Corrientes 3235',
-  },
-];
+import {apiUsuariosLogin} from '../../../utils/api/userRoutes';
 
 export const Login = ({navigation}) => {
   const {
     control,
     handleSubmit,
-    setError,
     formState: {errors},
   } = useForm();
   const dispatch = useDispatch();
@@ -41,36 +26,27 @@ export const Login = ({navigation}) => {
   const onSubmit = async data => {
     if (data) {
       try {
-        const foundUser = USERS.find(user => user.email === data.username);
+        const response = await apiUsuariosLogin(data);
 
-        if (!foundUser) {
-          setError('username', {
-            type: 'manual',
-            message: 'El correo electrónico no está registrado',
-          });
-          return;
-        }
-
-        if (foundUser.password !== data.password) {
-          setError('password', {
-            type: 'manual',
-            message: 'La contraseña es incorrecta',
-          });
-          return;
-        }
-
-        dispatch(setUserData(foundUser));
-
-        if (foundUser.type === 'doctor') {
-          navigation.navigate(PATHS.HOMEDOCTOR);
+        if (response) {
+          if (response.nroMatricula) {
+            console.log(response);
+          } else {
+            dispatch(setUserData(response));
+            navigation.navigate(PATHS.HOMEPATIENT);
+          }
         } else {
-          navigation.navigate(PATHS.HOMEPATIENT);
+          console.log('usuario invalido');
         }
       } catch (e) {
         console.log(e);
       }
     }
   };
+
+  // useEffect(() => {
+  //   navigation.navigate(PATHS.HOMEPATIENT);
+  // }, []);
 
   const handleNavigateRegister = () => {
     navigation.navigate(PATHS.REGISTER);

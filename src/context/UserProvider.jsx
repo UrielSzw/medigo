@@ -16,9 +16,11 @@ export const UserProvider = ({children}) => {
         // Agregar el campo cookies al objeto response
         console.log('interceptors');
         const cookies = response.headers['set-cookie'];
+        console.log('cookies', cookies);
         if (cookies) {
           const parsedCookies = parse(cookies[0]);
           const {tokenUsuario} = parsedCookies;
+          console.log('tokenUsuario', tokenUsuario);
           if (tokenUsuario && tokenUsuario !== '') {
             response.tokenUsuario = tokenUsuario;
             setTokenUsuario(tokenUsuario);

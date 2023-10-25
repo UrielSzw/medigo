@@ -11,6 +11,7 @@ import {
 import {PATHS} from '../../../routes/paths';
 import {styles} from './RegisterDoc.styles';
 import {MedigoLogoIcon} from '../../../assets';
+import {apiDoctorsRegister} from '../../../utils/api/doctorRoutes';
 
 export const RegisterDoc = ({navigation}) => {
   const {
@@ -22,7 +23,9 @@ export const RegisterDoc = ({navigation}) => {
   const onSubmit = async data => {
     if (data) {
       try {
-        console.log(data);
+        const response = await apiDoctorsRegister(data);
+        console.log(response.succes);
+
         navigation.navigate(PATHS.LOGIN);
       } catch (e) {
         console.log(e);

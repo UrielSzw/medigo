@@ -2,14 +2,20 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   userData: {
-    email: '',
+    nombre: '',
+    apellido: '',
+    dni: '',
+    fechaNacimiento: '',
+    username: '',
     password: '',
-    type: '',
-    address: '',
+    telefono: '',
+    sexo: '',
+    direccion: '',
     location: {
       latitude: '',
       longitude: '',
     },
+    grupoFamiliar: [],
   },
 };
 
@@ -19,7 +25,6 @@ export const userSlice = createSlice({
   reducers: {
     setUserData: (state, action) => {
       state.userData = {...state.userData, ...action.payload};
-      console.log(state.userData);
     },
   },
 });

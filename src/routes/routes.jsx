@@ -56,7 +56,7 @@ export const Routes = () => {
             <Stack.Screen name={PATHS.HELPDOC} component={HelpDoc} />
             <Stack.Screen name={PATHS.PATINFOINDOC} component={PatInfoDoc} />
           </>
-        ) : userData.type === 'patient' ? (
+        ) : userData.nombre.length > 0 ? (
           <>
             <Stack.Screen name={PATHS.HOMEPATIENT} component={HomePat} />
             <Stack.Screen name={PATHS.PERFILPATIENT} component={ProfilePat} />
