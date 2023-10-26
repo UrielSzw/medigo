@@ -12,4 +12,14 @@ const apiPatientUpdate = async patient => {
   }
 };
 
-export {apiPatientUpdate};
+const apiPatientRegister = async patient => {
+  try {
+    const responde = await api.post(`${rutaCliente}/registro`, patient);
+    return responde.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export {apiPatientUpdate, apiPatientRegister};

@@ -18,7 +18,7 @@ const apiUsuariosLogin = async usuario => {
 
 const apiEspecialidades = async () => {
   try {
-    const response = await api.post('especialidades');
+    const response = await api.get('especialidades');
     return response.data;
   } catch (error) {
     console.error(error);

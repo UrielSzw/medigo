@@ -8,10 +8,11 @@ import {
   StyledInput,
   DynamicInput,
 } from '../../../components';
-import {styles} from './RegisterPat.styles';
 import {PATHS} from '../../../routes/paths';
 import {MedigoLogoIcon} from '../../../assets';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {apiPatientRegister} from '../../../utils/api/patientRoutes';
+import {styles} from './RegisterPat.styles';
 
 export const RegisterPat = ({navigation}) => {
   const {
@@ -24,7 +25,11 @@ export const RegisterPat = ({navigation}) => {
     if (data) {
       try {
         console.log(data);
-        navigation.navigate(PATHS.LOGIN);
+        const response = await apiPatientRegister(data);
+
+        if (response) {
+          navigation.navigate(PATHS.LOGIN);
+        }
       } catch (e) {
         console.log(e);
       }
@@ -189,6 +194,7 @@ export const RegisterPat = ({navigation}) => {
                 <StyledInput
                   label="Contraseña"
                   style={styles.input}
+                  secureTextEntry
                   field={field}
                   name="password"
                   error={errors.password?.message}

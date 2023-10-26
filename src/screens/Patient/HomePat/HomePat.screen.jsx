@@ -149,6 +149,7 @@ export const HomePat = () => {
   };
 
   const [familyMembersOptions, setFamilyMembersOptions] = useState([]);
+  const [specialtyOptions, setSpecialtyOptions] = useState([]);
 
   const setModalDropdownsFamilyOptions = () => {
     let familyOptions = [];
@@ -170,7 +171,7 @@ export const HomePat = () => {
       const response = await apiEspecialidades();
 
       if (response) {
-        console.log(response);
+        setSpecialtyOptions(response);
       }
     } catch (e) {
       console.log(e);
@@ -333,7 +334,7 @@ export const HomePat = () => {
         dropdownValue={especialidad}
         setDropdownValue={setEspecialidad}
         title="Seleciona una especialidad"
-        options={['Kinesiologia', 'Clinico', 'Traumatologo', 'Alergista']}
+        options={specialtyOptions}
         visible={especialidadModal}
         setVisible={setEspecialidadModal}
       />

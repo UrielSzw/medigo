@@ -24,9 +24,10 @@ export const RegisterDoc = ({navigation}) => {
     if (data) {
       try {
         const response = await apiDoctorsRegister(data);
-        console.log(response.succes);
 
-        navigation.navigate(PATHS.LOGIN);
+        if (response) {
+          navigation.navigate(PATHS.LOGIN);
+        }
       } catch (e) {
         console.log(e);
       }
