@@ -16,4 +16,14 @@ const apiUsuariosLogin = async usuario => {
   }
 };
 
-export {apiUsuariosLogin};
+const apiEspecialidades = async () => {
+  try {
+    const response = await api.post('especialidades');
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export {apiUsuariosLogin, apiEspecialidades};

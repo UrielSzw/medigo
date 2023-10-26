@@ -5,37 +5,25 @@ const {height} = Dimensions.get('screen');
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: theme.colors.white,
+    height: height,
   },
-  docInfoPatWrapper: {
-    height: height - 68,
+  wrapper: {
+    height: height - 130,
+
+    paddingHorizontal: '5%',
     justifyContent: 'space-between',
-    paddingTop: 20,
-    flex: 1,
-    gap: 20,
+    gap: 10,
   },
-  infoDocContainer: {
-    marginHorizontal: 20,
-    flex: 1,
-    justifyContent: 'space-between',
-    gap: 200,
-  },
-  detailsContainer: {
+  wrapperTitle: {
+    paddingVertical: 10,
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-    marginBottom: 20,
+    gap: 2,
   },
-  userData: {
-    justifyContent: 'space-between',
+  wrapperForm: {
+    height: 350,
   },
-  buttonsContainer: {
-    gap: 25,
-    paddingHorizontal: 20,
-  },
-  inputStyle: {
-    paddingHorizontal: 20,
-    paddingTop: 10,
+  wrapperButtons: {
+    gap: 15,
   },
 });

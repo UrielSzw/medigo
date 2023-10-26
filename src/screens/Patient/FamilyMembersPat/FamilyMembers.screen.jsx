@@ -1,6 +1,5 @@
 import React from 'react';
-
-import {styles} from './FamilyMembers.styles.js';
+import {useSelector} from 'react-redux';
 import {View} from 'react-native';
 import {
   DoctorListItem,
@@ -11,8 +10,10 @@ import {
 } from '../../../components';
 import {FamilyIcon} from '../../../assets/index.js';
 import {PATHS} from '../../../routes/paths.js';
+import {styles} from './FamilyMembers.styles.js';
 
 export const FamilyMembers = ({navigation}) => {
+  const {userData} = useSelector(state => state.userReducer);
   const handleNavigateProfile = () => {
     navigation.navigate(PATHS.PERFILPATIENT);
   };
@@ -23,7 +24,10 @@ export const FamilyMembers = ({navigation}) => {
 
   return (
     <View style={styles.selectDocWrapper}>
-      <WelcomePerfilHeader username="Joe Doe" email="joedoe@gmail.com" />
+      <WelcomePerfilHeader
+        username={`${userData.nombre} ${userData.apellido}`}
+        email={userData.username}
+      />
       <View style={styles.selectDocContainer}>
         <View style={styles.nearDocsContainer}>
           <View style={styles.activityContainer}>
@@ -32,12 +36,15 @@ export const FamilyMembers = ({navigation}) => {
               Miembros Familiares
             </StyledText>
           </View>
-          <DoctorListItem
-            buttonText="Ver actividad"
-            name="Federico"
-            category="Hijo"
-            onPress={handleNavigateActivity}
-          />
+          {userData?.grupoFamiliar?.map((fam, index) => (
+            <DoctorListItem
+              key={index}
+              buttonText="Ver actividad"
+              name={`${fam.nombre} ${fam.apellido}`}
+              category={`${fam.sexo[0]}`}
+              onPress={handleNavigateActivity}
+            />
+          ))}
         </View>
 
         <View style={styles.buttonsContainer}>

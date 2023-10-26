@@ -23,6 +23,7 @@ import {PencilIcon} from '../../../assets';
 import {setUserData} from '../../../redux/user.slice';
 import {styles} from './HomePat.styles';
 import {WaitingModal} from '../../../components/Patient/WaitingModal/WaitingModal.component';
+import {apiEspecialidades} from '../../../utils/api/userRoutes';
 
 export const HomePat = () => {
   const {
@@ -49,14 +50,14 @@ export const HomePat = () => {
     'Seleccione grupo familiar',
   );
   const [filter, setFilter] = useState('Tiempo');
-  const [addressPreview, setAddressPreview] = useState(userData.address);
+  const [addressPreview, setAddressPreview] = useState(userData.direccion);
   const [listOfDoctorsState, setListOfDoctorsState] = useState(false);
   const [appointmentState, setAppointmentState] = useState(false); // Cambiar a true para evaluar vista de consulta en sesion
   const [doctorDetails, setDoctorDetails] = useState(undefined);
 
   const onSubmitAdress = () => {
     setValue('direccion', addressPreview);
-    dispatch(setUserData({address: addressPreview}));
+    dispatch(setUserData({direccion: addressPreview}));
     setOpenModal(false);
   };
 
@@ -89,10 +90,8 @@ export const HomePat = () => {
     setValue('familyGroup', grupoFamiliar);
 
     try {
-      const inputAddress = 'Av+Corrientes+5300+CABA';
-
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/search.php?q=${inputAddress}&format=jsonv2`,
+        `https://nominatim.openstreetmap.org/search.php?q=${data.direccion}&format=jsonv2`,
       );
       const locationData = await response.json();
 
@@ -131,10 +130,6 @@ export const HomePat = () => {
     }
   };
 
-  useEffect(() => {
-    setValue('direccion', addressPreview);
-  }, []);
-
   const handleViewMoreDetails = doctor => {
     setDoctorDetails(doctor);
     setDoctorDetailsModal(true);
@@ -152,6 +147,41 @@ export const HomePat = () => {
       console.log(e);
     }
   };
+
+  const [familyMembersOptions, setFamilyMembersOptions] = useState([]);
+
+  const setModalDropdownsFamilyOptions = () => {
+    let familyOptions = [];
+    if (userData) {
+      familyOptions.push(`${userData.nombre} ${userData.apellido}`);
+
+      if (userData.grupoFamiliar.length > 0) {
+        userData.grupoFamiliar.forEach(fam => {
+          familyOptions.push(`${fam.nombre} ${fam.apellido}`);
+        });
+      }
+
+      setFamilyMembersOptions(familyOptions);
+    }
+  };
+
+  const setModalDropdownsSpecialtyOptions = async () => {
+    try {
+      const response = await apiEspecialidades();
+
+      if (response) {
+        console.log(response);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    setValue('direccion', addressPreview);
+    setModalDropdownsFamilyOptions();
+    setModalDropdownsSpecialtyOptions();
+  }, []);
 
   useEffect(() => {
     if (grupoFamiliar !== 'Seleccione grupo familiar') {
@@ -209,14 +239,14 @@ export const HomePat = () => {
           <TouchableOpacity
             onPress={setOpenModal}
             style={styles.adressButtonWrapper}>
-            <StyledText color="grey">{userData.address}</StyledText>
+            <StyledText color="grey">{userData.direccion}</StyledText>
             <PencilIcon style={styles.icon} />
           </TouchableOpacity>
         )}
 
         {(listOfDoctorsState || appointmentState) && (
           <View style={styles.adressButtonWrapper}>
-            <StyledText color="grey">{userData.address}</StyledText>
+            <StyledText color="grey">{userData.direccion}</StyledText>
           </View>
         )}
 
@@ -270,7 +300,6 @@ export const HomePat = () => {
         title="Cambiar direccion"
         content={
           <ChangeAdressModal
-            userData={userData}
             addressPreview={addressPreview}
             setAddressPreview={setAddressPreview}
             onSubmitAdress={onSubmitAdress}
@@ -312,7 +341,7 @@ export const HomePat = () => {
         dropdownValue={grupoFamiliar}
         setDropdownValue={setGrupoFamiliar}
         title="Seleciona un grupoFamiliar"
-        options={['Yo', 'Hijo', 'Esposo']}
+        options={familyMembersOptions}
         visible={grupoFamiliarModal}
         setVisible={setGrupoFamiliarModal}
       />

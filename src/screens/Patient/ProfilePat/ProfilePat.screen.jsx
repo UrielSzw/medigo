@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View} from 'react-native';
+import {useSelector} from 'react-redux';
 import {
   FooterPatient,
   ProfileOption,
@@ -12,10 +13,11 @@ import {
   ActivityIcon,
   FamilyIcon,
 } from '../../../assets';
-import {styles} from './ProfilePat.styles';
 import {PATHS} from '../../../routes/paths';
+import {styles} from './ProfilePat.styles';
 
 export const ProfilePat = ({navigation}) => {
+  const {userData} = useSelector(state => state.userReducer);
   const handleActivityPress = () => {
     navigation.navigate(PATHS.ACTIVITYPAT);
   };
@@ -34,7 +36,10 @@ export const ProfilePat = ({navigation}) => {
 
   return (
     <View style={styles.wrapper}>
-      <WelcomePerfilHeader username="Joe Doe" email="joedoe@gmail.com" />
+      <WelcomePerfilHeader
+        username={`${userData.nombre} ${userData.apellido}`}
+        email={userData.username}
+      />
       <View style={styles.container}>
         <ProfileOption
           iconComponent={
