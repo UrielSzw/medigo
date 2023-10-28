@@ -42,7 +42,6 @@ export const HomePat = () => {
   const dispatch = useDispatch();
 
   const [modal, setModal] = useState({
-    waiting: false,
     filter: false,
     familyMembers: false,
     specialty: false,
@@ -51,6 +50,8 @@ export const HomePat = () => {
     address: false,
     request: false,
   });
+
+  const [waiting, setWaiting] = useState(false);
 
   const [especialidad, setEspecialidad] = useState('Seleccione especialidad');
   const [grupoFamiliar, setGrupoFamiliar] = useState(
@@ -159,7 +160,7 @@ export const HomePat = () => {
 
       if (response) {
         toggleModal('doctorDetails');
-        toggleModal('waiting');
+        setWaiting(true);
       }
     } catch (e) {
       console.log(e);
@@ -377,10 +378,7 @@ export const HomePat = () => {
         visible={modal.filter}
         setVisible={() => toggleModal('filter')}
       />
-      <WaitingModal
-        visible={modal.waiting}
-        setVisible={() => toggleModal('waiting')}
-      />
+      <WaitingModal visible={waiting} setVisible={setWaiting} />
     </View>
   );
 };
