@@ -1,4 +1,6 @@
 import React from 'react';
+import {useSelector} from 'react-redux';
+import {View} from 'react-native';
 import {
   FooterPatient,
   StyledButton,
@@ -6,20 +8,23 @@ import {
   UserDataItem,
   WelcomePerfilHeader,
 } from '../../../components';
-import {View} from 'react-native';
-
-import {styles} from './DocInfoPat.styles';
 import {ActivityIcon} from '../../../assets';
+import {formatDate} from '../../../utils/commonMethods';
 import {PATHS} from '../../../routes/paths';
+import {styles} from './DocInfoPat.styles';
 
 export const DocInfoPat = ({navigation}) => {
+  const {userActivity, userData} = useSelector(state => state.userReducer);
   const handleBackActivity = () => {
     navigation.navigate(PATHS.ACTIVITYPAT);
   };
 
   return (
     <View style={styles.docInfoPatWrapper}>
-      <WelcomePerfilHeader username="Joe Doe" email="joedoe@gmail.com" />
+      <WelcomePerfilHeader
+        username={`${userData.nombre} ${userData.apellido}`}
+        email={userData.username}
+      />
       <View style={styles.infoDocContainer}>
         <View style={styles.container}>
           <View style={styles.detailsContainer}>
@@ -28,24 +33,21 @@ export const DocInfoPat = ({navigation}) => {
           </View>
           <UserDataItem
             style={styles.userData}
-            name="Dr Joseph Brostito"
-            category="Kinesiologo"
+            name={`${userActivity.name} ${userActivity.lastName}`}
+            category={userActivity.speciality}
           />
           <View style={styles.textsContainer}>
             <StyledText color="grey" size="default">
-              Fecha de atencion: 24/03/2023
+              Fecha de atencion: {formatDate(userActivity.date)}
             </StyledText>
             <StyledText color="grey" size="default">
-              Monto: $2500
+              Monto: ${userActivity.price}
             </StyledText>
             <StyledText color="grey" size="default">
-              Calificacion: 3.5 estrellas
+              Calificacion: {userActivity.review} estrellas
             </StyledText>
             <StyledText color="grey" size="default">
-              Miembro familiar: Yo
-            </StyledText>
-            <StyledText color="grey" size="default">
-              Ubicacion de atencion: Av Corrientes 4251
+              Ubicacion de atencion: {userActivity.address}
             </StyledText>
           </View>
         </View>

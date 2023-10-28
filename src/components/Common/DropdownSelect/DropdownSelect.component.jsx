@@ -4,7 +4,6 @@ import {
   ScrollView,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  Animated,
   View,
 } from 'react-native';
 import {StyledText} from '../StyledText/StyledText.component';
@@ -29,40 +28,18 @@ export const DropdownSelect = ({
   handleClick,
 }) => {
   const [showOptions, setShowOptions] = useState([]);
-  const slideAnimationValue = new Animated.Value(0);
 
   const handleOnPress = option => {
     if (option) {
       setDropdownValue(option);
       handleClick && handleClick();
     }
-    setVisible(false);
+    setVisible();
   };
 
   useEffect(() => {
     setShowOptions(options);
   }, [options]);
-
-  //   useEffect(() => {
-  //     if (visible) {
-  //       Animated.timing(slideAnimationValue, {
-  //         toValue: 1,
-  //         duration: 400,
-  //         useNativeDriver: true,
-  //       }).start();
-  //     }
-  //   }, [visible]);
-
-  //   const slideAnimationStyle = {
-  //     transform: [
-  //       {
-  //         translateY: slideAnimationValue.interpolate({
-  //           inputRange: [0, 1],
-  //           outputRange: [300, 0],
-  //         }),
-  //       },
-  //     ],
-  //   };
 
   return (
     <Modal visible={visible} transparent>

@@ -9,7 +9,7 @@ import {styles} from './ChangeAdressModal.styles';
 import {setUserData} from '../../../redux/user.slice';
 import {apiPatientUpdate} from '../../../utils/api/patientRoutes';
 
-export const ChangeAdressModal = ({setOpenModal}) => {
+export const ChangeAdressModal = ({toggleModal}) => {
   const {
     control,
     handleSubmit,
@@ -19,10 +19,11 @@ export const ChangeAdressModal = ({setOpenModal}) => {
   const dispatch = useDispatch();
   const onSubmit = async data => {
     try {
+      console.log(data);
       const response = await apiPatientUpdate(data);
       if (response) {
         dispatch(setUserData(data));
-        setOpenModal(false);
+        toggleModal();
       }
     } catch (e) {
       console.log(e);
@@ -59,7 +60,7 @@ export const ChangeAdressModal = ({setOpenModal}) => {
       <View>
         <StyledButton onPress={handleSubmit(onSubmit)}>Cambiar</StyledButton>
 
-        <StyledButton variant="empty" onPress={() => setOpenModal(false)}>
+        <StyledButton variant="empty" onPress={toggleModal}>
           Cancelar
         </StyledButton>
       </View>

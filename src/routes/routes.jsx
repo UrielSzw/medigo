@@ -27,6 +27,7 @@ import {
 } from '../screens';
 import {PATHS} from './paths';
 import {UserContext} from '../context/UserProvider';
+import {Spinner} from '../components';
 
 export const Routes = () => {
   const Stack = createNativeStackNavigator();
@@ -83,6 +84,7 @@ export const Routes = () => {
           </>
         )}
       </Stack.Navigator>
+      <Spinner />
     </NavigationContainer>
   );
 };

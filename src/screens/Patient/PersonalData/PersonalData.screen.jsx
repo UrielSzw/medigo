@@ -9,6 +9,7 @@ import {
 } from '../../../components';
 import {PersonalDataIcon} from '../../../assets';
 import {PATHS} from '../../../routes/paths';
+import {formatDate} from '../../../utils/commonMethods';
 import {styles} from './PersonalData.styles';
 
 export const PersonalData = ({navigation}) => {
@@ -19,21 +20,6 @@ export const PersonalData = ({navigation}) => {
 
   const handleModifyData = () => {
     navigation.navigate(PATHS.MODIFYPATDATA);
-  };
-
-  const formatDate = date => {
-    // Crear un objeto de date a partir de la cadena
-    const dateObj = new Date(date);
-
-    // Obtener el día, mes y año
-    const day = dateObj.getDate().toString().padStart(2, '0');
-    const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
-    const year = dateObj.getFullYear();
-
-    // Formatear la date en el formato "dd-mm-yyyy"
-    const dateFormateada = `${day}-${month}-${year}`;
-
-    return dateFormateada;
   };
 
   return (

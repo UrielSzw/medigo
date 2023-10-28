@@ -13,11 +13,10 @@ export const WaitingModal = ({visible, setVisible}) => {
       const requestDoctor = 'requestDoctorWait()';
       if (requestDoctor === 'exito') {
         console.log('exito');
-        setVisible(false);
       } else if (requestDoctor === 'fallo') {
         console.log('fallo');
-        setVisible(false);
       }
+      setVisible();
     } catch (e) {
       console.log(e);
     }
@@ -25,7 +24,7 @@ export const WaitingModal = ({visible, setVisible}) => {
 
   useEffect(() => {
     if (count <= 0) {
-      setVisible(false);
+      setVisible();
     } else {
       setTimeout(() => {
         setCount(count - 1);

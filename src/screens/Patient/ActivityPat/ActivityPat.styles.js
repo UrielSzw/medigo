@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
   },
   selectDocContainer: {
     gap: 10,
+    flex: 1,
   },
   specialtyFilterContainer: {
     justifyContent: 'space-between',
@@ -35,11 +36,19 @@ export const styles = StyleSheet.create({
   nearDocsContainer: {
     marginTop: 10,
     paddingHorizontal: 20,
+    justifyContent: 'space-between',
     gap: 20,
+    flex: 1,
   },
   activityContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
+  },
+  scrollView: {
+    height: 300,
+  },
+  scrollViewContent: {
+    gap: 15,
   },
 });

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
-import {TouchableOpacity, View, TextInput} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {useForm} from 'react-hook-form';
 import {
@@ -11,12 +11,10 @@ import {
   FooterPatient,
   ListOfDoctors,
   PatientReview,
-  Rating,
   StyledButton,
   StyledModal,
   StyledText,
   SubmitDoctorDataModal,
-  UserDataItem,
   WelcomeHeader,
 } from '../../../components';
 import {PencilIcon} from '../../../assets';
@@ -24,6 +22,11 @@ import {setUserData} from '../../../redux/user.slice';
 import {styles} from './HomePat.styles';
 import {WaitingModal} from '../../../components/Patient/WaitingModal/WaitingModal.component';
 import {apiEspecialidades} from '../../../utils/api/userRoutes';
+import {
+  apiListOfDoctors,
+  apiRequestDoctor,
+} from '../../../utils/api/patientRoutes';
+import {setSpinner} from '../../../utils/setSpinner';
 
 export const HomePat = () => {
   const {
@@ -37,15 +40,19 @@ export const HomePat = () => {
 
   const {userData} = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
-  const [openModal, setOpenModal] = useState(false);
-  const [openMedicModal, setOpenMedicModal] = useState(false);
-  const [openWaiting, setOpenWaiting] = useState(false);
+
+  const [modal, setModal] = useState({
+    waiting: false,
+    filter: false,
+    familyMembers: false,
+    specialty: false,
+    review: false,
+    doctorDetails: false,
+    address: false,
+    request: false,
+  });
+
   const [especialidad, setEspecialidad] = useState('Seleccione especialidad');
-  const [especialidadModal, setEspecialidadModal] = useState(false);
-  const [grupoFamiliarModal, setGrupoFamiliarModal] = useState(false);
-  const [filterModal, setFilterModal] = useState(false);
-  const [doctorDetailsModal, setDoctorDetailsModal] = useState(false);
-  const [doctorReviewModal, setDoctorReviewModal] = useState(false); // Cambiar a true para evaluar vista del modal de Review
   const [grupoFamiliar, setGrupoFamiliar] = useState(
     'Seleccione grupo familiar',
   );
@@ -55,10 +62,16 @@ export const HomePat = () => {
   const [appointmentState, setAppointmentState] = useState(false); // Cambiar a true para evaluar vista de consulta en sesion
   const [doctorDetails, setDoctorDetails] = useState(undefined);
 
+  const toggleModal = name => {
+    setModal(prev => {
+      return {...prev, [name]: !prev[name]};
+    });
+  };
+
   const onSubmitAdress = () => {
     setValue('direccion', addressPreview);
     dispatch(setUserData({direccion: addressPreview}));
-    setOpenModal(false);
+    toggleModal('address');
   };
 
   const onSubmit = async data => {
@@ -115,9 +128,13 @@ export const HomePat = () => {
           direccion: data.direccion,
         };
 
-        setListOfDoctorsState(true);
-        setOpenMedicModal(false);
-        console.log(formData);
+        const responseDoctors = await apiListOfDoctors(formData);
+
+        if (responseDoctors) {
+          setListOfDoctorsState(true);
+          toggleModal('request');
+          console.log('responseDoctors', responseDoctors);
+        }
       } else {
         // No se encontró una ubicación, maneja el error o muestra un mensaje
         setError('direccion', {
@@ -131,20 +148,23 @@ export const HomePat = () => {
   };
 
   const handleViewMoreDetails = doctor => {
+    toggleModal('doctorDetails');
     setDoctorDetails(doctor);
-    setDoctorDetailsModal(true);
   };
 
-  const handleRequestDoctor = () => {
+  const handleRequestDoctor = async () => {
     try {
-      //Solicitar medico con numero de matricula
-      const requestDoctor = 'requestDoctorEndpoint(doctor.nroMatricula)';
-      if (requestDoctor) {
-        setDoctorDetailsModal(false);
-        setOpenWaiting(true);
+      setSpinner(true);
+      const response = await apiRequestDoctor(doctorDetails.nroMatricula);
+
+      if (response) {
+        toggleModal('doctorDetails');
+        toggleModal('waiting');
       }
     } catch (e) {
       console.log(e);
+    } finally {
+      setSpinner(false);
     }
   };
 
@@ -201,12 +221,13 @@ export const HomePat = () => {
       if (endAppointment === 'finalizo') {
         console.log('finalizo');
         setRunning(false);
-        setDoctorReviewModal(true);
+        toggleModal('review');
       }
     } catch (e) {
       console.log(e);
     }
   };
+
   useEffect(() => {
     let intervalId;
 
@@ -238,7 +259,7 @@ export const HomePat = () => {
       <View style={styles.body}>
         {!listOfDoctorsState && !appointmentState && (
           <TouchableOpacity
-            onPress={setOpenModal}
+            onPress={() => toggleModal('address')}
             style={styles.adressButtonWrapper}>
             <StyledText color="grey">{userData.direccion}</StyledText>
             <PencilIcon style={styles.icon} />
@@ -257,7 +278,7 @@ export const HomePat = () => {
           <ListOfDoctors
             filter={filter}
             handleViewMoreDetails={handleViewMoreDetails}
-            setFilterModal={setFilterModal}
+            setFilterModal={() => toggleModal('review')}
             especialidad={especialidad}
           />
         )}
@@ -273,7 +294,9 @@ export const HomePat = () => {
 
       {!listOfDoctorsState && !appointmentState && (
         <View style={styles.buttonWrapper}>
-          <StyledButton variant="primary" onPress={setOpenMedicModal}>
+          <StyledButton
+            variant="primary"
+            onPress={() => toggleModal('request')}>
             Solicitar medico
           </StyledButton>
         </View>
@@ -288,14 +311,14 @@ export const HomePat = () => {
             errors={errors}
             especialidad={especialidad}
             grupoFamiliar={grupoFamiliar}
-            setEspecialidadModal={setEspecialidadModal}
-            setGrupoFamiliarModal={setGrupoFamiliarModal}
+            setEspecialidadModal={() => toggleModal('specialty')}
+            setGrupoFamiliarModal={() => toggleModal('familyMembers')}
             handleSubmit={handleSubmit}
             onSubmit={onSubmit}
-            setOpenMedicModal={setOpenMedicModal}
+            setOpenMedicModal={() => toggleModal('request')}
           />
         }
-        open={openMedicModal}
+        open={modal.request}
       />
       <StyledModal
         title="Cambiar direccion"
@@ -304,10 +327,10 @@ export const HomePat = () => {
             addressPreview={addressPreview}
             setAddressPreview={setAddressPreview}
             onSubmitAdress={onSubmitAdress}
-            setOpenModal={setOpenModal}
+            toggleModal={() => toggleModal('address')}
           />
         }
-        open={openModal}
+        open={modal.address}
       />
       <StyledModal
         title="Informacion del medico"
@@ -315,46 +338,49 @@ export const HomePat = () => {
           <DoctorDetails
             doctor={doctorDetails}
             handleRequestDoctor={handleRequestDoctor}
-            setDoctorDetailsModal={setDoctorDetailsModal}
+            setDoctorDetailsModal={() => toggleModal('doctorDetails')}
           />
         }
-        open={doctorDetailsModal}
+        open={modal.doctorDetails}
       />
       <StyledModal
         title="Calificar medico"
         content={
           <PatientReview
             doctor={doctorDetails}
-            setDoctorReviewModal={setDoctorReviewModal}
+            setDoctorReviewModal={() => toggleModal('review')}
           />
         }
-        open={doctorReviewModal}
+        open={modal.review}
       />
       <DropdownSelect
         dropdownValue={especialidad}
         setDropdownValue={setEspecialidad}
         title="Seleciona una especialidad"
         options={specialtyOptions}
-        visible={especialidadModal}
-        setVisible={setEspecialidadModal}
+        visible={modal.specialty}
+        setVisible={() => toggleModal('specialty')}
       />
       <DropdownSelect
         dropdownValue={grupoFamiliar}
         setDropdownValue={setGrupoFamiliar}
         title="Seleciona un grupoFamiliar"
         options={familyMembersOptions}
-        visible={grupoFamiliarModal}
-        setVisible={setGrupoFamiliarModal}
+        visible={modal.familyMembers}
+        setVisible={() => toggleModal('familyMembers')}
       />
       <DropdownSelect
         dropdownValue={filter}
         setDropdownValue={setFilter}
         title="Seleciona un grupoFamiliar"
         options={['Precio', 'Tiempo', 'Calificacion']}
-        visible={filterModal}
-        setVisible={setFilterModal}
+        visible={modal.filter}
+        setVisible={() => toggleModal('filter')}
       />
-      <WaitingModal visible={openWaiting} setVisible={setOpenWaiting} />
+      <WaitingModal
+        visible={modal.waiting}
+        setVisible={() => toggleModal('waiting')}
+      />
     </View>
   );
 };

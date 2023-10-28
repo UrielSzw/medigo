@@ -1,17 +1,13 @@
 import React from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {View, ScrollView, TouchableOpacity, Text} from 'react-native';
+import {View, ScrollView, Text} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
-import {
-  Banner,
-  StyledButton,
-  StyledInput,
-  StyledText,
-} from '../../../components';
+import {Banner, StyledButton, StyledInput} from '../../../components';
 import {PATHS} from '../../../routes/paths';
-import {styles} from './RegisterDoc.styles';
 import {MedigoLogoIcon} from '../../../assets';
 import {apiDoctorsRegister} from '../../../utils/api/doctorRoutes';
+import {setSpinner} from '../../../utils/setSpinner';
+import {styles} from './RegisterDoc.styles';
 
 export const RegisterDoc = ({navigation}) => {
   const {
@@ -23,6 +19,7 @@ export const RegisterDoc = ({navigation}) => {
   const onSubmit = async data => {
     if (data) {
       try {
+        setSpinner(true);
         const response = await apiDoctorsRegister(data);
 
         if (response) {
@@ -30,6 +27,8 @@ export const RegisterDoc = ({navigation}) => {
         }
       } catch (e) {
         console.log(e);
+      } finally {
+        setSpinner(false);
       }
     }
   };

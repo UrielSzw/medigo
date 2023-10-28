@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {View, TouchableOpacity} from 'react-native';
 import {Controller, useForm} from 'react-hook-form';
@@ -11,9 +11,10 @@ import {
 } from '../../../components';
 import {MedigoLogoIcon} from '../../../assets';
 import {PATHS} from '../../../routes/paths';
-import {styles} from './Login.styles';
 import {setUserData} from '../../../redux/user.slice';
 import {apiUsuariosLogin} from '../../../utils/api/userRoutes';
+import {setSpinner} from '../../../utils/setSpinner';
+import {styles} from './Login.styles';
 
 export const Login = ({navigation}) => {
   const {
@@ -26,6 +27,7 @@ export const Login = ({navigation}) => {
   const onSubmit = async data => {
     if (data) {
       try {
+        setSpinner(true);
         const response = await apiUsuariosLogin(data);
 
         if (response) {
@@ -40,13 +42,11 @@ export const Login = ({navigation}) => {
         }
       } catch (e) {
         console.log(e);
+      } finally {
+        setSpinner(false);
       }
     }
   };
-
-  // useEffect(() => {
-  //   navigation.navigate(PATHS.HOMEPATIENT);
-  // }, []);
 
   const handleNavigateRegister = () => {
     navigation.navigate(PATHS.REGISTER);

@@ -2,6 +2,7 @@
 import React from 'react';
 import {Controller} from 'react-hook-form';
 import {View} from 'react-native';
+import {useSelector} from 'react-redux';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {StyledInput} from '../../Common/StyledInput/StyledInput.component';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
@@ -19,6 +20,8 @@ export const SubmitDoctorDataModal = ({
   setOpenMedicModal,
   errors,
 }) => {
+  const {userData} = useSelector(state => state.userReducer);
+
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={styles.contentAskMedicWrapperScroll}>
@@ -81,6 +84,7 @@ export const SubmitDoctorDataModal = ({
       <Controller
         control={control}
         name="direccion"
+        defaultValue={userData.direccion}
         render={({field}) => (
           <StyledInput
             error={errors.direccion?.message}

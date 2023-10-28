@@ -11,6 +11,14 @@ const initialState = {
       longitude: '',
     },
   },
+  doctorActivity: {
+    date: '',
+    price: '',
+    review: '',
+    name: '',
+    lastName: '',
+    address: '',
+  },
 };
 
 export const doctorSlice = createSlice({
@@ -19,11 +27,13 @@ export const doctorSlice = createSlice({
   reducers: {
     setDoctorData: (state, action) => {
       state.doctorData = {...state.doctorData, ...action.payload};
-      console.log(state.doctorData);
+    },
+    setDoctorActivity: (state, action) => {
+      state.doctorActivity = action.payload;
     },
   },
 });
 
-export const {setDoctorData} = doctorSlice.actions;
+export const {setDoctorData, setDoctorActivity} = doctorSlice.actions;
 
 export default doctorSlice.reducer;

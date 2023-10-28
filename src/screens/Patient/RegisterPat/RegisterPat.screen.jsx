@@ -12,6 +12,7 @@ import {PATHS} from '../../../routes/paths';
 import {MedigoLogoIcon} from '../../../assets';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {apiPatientRegister} from '../../../utils/api/patientRoutes';
+import {setSpinner} from '../../../utils/setSpinner';
 import {styles} from './RegisterPat.styles';
 
 export const RegisterPat = ({navigation}) => {
@@ -24,7 +25,7 @@ export const RegisterPat = ({navigation}) => {
   const onSubmit = async data => {
     if (data) {
       try {
-        console.log(data);
+        setSpinner(true);
         const response = await apiPatientRegister(data);
 
         if (response) {
@@ -32,6 +33,8 @@ export const RegisterPat = ({navigation}) => {
         }
       } catch (e) {
         console.log(e);
+      } finally {
+        setSpinner(false);
       }
     }
   };
