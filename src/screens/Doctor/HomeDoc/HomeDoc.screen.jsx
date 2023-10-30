@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import {View, Linking} from 'react-native';
+import {useSelector} from 'react-redux';
 import {
   FooterDoc,
   StyledText,
@@ -12,11 +14,24 @@ import {
   PatientDetailsModal,
   DoctorReview,
   AddNotesModal,
+  StyledSwitch,
 } from '../../../components';
 import {PATHS} from '../../../routes/paths';
+import {
+  apiAcceptRequest,
+  apiCancelRequest,
+  apiDeclineRequest,
+  apiDoctorsUpdateState,
+  apiEndAppointment,
+  apiLastRequestState,
+  apiRequireRequest,
+  apiReviewPatient,
+} from '../../../utils/api/doctorRoutes';
 import {styles} from './HomeDoc.styles';
+import {setSpinner} from '../../../utils/setSpinner';
 
 export const HomeDoc = ({navigation, route}) => {
+  const {doctorData} = useSelector(state => state.doctorReducer);
   const [permisoDenegado, setPermisoDenegado] = useState(
     route.params ? route.params.permisoDenegado : undefined,
   );
@@ -27,8 +42,11 @@ export const HomeDoc = ({navigation, route}) => {
   const [openModalDetail, setOpenModalDetail] = useState(false);
   const [openModalErrorGeo, setOpenModalErrorGeo] = useState(false);
   const [patientReviewModal, setPatientReviewModal] = useState(false);
+  const [endAppointmentModal, setEndAppointmentModal] = useState(false);
   const [notesModal, setNotesModal] = useState(false);
+  const [isSuccessful, setIsSuccessful] = useState(true);
   const [count, setCount] = useState(60);
+  const [request, setRequest] = useState({});
 
   const openGoogleMaps = (
     startLatitude = '-34.617865',
@@ -54,63 +72,180 @@ export const HomeDoc = ({navigation, route}) => {
     }
   }, [permisoDenegado]);
 
-  useEffect(() => {
-    if (count <= 0) {
-      console.log('Cancelado la request');
-    } else {
-      setTimeout(() => {
-        setCount(count - 1);
-      }, 1000);
+  const handleConfirmarClick = async () => {
+    try {
+      setSpinner(true);
+      const response = await apiDoctorsUpdateState();
+      if (response.state === 'desconectado') {
+        setCuentaActivada(false);
+        setActivo(false);
+        setSpinner(false);
+      } else {
+        navigation.navigate(PATHS.MAP);
+        setCuentaActivada(true);
+        setActivo(true);
+        setPermisoDenegado(true);
+      }
+      closeModal();
+    } catch (e) {
+      console.log(e);
     }
-  }, [count]);
+  };
 
-  const handleConfirmarClick = () => {
-    if (cuentaActivada) {
-      setCuentaActivada(false);
-      setActivo(false);
-    } else {
-      navigation.navigate(PATHS.MAP);
-      setCuentaActivada(true);
-      setActivo(true);
-      setPermisoDenegado(true);
+  const checkIfPatientCancel = async () => {
+    try {
+      const response = await apiLastRequestState();
+
+      if (response) {
+        console.log('checkIfPatientCancel', response);
+      }
+    } catch (e) {
+      console.log(e);
     }
-    closeModal();
   };
 
   const closeModal = () => {
     setOpenModal(false);
   };
 
-  const handleAcceptPatientRequest = () => {
-    setOpenModalDetail(false);
-    setActivo(false);
-    setAcceptedPatient({name: 'Nombre'});
+  const handlePatientRequestResponse = async value => {
+    try {
+      if (value) {
+        const response = await apiAcceptRequest();
+
+        if (response.state === 'en curso') {
+          setOpenModalDetail(false);
+          setActivo(false);
+          setAcceptedPatient({name: 'Nombre'});
+          setRequest({});
+          setTimeout(() => {
+            // Llama al callback después de 120 segundos
+            checkIfPatientCancel();
+          }, 120000);
+        }
+      } else {
+        const response = await apiDeclineRequest();
+
+        if (response.state === 'solicitando medico') {
+          setOpenModalDetail(false);
+          setActivo(false);
+          setRequest({});
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
-  const handleEndAppointment = () => {
-    setPatientReviewModal(true);
+  const handleEndAppointment = async () => {
+    try {
+      if (isSuccessful) {
+        const response = await apiEndAppointment();
+
+        if (response) {
+          setPatientReviewModal(true);
+        }
+      } else {
+        const response = await apiCancelRequest();
+
+        if (response) {
+          setPatientReviewModal(true);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
+
+  useEffect(() => {
+    if (request) {
+      if (count <= 0) {
+        handlePatientRequestResponse(false);
+        console.log('Cancelado la request');
+      } else {
+        setTimeout(() => {
+          setCount(count - 1);
+        }, 1000);
+      }
+    }
+  }, [request, count]);
 
   const handleAddNotes = () => {
     setNotesModal(true);
   };
 
-  const handleSetActiveAfterEnd = () => {
-    setActivo(true);
-    setAcceptedPatient({});
+  const handleSetActiveAfterEnd = async formData => {
+    try {
+      const response = await apiReviewPatient(formData);
+
+      if (response) {
+        setActivo(true);
+        setAcceptedPatient({});
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
+
+  const handlePatientRequest = async () => {
+    try {
+      const response = await apiRequireRequest();
+
+      if (response) {
+        console.log('request', response);
+        setRequest(response);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const [running, setRunning] = useState(false);
+
+  useEffect(() => {
+    if (activo) {
+      setRunning(true);
+    } else {
+      setRunning(false);
+    }
+  }, [activo, request]);
+
+  useEffect(() => {
+    let intervalId;
+
+    const startInterval = () => {
+      intervalId = setInterval(() => {
+        handlePatientRequest();
+        // Comprueba si la variable booleana cambió
+        if (!running) {
+          clearInterval(intervalId); // Detén el intervalo
+        }
+      }, 20000); // 20 segundos en milisegundos
+    };
+
+    if (running) {
+      startInterval(); // Inicia el intervalo cuando el componente se monta
+    }
+
+    // return () => {
+    //   setRunning(false); // Cambia la variable booleana a false cuando el componente se desmonta
+    //   clearInterval(intervalId); // Asegúrate de detener el intervalo al desmontar el componente
+    // };
+  }, [running]);
 
   return (
     <View style={styles.wrapper}>
       <View>
-        <WelcomeHeader username="Dr.Joseph Brostito" />
+        <WelcomeHeader
+          username={`${doctorData.nombre} ${doctorData.apellido}`}
+        />
       </View>
       <View style={styles.container}>
         <View style={styles.textState}>
           <StyledText size="xl" bold={true} color={activo ? 'green' : 'red'}>
             {activo ? 'ACTIVO' : 'INACTIVO'}
           </StyledText>
-          {activo && (
+          {activo && request.length > 0 && (
             <PatientRequest
               count={count}
               setOpenModalDetail={setOpenModalDetail}
@@ -136,9 +271,10 @@ export const HomeDoc = ({navigation, route}) => {
             {cuentaActivada ? 'Desactivar cuenta' : 'Activar cuenta'}
           </StyledButton>
         )}
+
         {acceptedPatient.name && (
           <View style={styles.buttonAccepted}>
-            <StyledButton onPress={handleEndAppointment}>
+            <StyledButton onPress={() => setEndAppointmentModal(true)}>
               Finalizar
             </StyledButton>
             <StyledButton variant="secondary" onPress={handleAddNotes}>
@@ -182,8 +318,7 @@ export const HomeDoc = ({navigation, route}) => {
         }
         content={
           <PatientDetailsModal
-            handleAcceptPatientRequest={handleAcceptPatientRequest}
-            setOpenModalDetail={setOpenModalDetail}
+            handleAcceptPatientRequest={handlePatientRequestResponse}
           />
         }
       />
@@ -212,6 +347,22 @@ export const HomeDoc = ({navigation, route}) => {
           />
         }
         open={patientReviewModal}
+      />
+      <StyledModal
+        title="Estado de la consulta"
+        content={
+          <View>
+            <StyledText>Estado de la consulta</StyledText>
+            <StyledSwitch
+              setIsChecked={setIsSuccessful}
+              isChecked={isSuccessful}
+            />
+            <StyledButton onPress={handleEndAppointment}>
+              Confirmar
+            </StyledButton>
+          </View>
+        }
+        open={endAppointmentModal}
       />
       <StyledModal
         title="Agregar Notas"

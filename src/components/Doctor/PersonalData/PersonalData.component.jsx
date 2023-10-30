@@ -9,7 +9,7 @@ import {styles} from './PersonalData.styles';
 export const PersonalData = ({
   dni,
   telefono,
-  especialidades,
+  especialidad,
   precio,
   nroMatricula,
   radioDeAccion,
@@ -38,7 +38,7 @@ export const PersonalData = ({
           Telefono: {telefono}
         </StyledText>
         <StyledText color="grey" size="default" style={styles.paddLeft}>
-          Especialidades: {especialidades.join(', ')}
+          Especialidades: {especialidad}
         </StyledText>
         <StyledText color="grey" size="default" style={styles.paddLeft}>
           Precio: {'$' + precio}

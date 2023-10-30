@@ -6,10 +6,7 @@ import {Rating} from '../../Common/Rating/Rating.component';
 import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
 import {styles} from './PatientDetailsModal.styles';
 
-export const PatientDetailsModal = ({
-  handleAcceptPatientRequest,
-  setOpenModalDetail,
-}) => {
+export const PatientDetailsModal = ({handlePatientRequestResponse}) => {
   return (
     <View>
       <View style={styles.dataWrapper}>
@@ -51,11 +48,13 @@ export const PatientDetailsModal = ({
           Sintomas: molestia en el codo
         </StyledText>
       </View>
-      <StyledButton onPress={handleAcceptPatientRequest}>Acceptar</StyledButton>
+      <StyledButton onPress={() => handlePatientRequestResponse(true)}>
+        Acceptar
+      </StyledButton>
       <StyledButton
         style={styles.button}
         variant="secondary"
-        onPress={() => setOpenModalDetail(false)}>
+        onPress={() => handlePatientRequestResponse(false)}>
         Rechazar
       </StyledButton>
     </View>

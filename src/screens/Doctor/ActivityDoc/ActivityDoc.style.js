@@ -42,4 +42,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 5,
   },
+  scrollView: {
+    height: 300,
+  },
+  scrollViewContent: {
+    gap: 15,
+  },
 });

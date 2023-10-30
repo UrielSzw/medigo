@@ -1,6 +1,5 @@
 import React from 'react';
-
-import {styles} from './SelectDoc.styles.js';
+import {useSelector} from 'react-redux';
 import {View} from 'react-native';
 import {
   DoctorListItem,
@@ -9,15 +8,18 @@ import {
   WelcomeHeader,
 } from '../../../components';
 import {FilterIcon} from '../../../assets/index.js';
+import {styles} from './SelectDoc.styles.js';
 
 export const SelectDoc = () => {
+  const {userData} = useSelector(state => state.userReducer);
+
   return (
     <View style={styles.selectDocWrapper}>
       <View style={styles.selectDocContainer}>
         <StyledText style={styles.addressTop} color="grey">
           Av.Corrientes 4251
         </StyledText>
-        <WelcomeHeader />
+        <WelcomeHeader username={`${userData.nombre} ${userData.apellido}`} />
         <View style={styles.specialtyFilterContainer}>
           <StyledText color="grey" style={styles.specialty}>
             Kinesiologo

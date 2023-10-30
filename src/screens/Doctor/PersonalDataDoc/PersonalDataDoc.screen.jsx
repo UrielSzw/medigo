@@ -1,5 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
+import {useSelector} from 'react-redux';
 import {
   FooterDoc,
   WelcomePerfilHeader,
@@ -8,19 +9,20 @@ import {
 import {styles} from './PersonalDataDoc.styles';
 
 export const PersonalDataDoc = () => {
+  const {doctorData} = useSelector(state => state.doctorReducer);
   return (
     <View style={styles.wrapper}>
       <WelcomePerfilHeader
-        username="Dr.Joseph Brostito"
-        email="fedepr2345@gmail.com"
+        username={`${doctorData.nombre} ${doctorData.apellido}`}
+        email={doctorData.username}
       />
       <PersonalData
-        dni="1111111111"
-        telefono="121312313213"
-        especialidades={['Cardiología', 'Dermatología', 'Oftalmología']}
-        precio="2500"
-        nroMatricula="177777777"
-        radioDeAccion="2"
+        dni={doctorData.dni}
+        telefono={doctorData.telefono}
+        especialidad={doctorData.especialidad}
+        precio={doctorData.precio}
+        nroMatricula={doctorData.nroMatricula}
+        radioDeAccion={doctorData.radioAccion}
       />
       <FooterDoc current="profile" />
     </View>

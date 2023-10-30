@@ -2,10 +2,18 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   doctorData: {
-    email: '',
-    password: '',
-    type: '',
-    address: '',
+    nombre: '',
+    apellido: '',
+    direccion: '',
+    dni: '',
+    especialidad: '',
+    fechaNacimiento: '',
+    nroMatricula: '',
+    precio: '',
+    radioAccion: '',
+    sexo: '',
+    telefono: '',
+    username: '',
     location: {
       latitude: '',
       longitude: '',

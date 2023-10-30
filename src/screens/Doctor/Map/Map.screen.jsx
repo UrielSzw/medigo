@@ -9,6 +9,7 @@ import {setUserData} from '../../../redux/user.slice';
 import {FooterDoc, StyledButton, StyledText} from '../../../components';
 import {PATHS} from '../../../routes/paths';
 import {styles} from './Map.Styles';
+import {setSpinner} from '../../../utils/setSpinner';
 
 export const Map = ({navigation}) => {
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -75,6 +76,7 @@ export const Map = ({navigation}) => {
       {currentLocation && (
         <MapView
           style={styles.map}
+          onMapLoaded={() => setSpinner(false)}
           initialRegion={{
             latitude: currentLocation.latitude,
             longitude: currentLocation.longitude,

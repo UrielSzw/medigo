@@ -26,13 +26,12 @@ import {
   PatInfoDoc,
 } from '../screens';
 import {PATHS} from './paths';
-import {UserContext} from '../context/UserProvider';
 import {Spinner} from '../components';
 
 export const Routes = () => {
   const Stack = createNativeStackNavigator();
   const {userData} = useSelector(state => state.userReducer);
-  // const {tokenUsuario} = useContext(UserContext);
+  const {doctorData} = useSelector(state => state.doctorReducer);
 
   return (
     <NavigationContainer>
@@ -40,7 +39,7 @@ export const Routes = () => {
         screenOptions={{
           headerShown: false,
         }}>
-        {userData.type === 'doctor' ? (
+        {doctorData.nombre ? (
           <>
             <Stack.Screen name={PATHS.HOMEDOCTOR} component={HomeDoc} />
             <Stack.Screen name={PATHS.PERFILDOCTOR} component={PerfilDoc} />
@@ -57,7 +56,7 @@ export const Routes = () => {
             <Stack.Screen name={PATHS.HELPDOC} component={HelpDoc} />
             <Stack.Screen name={PATHS.PATINFOINDOC} component={PatInfoDoc} />
           </>
-        ) : userData.nombre.length > 0 ? (
+        ) : userData.nombre ? (
           <>
             <Stack.Screen name={PATHS.HOMEPATIENT} component={HomePat} />
             <Stack.Screen name={PATHS.PERFILPATIENT} component={ProfilePat} />

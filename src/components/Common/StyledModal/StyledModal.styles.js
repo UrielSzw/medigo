@@ -31,4 +31,7 @@ export const styles = StyleSheet.create({
   defaultText: {
     marginBottom: 40,
   },
+  text: {
+    textAlign: 'center',
+  },
 });

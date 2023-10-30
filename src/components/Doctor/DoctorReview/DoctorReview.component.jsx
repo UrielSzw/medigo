@@ -12,6 +12,7 @@ export const DoctorReview = ({
 }) => {
   const [rating, setRating] = useState(0);
   const [showError, setShowError] = useState(false);
+  const [comment, setComment] = useState('');
 
   const handlePress = () => {
     if (rating === 0) {
@@ -19,7 +20,12 @@ export const DoctorReview = ({
       return;
     }
     setPatientReviewModal(false);
-    handleSetActiveAfterEnd();
+
+    if (comment.length > 0) {
+      handleSetActiveAfterEnd({valoracion: rating, comentario: comment});
+    } else {
+      handleSetActiveAfterEnd({valoracion: rating});
+    }
   };
 
   useEffect(() => {
@@ -33,7 +39,12 @@ export const DoctorReview = ({
       <Rating handleRating={setRating} />
       <View style={styles.textBox}>
         <StyledText style={styles.text}>Dejar comentario (opcional)</StyledText>
-        <TextInput multiline={true} style={styles.input} />
+        <TextInput
+          multiline={true}
+          style={styles.input}
+          onChange={setComment}
+          value={comment}
+        />
       </View>
       <View style={styles.footerBox}>
         {showError && (

@@ -273,7 +273,7 @@ export const HomePat = () => {
           </View>
         )}
 
-        <WelcomeHeader />
+        <WelcomeHeader username={`${userData.nombre} ${userData.apellido}`} />
 
         {listOfDoctorsState && (
           <ListOfDoctors

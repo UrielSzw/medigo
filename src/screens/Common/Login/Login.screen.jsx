@@ -13,6 +13,7 @@ import {MedigoLogoIcon} from '../../../assets';
 import {PATHS} from '../../../routes/paths';
 import {setUserData} from '../../../redux/user.slice';
 import {apiUsuariosLogin} from '../../../utils/api/userRoutes';
+import {setDoctorData} from '../../../redux/doctor.slice';
 import {setSpinner} from '../../../utils/setSpinner';
 import {styles} from './Login.styles';
 
@@ -32,7 +33,8 @@ export const Login = ({navigation}) => {
 
         if (response) {
           if (response.nroMatricula) {
-            console.log(response);
+            dispatch(setDoctorData(response));
+            navigation.navigate(PATHS.HOMEDOCTOR);
           } else {
             dispatch(setUserData(response));
             navigation.navigate(PATHS.HOMEPATIENT);

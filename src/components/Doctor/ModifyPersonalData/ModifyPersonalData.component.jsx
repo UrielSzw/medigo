@@ -3,12 +3,14 @@ import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {View, ScrollView, Keyboard} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
+import {useSelector} from 'react-redux';
 import {StyledButton, StyledText, StyledInput} from '../..';
 import {PersonalDataIcon} from '../../../assets';
-import {styles} from './ModifyPersonalData.styles';
 import {PATHS} from '../../../routes/paths';
+import {styles} from './ModifyPersonalData.styles';
 
 export const ModifyPersonalData = ({setHideFooter}) => {
+  const {doctorData} = useSelector(state => state.doctorReducer);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
@@ -67,6 +69,7 @@ export const ModifyPersonalData = ({setHideFooter}) => {
         <Controller
           control={control}
           name="sexo"
+          defaultValue={doctorData.sexo[0]}
           rules={{
             required: 'El sexo es obligatorio',
             validate: {
@@ -87,6 +90,7 @@ export const ModifyPersonalData = ({setHideFooter}) => {
         <Controller
           control={control}
           name="username"
+          defaultValue={doctorData.username}
           rules={{
             required: 'El correo electrónico es obligatorio',
             pattern: {
@@ -127,6 +131,7 @@ export const ModifyPersonalData = ({setHideFooter}) => {
         <Controller
           control={control}
           name="telefono"
+          defaultValue={doctorData.telefono}
           rules={{
             required: 'El teléfono es obligatorio',
             pattern: {
@@ -148,6 +153,7 @@ export const ModifyPersonalData = ({setHideFooter}) => {
         <Controller
           control={control}
           name="direccion"
+          defaultValue={doctorData.direccion}
           rules={{
             required: 'La dirección es obligatoria',
           }}
@@ -164,6 +170,7 @@ export const ModifyPersonalData = ({setHideFooter}) => {
         <Controller
           control={control}
           name="especialidad"
+          defaultValue={doctorData.especialidad}
           rules={{
             required: 'La especialidad es obligatoria',
           }}
@@ -180,6 +187,7 @@ export const ModifyPersonalData = ({setHideFooter}) => {
         <Controller
           control={control}
           name="precio"
+          defaultValue={doctorData.precio}
           rules={{
             required: 'El precio es obligatorio',
             validate: {
@@ -203,6 +211,7 @@ export const ModifyPersonalData = ({setHideFooter}) => {
         <Controller
           control={control}
           name="radioAccion"
+          defaultValue={doctorData.radioAccion}
           rules={{
             required: 'El radio de acción es obligatorio',
             validate: {
