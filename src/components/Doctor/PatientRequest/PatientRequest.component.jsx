@@ -1,17 +1,17 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
 import {styles} from './PatientRequest.styles';
 import {ClockIcon, DefaultProfile} from '../../../assets';
 
-export const PatientRequest = ({
-  logo,
-  name = 'User',
-  time = '15',
-  count = '60',
-  setOpenModalDetail,
-}) => {
+export const PatientRequest = ({logo, request, setOpenModalDetail}) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    setCount(60);
+  }, []);
+
   return (
     <View style={styles.wrapper}>
       <View style={styles.headerWrapper}>
@@ -23,13 +23,13 @@ export const PatientRequest = ({
           {logo ? logo : <DefaultProfile />}
           <View>
             <StyledText bold color="white" size="md">
-              {name}
+              {`${request.nombre} ${request.apellido}`}
             </StyledText>
           </View>
         </View>
         <View style={styles.timeWrapper}>
           <ClockIcon fill="#FFF" style={styles.icon} />
-          <StyledText color="white">{time} m</StyledText>
+          <StyledText color="white">{request.tiempoLlegada} m</StyledText>
         </View>
       </View>
       <View style={styles.buttonWrapper}>

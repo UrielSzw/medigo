@@ -191,6 +191,7 @@ export const RegisterDoc = ({navigation}) => {
                 label="Contraseña"
                 style={styles.input}
                 field={field}
+                secureTextEntry
                 name="password"
                 error={errors.password?.message}
               />

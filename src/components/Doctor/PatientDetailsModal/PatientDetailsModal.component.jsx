@@ -5,8 +5,12 @@ import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {Rating} from '../../Common/Rating/Rating.component';
 import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
 import {styles} from './PatientDetailsModal.styles';
+import {calculateAge} from '../../../utils/commonMethods';
 
-export const PatientDetailsModal = ({handlePatientRequestResponse}) => {
+export const PatientDetailsModal = ({
+  handlePatientRequestResponse,
+  request,
+}) => {
   return (
     <View>
       <View style={styles.dataWrapper}>
@@ -14,7 +18,7 @@ export const PatientDetailsModal = ({handlePatientRequestResponse}) => {
           <DefaultProfile />
           <View>
             <StyledText bold size="md">
-              User
+              {`${request.nombre} ${request.apellido}`}
             </StyledText>
             <StyledText color="grey">Pacietne</StyledText>
           </View>
@@ -27,25 +31,24 @@ export const PatientDetailsModal = ({handlePatientRequestResponse}) => {
       <View style={styles.detailsWrapper}>
         <Rating rating={4} readOnly />
         <StyledText color="grey" size="default">
-          DNI: 22222222
+          Sexo: {request.sexo}
         </StyledText>
         <StyledText color="grey" size="default">
-          Miembro familiar: Joe Doe
+          Edad: {calculateAge(request.fechaNacimiento)}
         </StyledText>
         <StyledText color="grey" size="default">
-          Ubicacion de atencion: Av Corrientes 4251
+          Ubicacion de atencion: {request.direccion}
         </StyledText>
         <View>
           <StyledText color="grey" size="default">
             Motivo:
           </StyledText>
           <StyledText color="grey" size="default">
-            - Siento mucho dolor en el codo cuando me toco o hago algun
-            movimiento leve
+            {request.motivo}
           </StyledText>
         </View>
         <StyledText color="grey" size="default">
-          Sintomas: molestia en el codo
+          Sintomas: {request.sintomas}
         </StyledText>
       </View>
       <StyledButton onPress={() => handlePatientRequestResponse(true)}>

@@ -26,6 +26,7 @@ const initialState = {
     name: '',
     lastName: '',
     address: '',
+    notes: '',
   },
 };
 

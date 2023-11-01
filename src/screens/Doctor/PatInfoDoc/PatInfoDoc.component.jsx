@@ -1,4 +1,5 @@
 import React from 'react';
+import {useSelector} from 'react-redux';
 import {
   FooterPatient,
   StyledButton,
@@ -7,11 +8,15 @@ import {
   WelcomePerfilHeader,
 } from '../../../components';
 import {View} from 'react-native';
+import {formatDate} from '../../../utils/commonMethods';
 import {ActivityIcon} from '../../../assets';
 import {PATHS} from '../../../routes/paths';
 import {styles} from './PatInfoDoc.styles';
 
 export const PatInfoDoc = ({navigation}) => {
+  const {doctorData, doctorActivity} = useSelector(
+    state => state.doctorReducer,
+  );
   const handleBackActivity = () => {
     navigation.navigate(PATHS.PERFILDOCTOR);
   };
@@ -19,8 +24,8 @@ export const PatInfoDoc = ({navigation}) => {
   return (
     <View style={styles.docInfoPatWrapper}>
       <WelcomePerfilHeader
-        username="Dr Joseph Brostito"
-        email="fedepr2345@gmail.com"
+        username={`${doctorData.nombre} ${doctorData.apellido}`}
+        email={doctorData.username}
       />
       <View style={styles.infoDocContainer}>
         <View style={styles.container}>
@@ -30,24 +35,21 @@ export const PatInfoDoc = ({navigation}) => {
           </View>
           <UserDataItem
             style={styles.userData}
-            name="Joe Doe"
+            name={`${doctorActivity.name} ${doctorActivity.lastName}`}
             category="Paciente"
           />
           <View style={styles.textsContainer}>
             <StyledText color="grey" size="default">
-              Fecha de atencion: 24/03/2023
+              Fecha de atencion: {formatDate(doctorActivity.date)}
             </StyledText>
             <StyledText color="grey" size="default">
-              Monto: $2500
+              Monto: {doctorActivity.price}
             </StyledText>
             <StyledText color="grey" size="default">
-              Calificacion: 3.5 estrellas
+              Calificacion: {doctorActivity.review} estrellas
             </StyledText>
             <StyledText color="grey" size="default">
-              Miembro familiar: Yo
-            </StyledText>
-            <StyledText color="grey" size="default">
-              Ubicacion de atencion: Av Corrientes 4251
+              Ubicacion de atencion: {doctorActivity.address}
             </StyledText>
           </View>
         </View>

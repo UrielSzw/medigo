@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect} from 'react';
+
+import React, {useState, useEffect, useRef} from 'react';
 import {View, Linking} from 'react-native';
 import {useSelector} from 'react-redux';
 import {
@@ -29,6 +29,7 @@ import {
 } from '../../../utils/api/doctorRoutes';
 import {styles} from './HomeDoc.styles';
 import {setSpinner} from '../../../utils/setSpinner';
+import {showModal} from '../../../redux/common.slice';
 
 export const HomeDoc = ({navigation, route}) => {
   const {doctorData} = useSelector(state => state.doctorReducer);
@@ -37,16 +38,16 @@ export const HomeDoc = ({navigation, route}) => {
   );
   const [activo, setActivo] = useState(false);
   const [cuentaActivada, setCuentaActivada] = useState(false);
-  const [acceptedPatient, setAcceptedPatient] = useState({});
+  const [acceptedPatient, setAcceptedPatient] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [openModalDetail, setOpenModalDetail] = useState(false);
-  const [openModalErrorGeo, setOpenModalErrorGeo] = useState(false);
   const [patientReviewModal, setPatientReviewModal] = useState(false);
   const [endAppointmentModal, setEndAppointmentModal] = useState(false);
   const [notesModal, setNotesModal] = useState(false);
   const [isSuccessful, setIsSuccessful] = useState(true);
   const [count, setCount] = useState(60);
-  const [request, setRequest] = useState({});
+  const [request, setRequest] = useState(null);
+  const [coordenates, setCoordenates] = useState({longitud: 0, latitud: 0});
 
   const openGoogleMaps = (
     startLatitude = '-34.617865',
@@ -68,19 +69,28 @@ export const HomeDoc = ({navigation, route}) => {
     if (permisoDenegado === false) {
       setActivo(false);
       setCuentaActivada(false);
-      setOpenModalErrorGeo(true);
+      showModal({
+        title: 'Error de geolocalización',
+        message:
+          'Para poder acceptar clientes, debes permitir la geolocalización',
+        show: true,
+      });
     }
   }, [permisoDenegado]);
 
   const handleConfirmarClick = async () => {
     try {
+      console.log('handleConfirmarClick');
       setSpinner(true);
       const response = await apiDoctorsUpdateState();
       if (response.state === 'desconectado') {
         setCuentaActivada(false);
         setActivo(false);
         setSpinner(false);
+        setRequest(null);
+        console.log('desconectado');
       } else {
+        console.log('conectado');
         navigation.navigate(PATHS.MAP);
         setCuentaActivada(true);
         setActivo(true);
@@ -98,6 +108,15 @@ export const HomeDoc = ({navigation, route}) => {
 
       if (response) {
         console.log('checkIfPatientCancel', response);
+        if (response.result === 'cancelada') {
+          setAcceptedPatient(null);
+          showModal({
+            title: 'El paciente cancelo la consulta',
+            message:
+              'El paciente hizo uso de su derecho de cancelar la consulta dentro de los primeros 2 minutos',
+            show: true,
+          });
+        }
       }
     } catch (e) {
       console.log(e);
@@ -116,8 +135,9 @@ export const HomeDoc = ({navigation, route}) => {
         if (response.state === 'en curso') {
           setOpenModalDetail(false);
           setActivo(false);
-          setAcceptedPatient({name: 'Nombre'});
-          setRequest({});
+          setAcceptedPatient(request);
+          setCuentaActivada(false);
+          setRequest(null);
           setTimeout(() => {
             // Llama al callback después de 120 segundos
             checkIfPatientCancel();
@@ -126,10 +146,11 @@ export const HomeDoc = ({navigation, route}) => {
       } else {
         const response = await apiDeclineRequest();
 
-        if (response.state === 'solicitando medico') {
+        if (response.state === 'seleccionando medico') {
           setOpenModalDetail(false);
           setActivo(false);
-          setRequest({});
+          setCuentaActivada(false);
+          setRequest(null);
         }
       }
     } catch (e) {
@@ -180,7 +201,7 @@ export const HomeDoc = ({navigation, route}) => {
 
       if (response) {
         setActivo(true);
-        setAcceptedPatient({});
+        setAcceptedPatient(null);
       }
     } catch (e) {
       console.log(e);
@@ -191,47 +212,41 @@ export const HomeDoc = ({navigation, route}) => {
     try {
       const response = await apiRequireRequest();
 
-      if (response) {
-        console.log('request', response);
-        setRequest(response);
+      if (response && !request) {
+        console.log('apiRequireRequest', response);
+        setRequest(response.result);
       }
     } catch (e) {
       console.log(e);
     }
   };
 
-  const [running, setRunning] = useState(false);
+  const [requestCount, setRequestCount] = useState(0);
 
   useEffect(() => {
-    if (activo) {
-      setRunning(true);
-    } else {
-      setRunning(false);
+    if (activo && !request) {
+      setRequestCount(39);
     }
   }, [activo, request]);
 
   useEffect(() => {
-    let intervalId;
-
-    const startInterval = () => {
-      intervalId = setInterval(() => {
-        handlePatientRequest();
-        // Comprueba si la variable booleana cambió
-        if (!running) {
-          clearInterval(intervalId); // Detén el intervalo
-        }
-      }, 20000); // 20 segundos en milisegundos
-    };
-
-    if (running) {
-      startInterval(); // Inicia el intervalo cuando el componente se monta
+    if (requestCount % 20 === 0 && activo) {
+      handlePatientRequest();
+      console.log('funcion ejecutada');
     }
 
-    // return () => {
-    //   setRunning(false); // Cambia la variable booleana a false cuando el componente se desmonta
-    //   clearInterval(intervalId); // Asegúrate de detener el intervalo al desmontar el componente
-    // };
-  }, [running]);
+    if (requestCount > 0 && !request) {
+      setTimeout(() => {
+        setRequestCount(requestCount - 1);
+      }, 1000);
+    }
+
+    if (request) {
+      setRequestCount(0);
+    }
+
+    console.log('requestCount', requestCount);
+  }, [requestCount]);
 
   return (
     <View style={styles.wrapper}>
@@ -245,13 +260,16 @@ export const HomeDoc = ({navigation, route}) => {
           <StyledText size="xl" bold={true} color={activo ? 'green' : 'red'}>
             {activo ? 'ACTIVO' : 'INACTIVO'}
           </StyledText>
-          {activo && request.length > 0 && (
+
+          {activo && request && (
             <PatientRequest
               count={count}
+              request={request}
               setOpenModalDetail={setOpenModalDetail}
             />
           )}
-          {!activo && acceptedPatient.name && (
+
+          {!activo && acceptedPatient && (
             <AcceptedPatient
               onPress={() =>
                 openGoogleMaps(
@@ -266,13 +284,13 @@ export const HomeDoc = ({navigation, route}) => {
         </View>
       </View>
       <View style={styles.buttonWrapper}>
-        {!acceptedPatient.name && (
+        {!acceptedPatient && (
           <StyledButton onPress={() => setOpenModal(true)}>
             {cuentaActivada ? 'Desactivar cuenta' : 'Activar cuenta'}
           </StyledButton>
         )}
 
-        {acceptedPatient.name && (
+        {acceptedPatient && (
           <View style={styles.buttonAccepted}>
             <StyledButton onPress={() => setEndAppointmentModal(true)}>
               Finalizar
@@ -318,24 +336,9 @@ export const HomeDoc = ({navigation, route}) => {
         }
         content={
           <PatientDetailsModal
-            handleAcceptPatientRequest={handlePatientRequestResponse}
+            handlePatientRequestResponse={handlePatientRequestResponse}
+            request={request}
           />
-        }
-      />
-      <StyledModal
-        open={openModalErrorGeo}
-        title="Error de geolocalización"
-        content={
-          <View style={{gap: 40}}>
-            <StyledText style={{textAlign: 'center'}}>
-              Para poder acceptar clientes, debes permitir la geolocalización
-            </StyledText>
-            <StyledButton
-              variant="warning"
-              onPress={() => setOpenModalErrorGeo(false)}>
-              Cerrar
-            </StyledButton>
-          </View>
         }
       />
       <StyledModal

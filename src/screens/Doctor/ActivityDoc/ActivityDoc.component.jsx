@@ -12,10 +12,11 @@ import {ActivityIcon} from '../../../assets/index.js';
 import {PATHS} from '../../../routes/paths.js';
 import {setSpinner} from '../../../utils/setSpinner';
 import {apiGetDoctorActivity} from '../../../utils/api/doctorRoutes';
+import {setDoctorActivity} from '../../../redux/doctor.slice';
 import {styles} from './ActivityDoc.style';
 
 export const ActivityDoc = ({navigation}) => {
-  const {doctorData} = useSelector(state => state.userReducer);
+  const {doctorData} = useSelector(state => state.doctorReducer);
   const dispatch = useDispatch();
   const [activityList, setActivityList] = useState([]);
   const handleNavigateProfile = () => {
@@ -23,17 +24,17 @@ export const ActivityDoc = ({navigation}) => {
   };
 
   const handlePatDetails = activity => {
-    // const doctorActivity = {
-    //   date: activity.createdAt,
-    //   price: activity.precio,
-    //   review: activity.valoracionMedico,
-    //   name: activity.medico.usuario.persona.nombre,
-    //   lastName: activity.medico.usuario.persona.apellido,
-    //   address: activity.direccion,
-    //   speciality: activity.medico.especialidad,
-    // };
+    const doctorActivity = {
+      date: activity.createdAt,
+      price: activity.precio,
+      review: activity.valoracionCliente,
+      name: activity.nombre,
+      lastName: activity.apellido,
+      address: activity.direccion,
+      notes: activity.observacion,
+    };
 
-    // dispatch(setUserActivity(doctorActivity));
+    dispatch(setDoctorActivity(doctorActivity));
     navigation.navigate(PATHS.PATINFOINDOC);
   };
 
@@ -60,8 +61,8 @@ export const ActivityDoc = ({navigation}) => {
     <View style={styles.selectDocWrapper}>
       <View style={styles.selectDocContainer}>
         <WelcomePerfilHeader
-          username={`${doctorData.nombre} ${doctorData.apellido}`}
-          email={doctorData.username}
+          username={`${doctorData?.nombre} ${doctorData?.apellido}`}
+          email={doctorData?.username}
         />
 
         <View style={styles.nearDocsContainer}>
@@ -79,8 +80,8 @@ export const ActivityDoc = ({navigation}) => {
                 <DoctorListItem
                   key={index}
                   onPress={() => handlePatDetails(activity)}
-                  // name={`${activity?.medico?.usuario?.persona?.nombre} ${activity?.medico?.usuario?.persona?.nombre}`}
-                  // category={activity?.medico?.especialidad}
+                  category="Paciente"
+                  name={`${activity.nombre} ${activity.apellido}`}
                 />
               ))}
           </ScrollView>

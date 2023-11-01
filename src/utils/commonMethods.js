@@ -12,3 +12,13 @@ export const formatDate = date => {
 
   return dateFormateada;
 };
+
+export const calculateAge = date => {
+  const dateArray = date.split(' ');
+  const birthdayDate = new Date(dateArray[0]);
+  const currentDate = new Date();
+
+  const age = currentDate.getFullYear() - birthdayDate.getFullYear();
+
+  return age;
+};

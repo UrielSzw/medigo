@@ -16,9 +16,12 @@ export const commonSlice = createSlice({
     showSpinner: (state, action) => {
       state.showSpinner = action.payload;
     },
+    showModal: (state, action) => {
+      state.showSpinner = action.payload;
+    },
   },
 });
 
-export const {showSpinner} = commonSlice.actions;
+export const {showSpinner, showModal} = commonSlice.actions;
 
 export default commonSlice.reducer;

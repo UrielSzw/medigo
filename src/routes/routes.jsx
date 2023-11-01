@@ -25,8 +25,8 @@ import {
   HelpDoc,
   PatInfoDoc,
 } from '../screens';
+import {GenericModal, Spinner} from '../components';
 import {PATHS} from './paths';
-import {Spinner} from '../components';
 
 export const Routes = () => {
   const Stack = createNativeStackNavigator();
@@ -84,6 +84,7 @@ export const Routes = () => {
         )}
       </Stack.Navigator>
       <Spinner />
+      <GenericModal />
     </NavigationContainer>
   );
 };

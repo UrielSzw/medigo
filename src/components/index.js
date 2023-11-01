@@ -30,3 +30,4 @@ export * from './Doctor/DoctorReview/DoctorReview.component';
 export * from './Doctor/AddNotesModal/AddNotesModal.component';
 export * from './Common/Spinner/Spinner.component';
 export * from './Common/Switch/Switch.component';
+export * from './Common/GenericModal/GenericModal.component';

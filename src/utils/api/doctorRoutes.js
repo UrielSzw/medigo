@@ -39,8 +39,7 @@ const apiRequireRequest = async () => {
     const response = await api.get(
       `${rutaDoctoresConsultas}/solicitar-consulta`,
     );
-    return {result: {nombre: 'pepe'}};
-    // return response.data;
+    return response.data;
   } catch (error) {
     console.error(error);
     throw error;
@@ -85,7 +84,7 @@ const apiCancelRequest = async () => {
 
 const apiLastRequestState = async () => {
   try {
-    const response = await api.post(
+    const response = await api.get(
       `${rutaDoctoresConsultas}/solicitar-estado-ultima-consulta`,
     );
     return response.data;
@@ -122,7 +121,9 @@ const apiReviewPatient = async formData => {
 
 const apiGetDoctorActivity = async () => {
   try {
-    const response = await api.get(`${rutaDoctoresConsultas}/valorar-consulta`);
+    const response = await api.get(
+      `${rutaDoctoresConsultas}/historialConsultas`,
+    );
     return response.data;
   } catch (error) {
     console.error(error);
