@@ -15,6 +15,7 @@ import {
   DoctorReview,
   AddNotesModal,
   StyledSwitch,
+  EndAppointmentModal,
 } from '../../../components';
 import {PATHS} from '../../../routes/paths';
 import {
@@ -110,6 +111,7 @@ export const HomeDoc = ({navigation, route}) => {
         console.log('checkIfPatientCancel', response);
         if (response.result === 'cancelada') {
           setAcceptedPatient(null);
+          console.log('bhdasiyudhgiauyshdauis', response);
           showModal({
             title: 'El paciente cancelo la consulta',
             message:
@@ -163,14 +165,16 @@ export const HomeDoc = ({navigation, route}) => {
       if (isSuccessful) {
         const response = await apiEndAppointment();
 
-        if (response) {
+        if (response?.state === 'calificando') {
+          setEndAppointmentModal(false);
           setPatientReviewModal(true);
         }
       } else {
         const response = await apiCancelRequest();
 
-        if (response) {
-          setPatientReviewModal(true);
+        if (response?.state === 'cancelada') {
+          setEndAppointmentModal(false);
+          acceptedPatient(null);
         }
       }
     } catch (e) {
@@ -354,16 +358,11 @@ export const HomeDoc = ({navigation, route}) => {
       <StyledModal
         title="Estado de la consulta"
         content={
-          <View>
-            <StyledText>Estado de la consulta</StyledText>
-            <StyledSwitch
-              setIsChecked={setIsSuccessful}
-              isChecked={isSuccessful}
-            />
-            <StyledButton onPress={handleEndAppointment}>
-              Confirmar
-            </StyledButton>
-          </View>
+          <EndAppointmentModal
+            setIsSuccessful={setIsSuccessful}
+            isSuccessful={isSuccessful}
+            handleEndAppointment={handleEndAppointment}
+          />
         }
         open={endAppointmentModal}
       />

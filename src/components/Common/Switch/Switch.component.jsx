@@ -14,16 +14,16 @@ export const StyledSwitch = ({isChecked, setIsChecked}) => {
 
   return (
     <TouchableOpacity onPress={toggleSwitch}>
-      <View style={isChecked ? styles.wrapperOn : styles.wrapperOff}>
+      <View style={[styles.wrapper, isChecked && styles.wrapperOn]}>
         {isChecked && (
-          <StyledText bold color="white" style={{fontSize: 10}}>
-            Exitosa
+          <StyledText bold color="white" style={{fontSize: 20}}>
+            SI
           </StyledText>
         )}
         <View style={styles.circle} />
         {!isChecked && (
-          <StyledText bold color="white" style={{fontSize: 10}}>
-            Cancelada
+          <StyledText bold color="white" style={{fontSize: 20}}>
+            NO
           </StyledText>
         )}
       </View>

@@ -1,33 +1,26 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
+import {theme} from '../../../theme/theme';
 
 export const getStyles = () =>
   StyleSheet.create({
-    wrapperOff: {
+    wrapper: {
       flexDirection: 'row',
-      gap: 2,
-      backgroundColor: '#9B9B9B',
+      gap: 10,
+      backgroundColor: theme.colors.red,
       alignItems: 'center',
-      borderRadius: 13.5,
-      width: 46,
-      height: 22,
+      borderRadius: 27,
+      width: 92,
+      height: 44,
       padding: 3,
     },
     wrapperOn: {
-      flexDirection: 'row',
-      gap: 2,
       backgroundColor: '#62A478',
-      alignItems: 'center',
-      borderRadius: 13.5,
-      width: 46,
-      height: 22,
-      padding: 3,
-      paddingRight: 5,
-      paddingLeft: 8,
+      paddingLeft: 24,
     },
     circle: {
       backgroundColor: '#FFF',
-      width: 18,
-      height: 18,
+      width: 36,
+      height: 36,
       borderRadius: 50,
     },
   });

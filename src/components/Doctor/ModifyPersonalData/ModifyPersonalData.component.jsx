@@ -110,26 +110,6 @@ export const ModifyPersonalData = ({setHideFooter}) => {
         />
         <Controller
           control={control}
-          name="password"
-          rules={{
-            required: 'La contraseña es obligatoria',
-            minLength: {
-              value: 6,
-              message: 'La contraseña debe tener al menos 6 caracteres',
-            },
-          }}
-          render={({field}) => (
-            <StyledInput
-              label="Contraseña"
-              style={styles.input}
-              field={field}
-              name="password"
-              error={errors.password?.message}
-            />
-          )}
-        />
-        <Controller
-          control={control}
           name="telefono"
           defaultValue={doctorData.telefono}
           rules={{
