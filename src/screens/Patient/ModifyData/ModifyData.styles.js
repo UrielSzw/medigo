@@ -23,6 +23,10 @@ export const styles = StyleSheet.create({
   wrapperForm: {
     height: 350,
   },
+  wrapperFormContent: {
+    gap: 15,
+    paddingBottom: 25,
+  },
   wrapperButtons: {
     gap: 15,
   },

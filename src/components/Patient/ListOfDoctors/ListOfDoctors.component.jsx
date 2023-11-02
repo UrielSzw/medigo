@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {ScrollView, TouchableOpacity, View} from 'react-native';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
@@ -5,73 +6,74 @@ import {DoctorListItem} from '../../Doctor/DoctorListItem/DoctorListItem.compone
 import {styles} from './ListOfDoctors.styles';
 import {FilterIcon} from '../../../assets';
 
-const DOCTORS_LIST = [
-  {
-    nroMatricula: '36985214',
-    nombre: 'Jorge',
-    apellido: 'ApellidoJorge',
-    especialidad: 'Clinico',
-    tiempo: '15',
-    precio: '1700',
-    valoracion: '4,8',
-    resenas: '(120 reseñas)',
-    comentarios: [],
-  },
-  {
-    nroMatricula: '15486532',
-    nombre: 'Fernando',
-    apellido: 'ApellidoFernando',
-    especialidad: 'Clinico',
-    tiempo: '22',
-    precio: '1700',
-    valoracion: '3,5',
-    resenas: '(10 reseñas)',
-    comentarios: [],
-  },
-  {
-    nroMatricula: '23124556',
-    nombre: 'Raul',
-    apellido: 'ApellidoRaul',
-    especialidad: 'Clinico',
-    tiempo: '45',
-    precio: '3300',
-    valoracion: '4',
-    resenas: '(1 reseñas)',
-    comentarios: [],
-  },
-  {
-    nroMatricula: '75326895',
-    nombre: 'Mariano',
-    apellido: 'ApellidoMariano',
-    especialidad: 'Clinico',
-    tiempo: '27',
-    precio: '1200',
-    valoracion: 'n/a',
-    resenas: '(0 reseñas)',
-    comentarios: [],
-  },
-];
+// const DOCTORS_LIST = [
+//   {
+//     nroMatricula: '36985214',
+//     nombre: 'Jorge',
+//     apellido: 'ApellidoJorge',
+//     especialidad: 'Clinico',
+//     tiempo: '15',
+//     precio: '1700',
+//     valoracion: '4,8',
+//     resenas: '(120 reseñas)',
+//     comentarios: [],
+//   },
+//   {
+//     nroMatricula: '15486532',
+//     nombre: 'Fernando',
+//     apellido: 'ApellidoFernando',
+//     especialidad: 'Clinico',
+//     tiempo: '22',
+//     precio: '1700',
+//     valoracion: '3,5',
+//     resenas: '(10 reseñas)',
+//     comentarios: [],
+//   },
+//   {
+//     nroMatricula: '23124556',
+//     nombre: 'Raul',
+//     apellido: 'ApellidoRaul',
+//     especialidad: 'Clinico',
+//     tiempo: '45',
+//     precio: '3300',
+//     valoracion: '4',
+//     resenas: '(1 reseñas)',
+//     comentarios: [],
+//   },
+//   {
+//     nroMatricula: '75326895',
+//     nombre: 'Mariano',
+//     apellido: 'ApellidoMariano',
+//     especialidad: 'Clinico',
+//     tiempo: '27',
+//     precio: '1200',
+//     valoracion: 'n/a',
+//     resenas: '(0 reseñas)',
+//     comentarios: [],
+//   },
+// ];
 
 export const ListOfDoctors = ({
   especialidad,
   setFilterModal,
   handleViewMoreDetails,
   filter,
+  listOfDoctorsData,
 }) => {
   const [data, setData] = useState([]);
 
   const sortDoctorsList = filterParam => {
     switch (filterParam) {
       case 'Precio':
-        return DOCTORS_LIST.slice().sort(
-          (a, b) => parseInt(a.precio, 10) - parseInt(b.precio, 10),
-        );
+        return listOfDoctorsData
+          .slice()
+          .sort((a, b) => parseInt(a.precio, 10) - parseInt(b.precio, 10));
       case 'Tiempo':
-        return DOCTORS_LIST.slice().sort(
-          (a, b) => parseInt(a.tiempo, 10) - parseInt(b.tiempo, 10),
-        );
+        return listOfDoctorsData
+          .slice()
+          .sort((a, b) => parseInt(a.tiempo, 10) - parseInt(b.tiempo, 10));
       case 'Calificacion':
-        return DOCTORS_LIST.slice().sort((a, b) => {
+        return listOfDoctorsData.slice().sort((a, b) => {
           const ratingA =
             a.valoracion === 'n/a' ? -1 : parseFloat(a.valoracion);
           const ratingB =
@@ -79,13 +81,13 @@ export const ListOfDoctors = ({
           return ratingB - ratingA;
         });
       default:
-        return DOCTORS_LIST;
+        return listOfDoctorsData;
     }
   };
 
   useEffect(() => {
     setData(sortDoctorsList(filter));
-  }, [filter]);
+  }, [filter, listOfDoctorsData]);
 
   return (
     <View style={styles.wrapper}>

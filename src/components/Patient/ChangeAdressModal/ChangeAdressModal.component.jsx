@@ -19,9 +19,8 @@ export const ChangeAdressModal = ({toggleModal}) => {
   const dispatch = useDispatch();
   const onSubmit = async data => {
     try {
-      console.log(data);
       const response = await apiPatientUpdate(data);
-      if (response) {
+      if (response.success) {
         dispatch(setUserData(data));
         toggleModal();
       }
@@ -36,13 +35,12 @@ export const ChangeAdressModal = ({toggleModal}) => {
       <Controller
         control={control}
         name="direccion"
-        defaultValue=""
+        defaultValue={userData.direccion}
         rules={{
           required: 'La dirección es obligatoria',
         }}
         render={({field}) => (
           <TextInput
-            placeholder={userData.direccion}
             value={field.value}
             onChangeText={field.onChange}
             style={{

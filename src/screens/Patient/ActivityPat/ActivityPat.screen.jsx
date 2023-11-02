@@ -24,15 +24,17 @@ export const ActivityPat = ({navigation}) => {
     navigation.navigate(PATHS.PERFILPATIENT);
   };
 
-  const handleDocDetails = activity => {
+  const handleDocDetails = consulta => {
     const doctorActivity = {
-      date: activity.createdAt,
-      price: activity.precio,
-      review: activity.valoracionMedico,
-      name: activity.medico.usuario.persona.nombre,
-      lastName: activity.medico.usuario.persona.apellido,
-      address: activity.direccion,
-      speciality: activity.medico.especialidad,
+      apellido: consulta.apellido,
+      apellidoMedico: consulta.apellidoMedico,
+      fechaAtencion: consulta.createdAt,
+      direccion: consulta.direccion,
+      especialidad: consulta.especialidad,
+      nombre: consulta.nombre,
+      nombreMedico: consulta.nombreMedico,
+      precio: consulta.precio,
+      valoracionMedico: consulta.valoracionMedico,
     };
 
     dispatch(setUserActivity(doctorActivity));
@@ -46,6 +48,7 @@ export const ActivityPat = ({navigation}) => {
 
       if (response) {
         setActivityList(response.result);
+        console.log(response.result);
       }
     } catch (e) {
       console.log(e);
@@ -80,8 +83,8 @@ export const ActivityPat = ({navigation}) => {
                 <DoctorListItem
                   key={index}
                   onPress={() => handleDocDetails(activity)}
-                  name={`${activity?.medico?.usuario?.persona?.nombre} ${activity?.medico?.usuario?.persona?.nombre}`}
-                  category={activity?.medico?.especialidad}
+                  name={`${activity?.nombreMedico} ${activity?.apellidoMedico}`}
+                  category={activity?.especialidad}
                 />
               ))}
           </ScrollView>

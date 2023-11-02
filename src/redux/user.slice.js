@@ -11,6 +11,8 @@ const initialState = {
     telefono: '',
     sexo: '',
     direccion: '',
+    ciudad: '',
+    codigoPostal: '',
     location: {
       latitude: '',
       longitude: '',
@@ -18,13 +20,15 @@ const initialState = {
     grupoFamiliar: [],
   },
   userActivity: {
-    date: '',
-    price: '',
-    review: '',
-    name: '',
-    lastName: '',
-    address: '',
-    speciality: '',
+    apellido: '',
+    apellidoMedico: '',
+    fechaAtencion: '',
+    direccion: '',
+    especialidad: '',
+    nombre: '',
+    nombreMedico: '',
+    precio: '',
+    valoracionMedico: 0,
   },
 };
 

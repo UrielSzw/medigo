@@ -37,11 +37,11 @@ const apiListOfDoctors = async formData => {
   }
 };
 
-const apiRequestDoctor = async medicoId => {
+const apiRequestDoctor = async nroMatricula => {
   try {
     const responde = await api.post(
       `${rutaClienteColsutas}/seleccionar-medico`,
-      medicoId,
+      nroMatricula,
     );
     return responde.data;
   } catch (error) {

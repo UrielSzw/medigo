@@ -33,21 +33,24 @@ export const DocInfoPat = ({navigation}) => {
           </View>
           <UserDataItem
             style={styles.userData}
-            name={`${userActivity.name} ${userActivity.lastName}`}
-            category={userActivity.speciality}
+            name={`${userActivity.nombreMedico} ${userActivity.apellidoMedico}`}
+            category={userActivity.especialidad}
           />
           <View style={styles.textsContainer}>
             <StyledText color="grey" size="default">
-              Fecha de atencion: {formatDate(userActivity.date)}
+              Paciente: {`${userActivity.nombre} ${userActivity.apellido}`}
             </StyledText>
             <StyledText color="grey" size="default">
-              Monto: ${userActivity.price}
+              Fecha de atencion: {formatDate(userActivity.fechaAtencion)}
             </StyledText>
             <StyledText color="grey" size="default">
-              Calificacion: {userActivity.review} estrellas
+              Monto: ${userActivity.precio}
             </StyledText>
             <StyledText color="grey" size="default">
-              Ubicacion de atencion: {userActivity.address}
+              Calificacion: {userActivity.valoracionMedico} estrellas
+            </StyledText>
+            <StyledText color="grey" size="default">
+              Ubicacion de atencion: {userActivity.direccion}
             </StyledText>
           </View>
         </View>

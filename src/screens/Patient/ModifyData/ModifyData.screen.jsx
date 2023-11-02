@@ -46,7 +46,9 @@ export const ModifyData = ({navigation}) => {
 
   const Form = () => {
     return (
-      <ScrollView style={styles.wrapperForm}>
+      <ScrollView
+        style={styles.wrapperForm}
+        contentContainerStyle={styles.wrapperFormContent}>
         <Controller
           control={control}
           name="nombre"

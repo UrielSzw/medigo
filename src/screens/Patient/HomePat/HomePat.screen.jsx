@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {TouchableOpacity, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {useForm} from 'react-hook-form';
 import {
   AppointmentConfirmed,
@@ -18,8 +18,6 @@ import {
   WelcomeHeader,
 } from '../../../components';
 import {PencilIcon} from '../../../assets';
-import {setUserData} from '../../../redux/user.slice';
-import {styles} from './HomePat.styles';
 import {WaitingModal} from '../../../components/Patient/WaitingModal/WaitingModal.component';
 import {apiEspecialidades} from '../../../utils/api/userRoutes';
 import {
@@ -27,20 +25,17 @@ import {
   apiRequestDoctor,
 } from '../../../utils/api/patientRoutes';
 import {setSpinner} from '../../../utils/setSpinner';
+import {styles} from './HomePat.styles';
 
 export const HomePat = () => {
   const {
     control,
     handleSubmit,
-    setValue,
     setError,
     clearErrors,
     formState: {errors},
   } = useForm();
-
   const {userData} = useSelector(state => state.userReducer);
-  const dispatch = useDispatch();
-
   const [modal, setModal] = useState({
     filter: false,
     familyMembers: false,
@@ -52,13 +47,12 @@ export const HomePat = () => {
   });
 
   const [waiting, setWaiting] = useState(false);
-
   const [especialidad, setEspecialidad] = useState('Seleccione especialidad');
   const [grupoFamiliar, setGrupoFamiliar] = useState(
     'Seleccione grupo familiar',
   );
+  const [listOfDoctorsData, setListOfDoctorsData] = useState([]);
   const [filter, setFilter] = useState('Tiempo');
-  const [addressPreview, setAddressPreview] = useState(userData.direccion);
   const [listOfDoctorsState, setListOfDoctorsState] = useState(false);
   const [appointmentState, setAppointmentState] = useState(false); // Cambiar a true para evaluar vista de consulta en sesion
   const [doctorDetails, setDoctorDetails] = useState(undefined);
@@ -67,12 +61,6 @@ export const HomePat = () => {
     setModal(prev => {
       return {...prev, [name]: !prev[name]};
     });
-  };
-
-  const onSubmitAdress = () => {
-    setValue('direccion', addressPreview);
-    dispatch(setUserData({direccion: addressPreview}));
-    toggleModal('address');
   };
 
   const onSubmit = async data => {
@@ -100,12 +88,14 @@ export const HomePat = () => {
       return;
     }
 
-    setValue('especialidad', especialidad);
-    setValue('familyGroup', grupoFamiliar);
-
     try {
+      setSpinner(true);
+      const direccionConsulta = data.direccion.replace(/\s+/g, '+');
+      const ciudadConsulta = data.ciudad.replace(/\s+/g, '+');
+      const codigoPostalConsulta = data.codigoPostal.replace(/\s+/g, '+');
+
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/search.php?q=${data.direccion}&format=jsonv2`,
+        `https://nominatim.openstreetmap.org/search.php?q=${direccionConsulta}+${ciudadConsulta}+${codigoPostalConsulta}&format=jsonv2`,
       );
       const locationData = await response.json();
 
@@ -114,9 +104,8 @@ export const HomePat = () => {
         const latitude = locationData[0].boundingbox[0];
         const longitude = locationData[0].boundingbox[2];
 
-        setValue('direccion', data.direccion);
-        setValue('especialidad', especialidad);
-        setValue('familyGroup', grupoFamiliar);
+        const nombrePaciente = grupoFamiliar.split(' ')[0];
+        const apellidoPaciente = grupoFamiliar.split(' ')[1];
 
         const formData = {
           sintomas: data.sintomas,
@@ -124,8 +113,8 @@ export const HomePat = () => {
           especialidad: especialidad,
           latitud: latitude,
           longitud: longitude,
-          nombre: 'nombre',
-          apellido: 'apellido',
+          nombre: nombrePaciente,
+          apellido: apellidoPaciente,
           direccion: data.direccion,
         };
 
@@ -135,6 +124,7 @@ export const HomePat = () => {
           setListOfDoctorsState(true);
           toggleModal('request');
           console.log('responseDoctors', responseDoctors);
+          setListOfDoctorsData(responseDoctors);
         }
       } else {
         // No se encontró una ubicación, maneja el error o muestra un mensaje
@@ -145,6 +135,8 @@ export const HomePat = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setSpinner(false);
     }
   };
 
@@ -156,9 +148,11 @@ export const HomePat = () => {
   const handleRequestDoctor = async () => {
     try {
       setSpinner(true);
-      const response = await apiRequestDoctor(doctorDetails.nroMatricula);
+      const response = await apiRequestDoctor({
+        nroMatricula: doctorDetails.nroMatricula,
+      });
 
-      if (response) {
+      if (response.state === 'solicitando medico') {
         toggleModal('doctorDetails');
         setWaiting(true);
       }
@@ -200,7 +194,6 @@ export const HomePat = () => {
   };
 
   useEffect(() => {
-    setValue('direccion', addressPreview);
     setModalDropdownsFamilyOptions();
     setModalDropdownsSpecialtyOptions();
   }, []);
@@ -214,46 +207,17 @@ export const HomePat = () => {
     }
   }, [grupoFamiliar, especialidad]);
 
-  // LOGICA PARA EL LLAMADO CADA 20 SEGUNDOS PARA SABER SI FINALIZO LA CONSULTA
-  const [running, setRunning] = useState(false);
   const handleEndOfAppointment = async () => {
     try {
       const endAppointment = 'endAppointmentEndpoint()';
       if (endAppointment === 'finalizo') {
         console.log('finalizo');
-        setRunning(false);
         toggleModal('review');
       }
     } catch (e) {
       console.log(e);
     }
   };
-
-  useEffect(() => {
-    let intervalId;
-
-    const startInterval = () => {
-      intervalId = setInterval(() => {
-        // Tu función a ejecutar cada 20 segundos
-        handleEndOfAppointment();
-        console.log('La función se ejecutará cada 20 segundos');
-
-        // Comprueba si la variable booleana cambió
-        if (!running) {
-          clearInterval(intervalId); // Detén el intervalo
-        }
-      }, 20000); // 20 segundos en milisegundos
-    };
-
-    if (running) {
-      startInterval(); // Inicia el intervalo cuando el componente se monta
-    }
-
-    return () => {
-      setRunning(false); // Cambia la variable booleana a false cuando el componente se desmonta
-      clearInterval(intervalId); // Asegúrate de detener el intervalo al desmontar el componente
-    };
-  }, [running]);
 
   return (
     <View style={styles.wrapper}>
@@ -281,6 +245,7 @@ export const HomePat = () => {
             handleViewMoreDetails={handleViewMoreDetails}
             setFilterModal={() => toggleModal('review')}
             especialidad={especialidad}
+            listOfDoctorsData={listOfDoctorsData}
           />
         )}
 
@@ -324,12 +289,7 @@ export const HomePat = () => {
       <StyledModal
         title="Cambiar direccion"
         content={
-          <ChangeAdressModal
-            addressPreview={addressPreview}
-            setAddressPreview={setAddressPreview}
-            onSubmitAdress={onSubmitAdress}
-            toggleModal={() => toggleModal('address')}
-          />
+          <ChangeAdressModal toggleModal={() => toggleModal('address')} />
         }
         open={modal.address}
       />
