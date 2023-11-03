@@ -1,16 +1,20 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View} from 'react-native';
+import {useDispatch} from 'react-redux';
 import {
   FooterDoc,
   ProfileOption,
+  StyledButton,
   WelcomePerfilHeader,
 } from '../../../components';
 import {HelpIcon, PersonalDataIcon, ActivityIcon} from '../../../assets';
 import {PATHS} from '../../../routes/paths';
+import {clearAllDoctor} from '../../../redux/doctor.slice';
 import {styles} from './PerfilDoc.styles';
 
 export const PerfilDoc = ({navigation}) => {
+  const dispatch = useDispatch();
   const handleActividadPress = () => {
     navigation.navigate(PATHS.ACTIVITYDOC);
   };
@@ -21,6 +25,10 @@ export const PerfilDoc = ({navigation}) => {
 
   const handleAyudaPress = () => {
     navigation.navigate(PATHS.HELPDOC);
+  };
+
+  const handleLogout = async () => {
+    dispatch(clearAllDoctor());
   };
 
   return (
@@ -66,6 +74,12 @@ export const PerfilDoc = ({navigation}) => {
           text="Ayuda"
           onPress={handleAyudaPress}
         />
+        <StyledButton
+          variant="warning"
+          style={styles.logout}
+          onPress={handleLogout}>
+          Logout
+        </StyledButton>
       </View>
       <FooterDoc current="profile" />
     </View>

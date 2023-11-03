@@ -30,6 +30,7 @@ import {setSpinner} from '../../../utils/setSpinner';
 import {showModal} from '../../../redux/common.slice';
 import {setDoctorData, setRequestData} from '../../../redux/doctor.slice';
 import {styles} from './HomeDoc.styles';
+import {calculateTimeDifference} from '../../../utils/commonMethods';
 
 export const HomeDoc = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -130,6 +131,7 @@ export const HomeDoc = ({navigation, route}) => {
 
   const handlePatientRequestResponse = async value => {
     try {
+      setSpinner(true);
       if (value) {
         const response = await apiAcceptRequest();
 
@@ -153,6 +155,8 @@ export const HomeDoc = ({navigation, route}) => {
       }
     } catch (e) {
       console.log(e);
+    } finally {
+      setSpinner(false);
     }
   };
 
@@ -212,9 +216,19 @@ export const HomeDoc = ({navigation, route}) => {
     try {
       const response = await apiRequireRequest();
 
-      if (response && !requestData.requested) {
-        console.log('apiRequireRequest', response);
-        dispatch(setRequestData(response.result));
+      if (response.result && !requestData.requested) {
+        console.log('apiRequireRequest', response.result);
+        const timeLeft = calculateTimeDifference(
+          response.result.fechaSeleccion,
+          60,
+        );
+        dispatch(
+          setRequestData({
+            ...response.result,
+            fechaSeleccion: timeLeft,
+            requested: true,
+          }),
+        );
       }
     } catch (e) {
       console.log(e);

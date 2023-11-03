@@ -48,6 +48,7 @@ const initialState = {
     updateAt: '',
     latitudCliente: '',
     longitudCliente: '',
+    fechaSeleccion: '',
     nombre: '',
     apellido: '',
     sexo: '',
@@ -68,10 +69,17 @@ export const doctorSlice = createSlice({
     setDoctorActivity: (state, action) => {
       state.doctorActivity = action.payload;
     },
+    clearAllDoctor: (state, action) => {
+      return initialState;
+    },
   },
 });
 
-export const {setDoctorData, setDoctorActivity, setRequestData} =
-  doctorSlice.actions;
+export const {
+  setDoctorData,
+  setDoctorActivity,
+  setRequestData,
+  clearAllDoctor,
+} = doctorSlice.actions;
 
 export default doctorSlice.reducer;

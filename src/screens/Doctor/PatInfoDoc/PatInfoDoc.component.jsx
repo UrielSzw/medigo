@@ -18,7 +18,7 @@ export const PatInfoDoc = ({navigation}) => {
     state => state.doctorReducer,
   );
   const handleBackActivity = () => {
-    navigation.navigate(PATHS.PERFILDOCTOR);
+    navigation.navigate(PATHS.ACTIVITYDOC);
   };
 
   return (
