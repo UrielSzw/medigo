@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {TouchableOpacity, View} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useForm} from 'react-hook-form';
 import {
   AppointmentConfirmed,
@@ -25,6 +25,13 @@ import {
   apiRequestDoctor,
 } from '../../../utils/api/patientRoutes';
 import {setSpinner} from '../../../utils/setSpinner';
+import {calculateTimeDifference} from '../../../utils/commonMethods';
+import {
+  setDoctorDetails,
+  setListOfDoctorsData,
+  setRequestDetails,
+  setUserState,
+} from '../../../redux/user.slice';
 import {styles} from './HomePat.styles';
 
 export const HomePat = () => {
@@ -35,7 +42,10 @@ export const HomePat = () => {
     clearErrors,
     formState: {errors},
   } = useForm();
-  const {userData} = useSelector(state => state.userReducer);
+  const {userData, userState, doctorDetails} = useSelector(
+    state => state.userReducer,
+  );
+  const dispatch = useDispatch();
   const [modal, setModal] = useState({
     filter: false,
     familyMembers: false,
@@ -51,11 +61,9 @@ export const HomePat = () => {
   const [grupoFamiliar, setGrupoFamiliar] = useState(
     'Seleccione grupo familiar',
   );
-  const [listOfDoctorsData, setListOfDoctorsData] = useState([]);
+  // const [listOfDoctorsData, setListOfDoctorsData] = useState([]);
   const [filter, setFilter] = useState('Tiempo');
-  const [listOfDoctorsState, setListOfDoctorsState] = useState(false);
-  const [appointmentState, setAppointmentState] = useState(false); // Cambiar a true para evaluar vista de consulta en sesion
-  const [doctorDetails, setDoctorDetails] = useState(undefined);
+  // const [doctorDetails, setDoctorDetails] = useState(undefined);
 
   const toggleModal = name => {
     setModal(prev => {
@@ -118,13 +126,14 @@ export const HomePat = () => {
           direccion: data.direccion,
         };
 
+        dispatch(setRequestDetails(formData));
         const responseDoctors = await apiListOfDoctors(formData);
 
         if (responseDoctors.result) {
           console.log('responseDoctors.result', responseDoctors.result);
-          setListOfDoctorsState(true);
+          dispatch(setUserState({listOfDoctorsState: true}));
           toggleModal('request');
-          setListOfDoctorsData(responseDoctors.result);
+          dispatch(setListOfDoctorsData(responseDoctors.result));
         }
       } else {
         // No se encontró una ubicación, maneja el error o muestra un mensaje
@@ -142,18 +151,26 @@ export const HomePat = () => {
 
   const handleViewMoreDetails = doctor => {
     toggleModal('doctorDetails');
-    setDoctorDetails(doctor);
+    dispatch(setDoctorDetails(doctor));
   };
+
+  const [waitingTime, setWaitingTime] = useState(0);
 
   const handleRequestDoctor = async () => {
     try {
       setSpinner(true);
+      console.log('doctorDetails.nroMatricula', {
+        nroMatricula: doctorDetails.nroMatricula,
+      });
       const response = await apiRequestDoctor({
         nroMatricula: doctorDetails.nroMatricula,
       });
+      console.log('response', response);
 
       if (response.state === 'solicitando medico') {
         toggleModal('doctorDetails');
+        console.log('solicitando medico', response.state);
+        setWaitingTime(calculateTimeDifference(response.hora));
         setWaiting(true);
       }
     } catch (e) {
@@ -207,22 +224,10 @@ export const HomePat = () => {
     }
   }, [grupoFamiliar, especialidad]);
 
-  const handleEndOfAppointment = async () => {
-    try {
-      const endAppointment = 'endAppointmentEndpoint()';
-      if (endAppointment === 'finalizo') {
-        console.log('finalizo');
-        toggleModal('review');
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   return (
     <View style={styles.wrapper}>
       <View style={styles.body}>
-        {!listOfDoctorsState && !appointmentState && (
+        {!userState.listOfDoctorsState && !userState.appointmentState && (
           <TouchableOpacity
             onPress={() => toggleModal('address')}
             style={styles.adressButtonWrapper}>
@@ -231,7 +236,7 @@ export const HomePat = () => {
           </TouchableOpacity>
         )}
 
-        {(listOfDoctorsState || appointmentState) && (
+        {(userState.listOfDoctorsState || userState.appointmentState) && (
           <View style={styles.adressButtonWrapper}>
             <StyledText color="grey">{userData.direccion}</StyledText>
           </View>
@@ -239,26 +244,23 @@ export const HomePat = () => {
 
         <WelcomeHeader username={`${userData.nombre} ${userData.apellido}`} />
 
-        {listOfDoctorsState && (
+        {userState.listOfDoctorsState && (
           <ListOfDoctors
             filter={filter}
             handleViewMoreDetails={handleViewMoreDetails}
-            setFilterModal={() => toggleModal('review')}
+            setFilterModal={() => toggleModal('doctorDetails')}
             especialidad={especialidad}
-            listOfDoctorsData={listOfDoctorsData}
           />
         )}
 
-        {appointmentState && (
+        {userState.appointmentState && (
           <AppointmentConfirmed
-            setAppointmentState={setAppointmentState}
-            setDoctorDetails={setDoctorDetails}
-            doctor={doctorDetails}
+            setDoctorReviewModal={() => toggleModal('review')}
           />
         )}
       </View>
 
-      {!listOfDoctorsState && !appointmentState && (
+      {!userState.listOfDoctorsState && !userState.appointmentState && (
         <View style={styles.buttonWrapper}>
           <StyledButton
             variant="primary"
@@ -297,7 +299,6 @@ export const HomePat = () => {
         title="Informacion del medico"
         content={
           <DoctorDetails
-            doctor={doctorDetails}
             handleRequestDoctor={handleRequestDoctor}
             setDoctorDetailsModal={() => toggleModal('doctorDetails')}
           />
@@ -307,10 +308,7 @@ export const HomePat = () => {
       <StyledModal
         title="Calificar medico"
         content={
-          <PatientReview
-            doctor={doctorDetails}
-            setDoctorReviewModal={() => toggleModal('review')}
-          />
+          <PatientReview setDoctorReviewModal={() => toggleModal('review')} />
         }
         open={modal.review}
       />
@@ -338,7 +336,11 @@ export const HomePat = () => {
         visible={modal.filter}
         setVisible={() => toggleModal('filter')}
       />
-      <WaitingModal visible={waiting} setVisible={setWaiting} />
+      <WaitingModal
+        visible={waiting}
+        setVisible={setWaiting}
+        countNumber={waitingTime}
+      />
     </View>
   );
 };

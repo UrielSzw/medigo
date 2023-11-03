@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {ScrollView, TouchableOpacity, View} from 'react-native';
+import {useSelector} from 'react-redux';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {DoctorListItem} from '../../Doctor/DoctorListItem/DoctorListItem.component';
-import {styles} from './ListOfDoctors.styles';
 import {FilterIcon} from '../../../assets';
+import {styles} from './ListOfDoctors.styles';
 
 // const DOCTORS_LIST = [
 //   {
@@ -58,8 +59,10 @@ export const ListOfDoctors = ({
   setFilterModal,
   handleViewMoreDetails,
   filter,
-  listOfDoctorsData,
 }) => {
+  const {listOfDoctorsData, avoidDoctors} = useSelector(
+    state => state.userReducer,
+  );
   const [data, setData] = useState([]);
 
   const sortDoctorsList = filterParam => {
@@ -86,7 +89,15 @@ export const ListOfDoctors = ({
   };
 
   useEffect(() => {
-    setData(sortDoctorsList(filter));
+    let dataFiltered = sortDoctorsList(filter);
+
+    if (avoidDoctors.length > 0) {
+      dataFiltered = dataFiltered.filter(
+        dataFil => !avoidDoctors.includes(dataFil.nroMatricula),
+      );
+    }
+
+    setData(dataFiltered);
   }, [filter, listOfDoctorsData]);
 
   return (

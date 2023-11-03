@@ -50,11 +50,21 @@ const apiRequestDoctor = async nroMatricula => {
   }
 };
 
+const apiLastRequestState = async () => {
+  try {
+    const responde = await api.get(
+      `${rutaClienteColsutas}/solicitar-estado-ultima-consulta`,
+    );
+    return responde.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 const apiCancelDoctor = async () => {
   try {
-    const responde = await api.post(
-      `${rutaClienteColsutas}/seleccionar-medico`,
-    );
+    const responde = await api.post(`${rutaClienteColsutas}/cancelar-consulta`);
     return responde.data;
   } catch (error) {
     console.error(error);
@@ -91,4 +101,7 @@ export {
   apiListOfDoctors,
   apiRequestDoctor,
   apiGetPatientActivity,
+  apiLastRequestState,
+  apiCancelDoctor,
+  apiReviewDoctor,
 };

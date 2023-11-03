@@ -1,52 +1,88 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {ClockIcon, DefaultProfile} from '../../../assets';
-import {styles} from './AppointmentConfirmed.styles';
 import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
+import {removeDoctorDetails, setUserState} from '../../../redux/user.slice';
+import {
+  apiCancelDoctor,
+  apiLastRequestState,
+} from '../../../utils/api/patientRoutes';
+import {setSpinner} from '../../../utils/setSpinner';
+import {styles} from './AppointmentConfirmed.styles';
+import {setModal} from '../../../utils/setModal';
 
-const DOCTOR = {
-  time: '15',
-  price: '1700',
-  reviews: '(120 reseñas)',
-  rating: '4,8',
-  name: 'Jorge',
-  category: 'Clinico',
-  dni: '36985214',
-};
+const TOTAL_TIME = 600;
 
-export const AppointmentConfirmed = ({
-  logo,
-  doctor = DOCTOR,
-  setAppointmentState,
-  setDoctorDetails,
-}) => {
-  const [count, setCount] = useState(120);
+export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
+  const {doctorDetails} = useSelector(state => state.userReducer);
+  const dispatch = useDispatch();
+  const [count, setCount] = useState(0);
   const [disabled, setDisabled] = useState(false);
 
   const handleCancelAppoinment = async () => {
     try {
-      const cancelRequest = 'cancelRequestEndpoint()';
+      setSpinner(true);
+      const cancelRequest = await apiCancelDoctor();
 
-      if (cancelRequest) {
-        setAppointmentState(false);
-        setDoctorDetails(undefined);
+      if (cancelRequest.state === 'cancelada') {
+        dispatch(setUserState({appointmentState: false}));
+        dispatch(removeDoctorDetails());
       }
     } catch (e) {
       console.log(e);
+    } finally {
+      setSpinner(false);
+    }
+  };
+
+  const checkIfAppointmentEnded = async () => {
+    try {
+      setSpinner(true);
+      const response = await apiLastRequestState();
+
+      if (response.result === 'cancelada') {
+        dispatch(setUserState({appointmentState: false}));
+        setModal({
+          show: true,
+          title: 'Consulta cancelada',
+          message:
+            'El medico cancelo la consulta. Puedes realizar una consulta nueva',
+        });
+      } else if (response.result === 'calificando') {
+        dispatch(setUserState({appointmentState: false}));
+        setDoctorReviewModal();
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setSpinner(false);
     }
   };
 
   useEffect(() => {
-    if (count <= 0) {
+    if (count === TOTAL_TIME - 120) {
       setDisabled(true);
-    } else {
+      setTimeout(() => {
+        setCount(count - 1);
+      }, 1000);
+    } else if (count % 60 === 0) {
+      checkIfAppointmentEnded();
+      setTimeout(() => {
+        setCount(count - 1);
+      }, 1000);
+    } else if (count > 0) {
       setTimeout(() => {
         setCount(count - 1);
       }, 1000);
     }
   }, [count]);
+
+  useEffect(() => {
+    setCount(TOTAL_TIME);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -60,14 +96,14 @@ export const AppointmentConfirmed = ({
             {logo ? logo : <DefaultProfile />}
             <View>
               <StyledText color="white" bold size="md">
-                {doctor.name}
+                {doctorDetails.name}
               </StyledText>
-              <StyledText color="white">{doctor.category}</StyledText>
+              <StyledText color="white">{doctorDetails.category}</StyledText>
             </View>
           </View>
           <View style={styles.time}>
             <ClockIcon fill="#FFF" style={styles.icon} />
-            <StyledText color="white">{doctor.time} m</StyledText>
+            <StyledText color="white">{doctorDetails.time} m</StyledText>
           </View>
         </View>
       </View>

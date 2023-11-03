@@ -2,7 +2,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {View, ScrollView} from 'react-native';
 import {
   FooterPatient,
@@ -16,10 +16,13 @@ import {PATHS} from '../../../routes/paths';
 import {formatDate} from '../../../utils/commonMethods';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {apiPatientUpdate} from '../../../utils/api/patientRoutes';
+import {setSpinner} from '../../../utils/setSpinner';
+import {setUserData} from '../../../redux/user.slice';
 import {styles} from './ModifyData.styles';
 
 export const ModifyData = ({navigation}) => {
   const {userData} = useSelector(state => state.userReducer);
+  const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
@@ -32,16 +35,18 @@ export const ModifyData = ({navigation}) => {
 
   const onSubmit = async data => {
     try {
-      console.log(data);
+      setSpinner(true);
       const response = await apiPatientUpdate(data);
 
       if (response) {
+        dispatch(setUserData(data));
         handleBackPersonalData();
       }
     } catch (e) {
       console.log(e);
+    } finally {
+      setSpinner(false);
     }
-    console.log(data);
   };
 
   const Form = () => {

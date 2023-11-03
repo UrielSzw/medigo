@@ -1,18 +1,17 @@
+// Funcion para formatear fehca de nacimiento para poder mostrarla
 export const formatDate = date => {
-  // Crear un objeto de date a partir de la cadena
   const dateObj = new Date(date);
 
-  // Obtener el día, mes y año
   const day = dateObj.getDate().toString().padStart(2, '0');
   const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
   const year = dateObj.getFullYear();
 
-  // Formatear la date en el formato "dd-mm-yyyy"
   const dateFormateada = `${year}-${month}-${day}`;
 
   return dateFormateada;
 };
 
+// Funcion para calcular edad a partir de una fecha de nacimiento
 export const calculateAge = date => {
   const dateArray = date.split(' ');
   const birthdayDate = new Date(dateArray[0]);
@@ -21,4 +20,18 @@ export const calculateAge = date => {
   const age = currentDate.getFullYear() - birthdayDate.getFullYear();
 
   return age;
+};
+
+// Funcion para calcular tiempo faltante entre la hora actual y otro horario
+export const calculateTimeDifference = (dateString, secondsToAdd) => {
+  const originalDate = new Date(dateString);
+  const currentTime = new Date();
+
+  const modifiedDate = new Date(originalDate.getTime() + secondsToAdd * 1000);
+
+  const timeDifferenceInSeconds = Math.floor(
+    (modifiedDate - currentTime) / 1000,
+  );
+
+  return timeDifferenceInSeconds;
 };
