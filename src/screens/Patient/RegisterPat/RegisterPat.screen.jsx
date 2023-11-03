@@ -262,6 +262,39 @@ export const RegisterPat = ({navigation}) => {
                 />
               )}
             />
+            <Controller
+              control={control}
+              name="ciudad"
+              rules={{
+                required: 'La ciudad es obligatoria',
+              }}
+              render={({field}) => (
+                <StyledInput
+                  label="Ciudad"
+                  style={styles.input}
+                  field={field}
+                  name="ciudad"
+                  error={errors.ciudad?.message}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="codigoPostal"
+              rules={{
+                required: 'El codigo postal es obligatorio',
+              }}
+              render={({field}) => (
+                <StyledInput
+                  label="Codigo postal"
+                  keyboardType="numeric"
+                  style={styles.input}
+                  field={field}
+                  name="codigoPostal"
+                  error={errors.codigoPostal?.message}
+                />
+              )}
+            />
             <StyledText>Miembros del grupo familiar</StyledText>
             <DynamicInput errors={errors} control={control} />
           </ScrollView>

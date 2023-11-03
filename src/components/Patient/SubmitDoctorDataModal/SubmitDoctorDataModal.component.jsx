@@ -126,6 +126,7 @@ export const SubmitDoctorDataModal = ({
             <StyledInput
               error={errors.codigoPostal?.message}
               label="Codigo Postal"
+              keyboardType="numeric"
               field={field}
               name="codigoPostal"
             />

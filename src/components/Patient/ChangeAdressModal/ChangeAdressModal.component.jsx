@@ -5,9 +5,10 @@ import {useForm, Controller} from 'react-hook-form';
 import {useDispatch, useSelector} from 'react-redux';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
-import {styles} from './ChangeAdressModal.styles';
 import {setUserData} from '../../../redux/user.slice';
 import {apiPatientUpdate} from '../../../utils/api/patientRoutes';
+import {setSpinner} from '../../../utils/setSpinner';
+import {styles} from './ChangeAdressModal.styles';
 
 export const ChangeAdressModal = ({toggleModal}) => {
   const {
@@ -19,6 +20,7 @@ export const ChangeAdressModal = ({toggleModal}) => {
   const dispatch = useDispatch();
   const onSubmit = async data => {
     try {
+      setSpinner(true);
       const response = await apiPatientUpdate(data);
       if (response.success) {
         dispatch(setUserData(data));
@@ -26,6 +28,8 @@ export const ChangeAdressModal = ({toggleModal}) => {
       }
     } catch (e) {
       console.log(e);
+    } finally {
+      setSpinner(false);
     }
   };
 

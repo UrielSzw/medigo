@@ -120,11 +120,11 @@ export const HomePat = () => {
 
         const responseDoctors = await apiListOfDoctors(formData);
 
-        if (responseDoctors) {
+        if (responseDoctors.result) {
+          console.log('responseDoctors.result', responseDoctors.result);
           setListOfDoctorsState(true);
           toggleModal('request');
-          console.log('responseDoctors', responseDoctors);
-          setListOfDoctorsData(responseDoctors);
+          setListOfDoctorsData(responseDoctors.result);
         }
       } else {
         // No se encontró una ubicación, maneja el error o muestra un mensaje
