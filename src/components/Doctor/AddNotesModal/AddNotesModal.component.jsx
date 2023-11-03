@@ -7,7 +7,7 @@ import {styles} from './AddNotesModal.styles';
 
 export const AddNotesModal = ({setNotesModal}) => {
   const handleCloseNotesModal = () => {
-    setNotesModal(false);
+    setNotesModal();
   };
 
   return (

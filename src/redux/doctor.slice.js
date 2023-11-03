@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   doctorData: {
+    active: false,
     nombre: '',
     apellido: '',
     direccion: '',
@@ -28,6 +29,30 @@ const initialState = {
     address: '',
     notes: '',
   },
+  requestData: {
+    accepted: false,
+    requested: false,
+    motivo: '',
+    sintomas: '',
+    precio: '',
+    tiempoLlegada: '',
+    estado: '',
+    especialidad: '',
+    valoracionMedico: '',
+    valoracionCliente: '',
+    comentarioDelCliente: '',
+    comentarioDelMedico: '',
+    direccion: '',
+    observacion: '',
+    createdAt: '',
+    updateAt: '',
+    latitudCliente: '',
+    longitudCliente: '',
+    nombre: '',
+    apellido: '',
+    sexo: '',
+    fechaNacimiento: '',
+  },
 };
 
 export const doctorSlice = createSlice({
@@ -37,12 +62,16 @@ export const doctorSlice = createSlice({
     setDoctorData: (state, action) => {
       state.doctorData = {...state.doctorData, ...action.payload};
     },
+    setRequestData: (state, action) => {
+      state.requestData = {...state.requestData, ...action.payload};
+    },
     setDoctorActivity: (state, action) => {
       state.doctorActivity = action.payload;
     },
   },
 });
 
-export const {setDoctorData, setDoctorActivity} = doctorSlice.actions;
+export const {setDoctorData, setDoctorActivity, setRequestData} =
+  doctorSlice.actions;
 
 export default doctorSlice.reducer;

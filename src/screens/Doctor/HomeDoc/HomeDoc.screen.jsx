@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Linking} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   FooterDoc,
   StyledText,
@@ -14,7 +13,6 @@ import {
   PatientDetailsModal,
   DoctorReview,
   AddNotesModal,
-  StyledSwitch,
   EndAppointmentModal,
 } from '../../../components';
 import {PATHS} from '../../../routes/paths';
@@ -28,27 +26,29 @@ import {
   apiRequireRequest,
   apiReviewPatient,
 } from '../../../utils/api/doctorRoutes';
-import {styles} from './HomeDoc.styles';
 import {setSpinner} from '../../../utils/setSpinner';
 import {showModal} from '../../../redux/common.slice';
+import {setDoctorData, setRequestData} from '../../../redux/doctor.slice';
+import {styles} from './HomeDoc.styles';
 
 export const HomeDoc = ({navigation, route}) => {
-  const {doctorData} = useSelector(state => state.doctorReducer);
+  const dispatch = useDispatch();
+  const {doctorData, requestData} = useSelector(state => state.doctorReducer);
   const [permisoDenegado, setPermisoDenegado] = useState(
     route.params ? route.params.permisoDenegado : undefined,
   );
-  const [activo, setActivo] = useState(false);
-  const [cuentaActivada, setCuentaActivada] = useState(false);
-  const [acceptedPatient, setAcceptedPatient] = useState(null);
-  const [openModal, setOpenModal] = useState(false);
-  const [openModalDetail, setOpenModalDetail] = useState(false);
-  const [patientReviewModal, setPatientReviewModal] = useState(false);
-  const [endAppointmentModal, setEndAppointmentModal] = useState(false);
-  const [notesModal, setNotesModal] = useState(false);
+
+  const [modal, setModal] = useState({
+    notes: false,
+    detail: false,
+    review: false,
+    active: false,
+    end: false,
+  });
+
   const [isSuccessful, setIsSuccessful] = useState(true);
   const [count, setCount] = useState(60);
-  const [request, setRequest] = useState(null);
-  const [coordenates, setCoordenates] = useState({longitud: 0, latitud: 0});
+  // const [coordenates, setCoordenates] = useState({longitud: 0, latitud: 0});
 
   const openGoogleMaps = (
     startLatitude = '-34.617865',
@@ -61,6 +61,12 @@ export const HomeDoc = ({navigation, route}) => {
     Linking.openURL(url);
   };
 
+  const toggleModal = name => {
+    setModal(prev => {
+      return {...prev, [name]: !prev[name]};
+    });
+  };
+
   useEffect(() => {
     // Si el valor de la ruta cambia, actualiza el estado
     setPermisoDenegado(route.params ? route.params.permisoDenegado : undefined);
@@ -68,8 +74,7 @@ export const HomeDoc = ({navigation, route}) => {
 
   useEffect(() => {
     if (permisoDenegado === false) {
-      setActivo(false);
-      setCuentaActivada(false);
+      dispatch(setDoctorData({active: false}));
       showModal({
         title: 'Error de geolocalización',
         message:
@@ -85,19 +90,17 @@ export const HomeDoc = ({navigation, route}) => {
       setSpinner(true);
       const response = await apiDoctorsUpdateState();
       if (response.state === 'desconectado') {
-        setCuentaActivada(false);
-        setActivo(false);
         setSpinner(false);
-        setRequest(null);
+        dispatch(setDoctorData({active: false}));
+        dispatch(setRequestData({requested: false}));
         console.log('desconectado');
       } else {
         console.log('conectado');
         navigation.navigate(PATHS.MAP);
-        setCuentaActivada(true);
-        setActivo(true);
+        dispatch(setDoctorData({active: true}));
         setPermisoDenegado(true);
       }
-      closeModal();
+      toggleModal('active');
     } catch (e) {
       console.log(e);
     }
@@ -110,7 +113,7 @@ export const HomeDoc = ({navigation, route}) => {
       if (response) {
         console.log('checkIfPatientCancel', response);
         if (response.result === 'cancelada') {
-          setAcceptedPatient(null);
+          dispatch(setRequestData({accepted: false}));
           console.log('bhdasiyudhgiauyshdauis', response);
           showModal({
             title: 'El paciente cancelo la consulta',
@@ -125,21 +128,15 @@ export const HomeDoc = ({navigation, route}) => {
     }
   };
 
-  const closeModal = () => {
-    setOpenModal(false);
-  };
-
   const handlePatientRequestResponse = async value => {
     try {
       if (value) {
         const response = await apiAcceptRequest();
 
         if (response.state === 'en curso') {
-          setOpenModalDetail(false);
-          setActivo(false);
-          setAcceptedPatient(request);
-          setCuentaActivada(false);
-          setRequest(null);
+          toggleModal('detail');
+          dispatch(setDoctorData({active: false}));
+          dispatch(setRequestData({requested: false, accepted: true}));
           setTimeout(() => {
             // Llama al callback después de 120 segundos
             checkIfPatientCancel();
@@ -149,10 +146,9 @@ export const HomeDoc = ({navigation, route}) => {
         const response = await apiDeclineRequest();
 
         if (response.state === 'seleccionando medico') {
-          setOpenModalDetail(false);
-          setActivo(false);
-          setCuentaActivada(false);
-          setRequest(null);
+          toggleModal('detail');
+          dispatch(setDoctorData({active: false}));
+          dispatch(setRequestData({requested: false}));
         }
       }
     } catch (e) {
@@ -166,15 +162,15 @@ export const HomeDoc = ({navigation, route}) => {
         const response = await apiEndAppointment();
 
         if (response?.state === 'calificando') {
-          setEndAppointmentModal(false);
-          setPatientReviewModal(true);
+          toggleModal('end');
+          toggleModal('review');
         }
       } else {
         const response = await apiCancelRequest();
 
         if (response?.state === 'cancelada') {
-          setEndAppointmentModal(false);
-          acceptedPatient(null);
+          toggleModal('end');
+          dispatch(setRequestData({accepted: false}));
         }
       }
     } catch (e) {
@@ -183,7 +179,7 @@ export const HomeDoc = ({navigation, route}) => {
   };
 
   useEffect(() => {
-    if (request) {
+    if (requestData.requested) {
       if (count <= 0) {
         handlePatientRequestResponse(false);
         console.log('Cancelado la request');
@@ -193,10 +189,10 @@ export const HomeDoc = ({navigation, route}) => {
         }, 1000);
       }
     }
-  }, [request, count]);
+  }, [requestData.requested, count]);
 
   const handleAddNotes = () => {
-    setNotesModal(true);
+    toggleModal('notes');
   };
 
   const handleSetActiveAfterEnd = async formData => {
@@ -204,8 +200,8 @@ export const HomeDoc = ({navigation, route}) => {
       const response = await apiReviewPatient(formData);
 
       if (response) {
-        setActivo(true);
-        setAcceptedPatient(null);
+        dispatch(setDoctorData({active: true}));
+        dispatch(setRequestData({accepted: false}));
       }
     } catch (e) {
       console.log(e);
@@ -216,9 +212,9 @@ export const HomeDoc = ({navigation, route}) => {
     try {
       const response = await apiRequireRequest();
 
-      if (response && !request) {
+      if (response && !requestData.requested) {
         console.log('apiRequireRequest', response);
-        setRequest(response.result);
+        dispatch(setRequestData(response.result));
       }
     } catch (e) {
       console.log(e);
@@ -228,24 +224,24 @@ export const HomeDoc = ({navigation, route}) => {
   const [requestCount, setRequestCount] = useState(0);
 
   useEffect(() => {
-    if (activo && !request) {
+    if (doctorData.active && !requestData.requested) {
       setRequestCount(39);
     }
-  }, [activo, request]);
+  }, [doctorData.active, requestData.requested]);
 
   useEffect(() => {
-    if (requestCount % 20 === 0 && activo) {
+    if (requestCount % 20 === 0 && doctorData.active) {
       handlePatientRequest();
       console.log('funcion ejecutada');
     }
 
-    if (requestCount > 0 && !request) {
+    if (requestCount > 0 && !requestData.requested) {
       setTimeout(() => {
         setRequestCount(requestCount - 1);
       }, 1000);
     }
 
-    if (request) {
+    if (requestData.requested) {
       setRequestCount(0);
     }
 
@@ -261,19 +257,21 @@ export const HomeDoc = ({navigation, route}) => {
       </View>
       <View style={styles.container}>
         <View style={styles.textState}>
-          <StyledText size="xl" bold={true} color={activo ? 'green' : 'red'}>
-            {activo ? 'ACTIVO' : 'INACTIVO'}
+          <StyledText
+            size="xl"
+            bold={true}
+            color={doctorData.active ? 'green' : 'red'}>
+            {doctorData.active ? 'ACTIVO' : 'INACTIVO'}
           </StyledText>
 
-          {activo && request && (
+          {doctorData.active && requestData.requested && (
             <PatientRequest
               count={count}
-              request={request}
-              setOpenModalDetail={setOpenModalDetail}
+              setOpenModalDetail={() => toggleModal('detail')}
             />
           )}
 
-          {!activo && acceptedPatient && (
+          {!doctorData.active && requestData.accepted && (
             <AcceptedPatient
               onPress={() =>
                 openGoogleMaps(
@@ -288,15 +286,15 @@ export const HomeDoc = ({navigation, route}) => {
         </View>
       </View>
       <View style={styles.buttonWrapper}>
-        {!acceptedPatient && (
-          <StyledButton onPress={() => setOpenModal(true)}>
-            {cuentaActivada ? 'Desactivar cuenta' : 'Activar cuenta'}
+        {!requestData.accepted && (
+          <StyledButton onPress={() => toggleModal('active')}>
+            {doctorData.active ? 'Desactivar cuenta' : 'Activar cuenta'}
           </StyledButton>
         )}
 
-        {acceptedPatient && (
+        {requestData.accepted && (
           <View style={styles.buttonAccepted}>
-            <StyledButton onPress={() => setEndAppointmentModal(true)}>
+            <StyledButton onPress={() => toggleModal('end')}>
               Finalizar
             </StyledButton>
             <StyledButton variant="secondary" onPress={handleAddNotes}>
@@ -308,7 +306,7 @@ export const HomeDoc = ({navigation, route}) => {
       <FooterDoc current="home" />
       <StyledModal
         title={
-          cuentaActivada
+          doctorData.active
             ? '¿Estas seguro que desea desactivar y dejar de recibir consultas?'
             : '¿Estas seguro que desea activar y comenzar a recibir consultas?'
         }
@@ -318,16 +316,18 @@ export const HomeDoc = ({navigation, route}) => {
               <StyledButton onPress={handleConfirmarClick}>
                 Confirmar
               </StyledButton>
-              <StyledButton onPress={closeModal} variant="empty">
+              <StyledButton
+                onPress={() => toggleModal('active')}
+                variant="empty">
                 Cancelar
               </StyledButton>
             </View>
           </View>
         }
-        open={openModal}
+        open={modal.active}
       />
       <StyledModal
-        open={openModalDetail}
+        open={modal.detail}
         title={
           <View style={styles.headerModalWrapper}>
             <StyledText color="white" size="xs">
@@ -341,7 +341,6 @@ export const HomeDoc = ({navigation, route}) => {
         content={
           <PatientDetailsModal
             handlePatientRequestResponse={handlePatientRequestResponse}
-            request={request}
           />
         }
       />
@@ -350,10 +349,10 @@ export const HomeDoc = ({navigation, route}) => {
         content={
           <DoctorReview
             handleSetActiveAfterEnd={handleSetActiveAfterEnd}
-            setPatientReviewModal={setPatientReviewModal}
+            setPatientReviewModal={() => toggleModal('review')}
           />
         }
-        open={patientReviewModal}
+        open={modal.review}
       />
       <StyledModal
         title="Estado de la consulta"
@@ -364,12 +363,12 @@ export const HomeDoc = ({navigation, route}) => {
             handleEndAppointment={handleEndAppointment}
           />
         }
-        open={endAppointmentModal}
+        open={modal.end}
       />
       <StyledModal
         title="Agregar Notas"
-        content={<AddNotesModal setNotesModal={setNotesModal} />}
-        open={notesModal}
+        content={<AddNotesModal setNotesModal={() => toggleModal('notes')} />}
+        open={modal.notes}
       />
     </View>
   );

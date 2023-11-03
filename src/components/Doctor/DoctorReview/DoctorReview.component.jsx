@@ -19,7 +19,7 @@ export const DoctorReview = ({
       setShowError(true);
       return;
     }
-    setPatientReviewModal(false);
+    setPatientReviewModal();
 
     if (comment.length > 0) {
       handleSetActiveAfterEnd({valoracion: rating, comentario: comment});

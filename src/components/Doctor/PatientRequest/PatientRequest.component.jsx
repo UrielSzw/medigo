@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
+import {useSelector} from 'react-redux';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
-import {styles} from './PatientRequest.styles';
 import {ClockIcon, DefaultProfile} from '../../../assets';
+import {styles} from './PatientRequest.styles';
 
-export const PatientRequest = ({logo, request, setOpenModalDetail}) => {
+export const PatientRequest = ({logo, setOpenModalDetail}) => {
+  const {requestData} = useSelector(state => state.doctorReducer);
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -23,13 +25,13 @@ export const PatientRequest = ({logo, request, setOpenModalDetail}) => {
           {logo ? logo : <DefaultProfile />}
           <View>
             <StyledText bold color="white" size="md">
-              {`${request.nombre} ${request.apellido}`}
+              {`${requestData.nombre} ${requestData.apellido}`}
             </StyledText>
           </View>
         </View>
         <View style={styles.timeWrapper}>
           <ClockIcon fill="#FFF" style={styles.icon} />
-          <StyledText color="white">{request.tiempoLlegada} m</StyledText>
+          <StyledText color="white">{requestData.tiempoLlegada} m</StyledText>
         </View>
       </View>
       <View style={styles.buttonWrapper}>
