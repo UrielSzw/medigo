@@ -1,16 +1,30 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {View, ScrollView, Keyboard} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
-import {useSelector} from 'react-redux';
-import {StyledButton, StyledText, StyledInput} from '../..';
+import {useDispatch, useSelector} from 'react-redux';
+import {StyledButton, StyledText, StyledInput, DropdownSelect} from '../..';
 import {PersonalDataIcon} from '../../../assets';
 import {PATHS} from '../../../routes/paths';
+import {setSpinner} from '../../../utils/setSpinner';
+import {apiDoctorsUpdate} from '../../../utils/api/doctorRoutes';
 import {styles} from './ModifyPersonalData.styles';
+import {setDoctorData} from '../../../redux/doctor.slice';
 
 export const ModifyPersonalData = ({setHideFooter}) => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm();
   const {doctorData} = useSelector(state => state.doctorReducer);
+  const {especialidades} = useSelector(state => state.commonReducer);
+  const [especialidad, setEspecialidad] = useState('Seleccione especialidad');
+  const [especialidadModal, setEspecialidadModal] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
@@ -35,20 +49,20 @@ export const ModifyPersonalData = ({setHideFooter}) => {
     };
   }, []);
 
-  const navigation = useNavigation();
-  const {
-    control,
-    handleSubmit,
-    formState: {errors},
-  } = useForm();
-
   const onSubmit = async data => {
     if (data) {
       try {
-        console.log(data);
-        navigation.navigate(PATHS.PERSONALDATADOC);
+        setSpinner(true);
+        const response = await apiDoctorsUpdate(data);
+
+        if (response.success) {
+          dispatch(setDoctorData(data));
+          navigation.navigate(PATHS.PERSONALDATADOC);
+        }
       } catch (e) {
         console.log(e);
+      } finally {
+        setSpinner(false);
       }
     }
   };
@@ -147,23 +161,20 @@ export const ModifyPersonalData = ({setHideFooter}) => {
             />
           )}
         />
-        <Controller
-          control={control}
-          name="especialidad"
-          defaultValue={doctorData.especialidad}
-          rules={{
-            required: 'La especialidad es obligatoria',
-          }}
-          render={({field}) => (
-            <StyledInput
-              label="Especialidad"
-              style={styles.input}
-              field={field}
-              name="especialidad"
-              error={errors.especialidad?.message}
-            />
+        <View>
+          <StyledText>Especialidad</StyledText>
+          <StyledButton
+            style={errors?.especialidad && {borderColor: 'red'}}
+            variant="empty"
+            onPress={() => setEspecialidadModal(true)}>
+            {especialidad}
+          </StyledButton>
+          {errors?.especialidad && (
+            <StyledText size="sm" color="red">
+              {errors?.especialidad.message}
+            </StyledText>
           )}
-        />
+        </View>
         <Controller
           control={control}
           name="precio"
@@ -223,6 +234,14 @@ export const ModifyPersonalData = ({setHideFooter}) => {
           </StyledButton>
         </View>
       )}
+      <DropdownSelect
+        dropdownValue={especialidad}
+        setDropdownValue={setEspecialidad}
+        title="Seleciona una especialidad"
+        options={especialidades}
+        visible={especialidadModal}
+        setVisible={() => setEspecialidadModal(false)}
+      />
     </View>
   );
 };

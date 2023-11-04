@@ -93,6 +93,10 @@ export const userSlice = createSlice({
     },
     removeRequestDetails: (state, action) => {
       state.requestDetails = initialState.requestDetails;
+      console.log('removeRequestDetails', state.requestDetails);
+    },
+    clearAllUser: (state, action) => {
+      return initialState;
     },
   },
 });
@@ -107,6 +111,7 @@ export const {
   addDoctorLicense,
   removeDoctorDetails,
   removeRequestDetails,
+  clearAllUser,
 } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -108,7 +108,7 @@ const apiEndAppointment = async () => {
 
 const apiReviewPatient = async formData => {
   try {
-    const response = await api.post(
+    const response = await api.put(
       `${rutaDoctoresConsultas}/valorar-consulta`,
       formData,
     );
@@ -142,4 +142,5 @@ export {
   apiDeclineRequest,
   apiCancelRequest,
   apiLastRequestState,
+  apiDoctorsUpdate,
 };

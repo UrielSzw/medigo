@@ -1,10 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   FooterPatient,
   ProfileOption,
+  StyledButton,
   WelcomePerfilHeader,
 } from '../../../components';
 import {
@@ -14,10 +15,12 @@ import {
   FamilyIcon,
 } from '../../../assets';
 import {PATHS} from '../../../routes/paths';
+import {clearAllUser} from '../../../redux/user.slice';
 import {styles} from './ProfilePat.styles';
 
 export const ProfilePat = ({navigation}) => {
   const {userData} = useSelector(state => state.userReducer);
+  const dispatch = useDispatch();
   const handleActivityPress = () => {
     navigation.navigate(PATHS.ACTIVITYPAT);
   };
@@ -32,6 +35,10 @@ export const ProfilePat = ({navigation}) => {
 
   const handlePersonalDataPress = () => {
     navigation.navigate(PATHS.PERSONALDATA);
+  };
+
+  const handleLogout = async () => {
+    dispatch(clearAllUser());
   };
 
   return (
@@ -89,6 +96,12 @@ export const ProfilePat = ({navigation}) => {
           text="Miembros familiares"
           onPress={handleFamilyMembersPress}
         />
+        <StyledButton
+          variant="warning"
+          style={styles.logout}
+          onPress={handleLogout}>
+          Logout
+        </StyledButton>
       </View>
       <FooterPatient current="profile" />
     </View>

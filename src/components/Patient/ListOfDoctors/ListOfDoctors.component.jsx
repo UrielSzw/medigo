@@ -1,58 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {ScrollView, TouchableOpacity, View} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {DoctorListItem} from '../../Doctor/DoctorListItem/DoctorListItem.component';
 import {FilterIcon} from '../../../assets';
+import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
+import {removeRequestDetails, setUserState} from '../../../redux/user.slice';
 import {styles} from './ListOfDoctors.styles';
-
-// const DOCTORS_LIST = [
-//   {
-//     nroMatricula: '36985214',
-//     nombre: 'Jorge',
-//     apellido: 'ApellidoJorge',
-//     especialidad: 'Clinico',
-//     tiempo: '15',
-//     precio: '1700',
-//     valoracion: '4,8',
-//     resenas: '(120 reseñas)',
-//     comentarios: [],
-//   },
-//   {
-//     nroMatricula: '15486532',
-//     nombre: 'Fernando',
-//     apellido: 'ApellidoFernando',
-//     especialidad: 'Clinico',
-//     tiempo: '22',
-//     precio: '1700',
-//     valoracion: '3,5',
-//     resenas: '(10 reseñas)',
-//     comentarios: [],
-//   },
-//   {
-//     nroMatricula: '23124556',
-//     nombre: 'Raul',
-//     apellido: 'ApellidoRaul',
-//     especialidad: 'Clinico',
-//     tiempo: '45',
-//     precio: '3300',
-//     valoracion: '4',
-//     resenas: '(1 reseñas)',
-//     comentarios: [],
-//   },
-//   {
-//     nroMatricula: '75326895',
-//     nombre: 'Mariano',
-//     apellido: 'ApellidoMariano',
-//     especialidad: 'Clinico',
-//     tiempo: '27',
-//     precio: '1200',
-//     valoracion: 'n/a',
-//     resenas: '(0 reseñas)',
-//     comentarios: [],
-//   },
-// ];
 
 export const ListOfDoctors = ({
   especialidad,
@@ -63,6 +18,7 @@ export const ListOfDoctors = ({
   const {listOfDoctorsData, avoidDoctors} = useSelector(
     state => state.userReducer,
   );
+  const dispatch = useDispatch();
   const [data, setData] = useState([]);
 
   const sortDoctorsList = filterParam => {
@@ -100,6 +56,11 @@ export const ListOfDoctors = ({
     setData(dataFiltered);
   }, [filter, listOfDoctorsData]);
 
+  const handleBackToStart = () => {
+    dispatch(setUserState({listOfDoctorsState: false}));
+    dispatch(removeRequestDetails());
+  };
+
   return (
     <View style={styles.wrapper}>
       <View>
@@ -133,7 +94,14 @@ export const ListOfDoctors = ({
             onPress={() => handleViewMoreDetails(doctor)}
           />
         ))}
+        {data.length <= 0 && (
+          <StyledText color="red">
+            No se encuentran doctores en este momento
+          </StyledText>
+        )}
       </ScrollView>
+
+      <StyledButton onPress={handleBackToStart}>Volver</StyledButton>
     </View>
   );
 };

@@ -1,8 +1,16 @@
-import React from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {View, ScrollView, Text} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
-import {Banner, StyledButton, StyledInput} from '../../../components';
+import {useSelector} from 'react-redux';
+import {
+  Banner,
+  DropdownSelect,
+  StyledButton,
+  StyledInput,
+  StyledText,
+} from '../../../components';
 import {PATHS} from '../../../routes/paths';
 import {MedigoLogoIcon} from '../../../assets';
 import {apiDoctorsRegister} from '../../../utils/api/doctorRoutes';
@@ -15,6 +23,9 @@ export const RegisterDoc = ({navigation}) => {
     handleSubmit,
     formState: {errors},
   } = useForm();
+  const {especialidades} = useSelector(state => state.commonReducer);
+  const [especialidad, setEspecialidad] = useState('Seleccione especialidad');
+  const [especialidadModal, setEspecialidadModal] = useState(false);
 
   const onSubmit = async data => {
     if (data) {
@@ -255,22 +266,20 @@ export const RegisterDoc = ({navigation}) => {
               />
             )}
           />
-          <Controller
-            control={control}
-            name="especialidad"
-            rules={{
-              required: 'La especialidad es obligatoria',
-            }}
-            render={({field}) => (
-              <StyledInput
-                label="Especialidad"
-                style={styles.input}
-                field={field}
-                name="especialidad"
-                error={errors.especialidad?.message}
-              />
+          <View>
+            <StyledText>Especialidad</StyledText>
+            <StyledButton
+              style={errors?.especialidad && {borderColor: 'red'}}
+              variant="empty"
+              onPress={() => setEspecialidadModal(true)}>
+              {especialidad}
+            </StyledButton>
+            {errors?.especialidad && (
+              <StyledText size="sm" color="red">
+                {errors?.especialidad.message}
+              </StyledText>
             )}
-          />
+          </View>
           <Controller
             control={control}
             name="precio"
@@ -350,6 +359,14 @@ export const RegisterDoc = ({navigation}) => {
         </View>
       </View>
       <MedigoLogoIcon style={styles.logo} />
+      <DropdownSelect
+        dropdownValue={especialidad}
+        setDropdownValue={setEspecialidad}
+        title="Seleciona una especialidad"
+        options={especialidades}
+        visible={especialidadModal}
+        setVisible={() => setEspecialidadModal(false)}
+      />
     </KeyboardAwareScrollView>
   );
 };

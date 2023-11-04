@@ -24,15 +24,16 @@ export const WaitingModal = ({visible, setVisible, countNumber}) => {
 
   const handleDoctorRequestWait = async () => {
     try {
-      setSpinner(true);
       const requestDoctor = await apiLastRequestState();
       if (requestDoctor.result === 'en curso') {
+        setSpinner(true);
         console.log('en curso');
         setVisible(false);
         dispatch(
           setUserState({appointmentState: true, listOfDoctorsState: false}),
         );
       } else if (requestDoctor.result === 'seleccionando medico') {
+        setSpinner(true);
         console.log('seleccionando medico');
         dispatch(addDoctorLicense(doctorDetails.nroMatricula));
 

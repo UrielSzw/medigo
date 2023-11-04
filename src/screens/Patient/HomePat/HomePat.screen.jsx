@@ -33,6 +33,7 @@ import {
   setUserState,
 } from '../../../redux/user.slice';
 import {styles} from './HomePat.styles';
+import {setEspecialidades} from '../../../redux/common.slice';
 
 export const HomePat = () => {
   const {
@@ -45,6 +46,7 @@ export const HomePat = () => {
   const {userData, userState, doctorDetails} = useSelector(
     state => state.userReducer,
   );
+  const {especialidades} = useSelector(state => state.commonReducer);
   const dispatch = useDispatch();
   const [modal, setModal] = useState({
     filter: false,
@@ -150,8 +152,8 @@ export const HomePat = () => {
   };
 
   const handleViewMoreDetails = doctor => {
-    toggleModal('doctorDetails');
     dispatch(setDoctorDetails(doctor));
+    toggleModal('doctorDetails');
   };
 
   const [waitingTime, setWaitingTime] = useState(0);
@@ -167,9 +169,9 @@ export const HomePat = () => {
       });
       console.log('response', response);
 
-      if (response.state === 'solicitando medico') {
+      if (response.estado === 'solicitando medico') {
         toggleModal('doctorDetails');
-        console.log('solicitando medico', response.state);
+        console.log('solicitando medico', response.estado);
         setWaitingTime(calculateTimeDifference(response.hora));
         setWaiting(true);
       }
@@ -181,38 +183,36 @@ export const HomePat = () => {
   };
 
   const [familyMembersOptions, setFamilyMembersOptions] = useState([]);
-  const [specialtyOptions, setSpecialtyOptions] = useState([]);
 
   const setModalDropdownsFamilyOptions = () => {
     let familyOptions = [];
-    if (userData) {
-      familyOptions.push(`${userData.nombre} ${userData.apellido}`);
 
-      if (userData.grupoFamiliar.length > 0) {
-        userData.grupoFamiliar.forEach(fam => {
-          familyOptions.push(`${fam.nombre} ${fam.apellido}`);
-        });
-      }
-
-      setFamilyMembersOptions(familyOptions);
+    if (userData.grupoFamiliar.length > 0) {
+      userData.grupoFamiliar.forEach(fam => {
+        familyOptions.push(`${fam.nombre} ${fam.apellido}`);
+      });
     }
-  };
 
-  const setModalDropdownsSpecialtyOptions = async () => {
-    try {
-      const response = await apiEspecialidades();
-
-      if (response) {
-        setSpecialtyOptions(response);
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    setFamilyMembersOptions(familyOptions);
   };
 
   useEffect(() => {
     setModalDropdownsFamilyOptions();
-    setModalDropdownsSpecialtyOptions();
+    if (especialidades.length === 0) {
+      const setModalDropdownsSpecialtyOptions = async () => {
+        try {
+          const response = await apiEspecialidades();
+
+          if (response) {
+            dispatch(setEspecialidades(response));
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      };
+
+      setModalDropdownsSpecialtyOptions();
+    }
   }, []);
 
   useEffect(() => {
@@ -248,7 +248,7 @@ export const HomePat = () => {
           <ListOfDoctors
             filter={filter}
             handleViewMoreDetails={handleViewMoreDetails}
-            setFilterModal={() => toggleModal('doctorDetails')}
+            setFilterModal={() => toggleModal('filter')}
             especialidad={especialidad}
           />
         )}
@@ -316,7 +316,7 @@ export const HomePat = () => {
         dropdownValue={especialidad}
         setDropdownValue={setEspecialidad}
         title="Seleciona una especialidad"
-        options={specialtyOptions}
+        options={especialidades}
         visible={modal.specialty}
         setVisible={() => toggleModal('specialty')}
       />

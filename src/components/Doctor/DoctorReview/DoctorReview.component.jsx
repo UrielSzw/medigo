@@ -6,10 +6,7 @@ import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
 import {styles} from './DoctorReview.styles';
 
-export const DoctorReview = ({
-  setPatientReviewModal,
-  handleSetActiveAfterEnd,
-}) => {
+export const DoctorReview = ({setPatientReviewModal, handleReviewPatient}) => {
   const [rating, setRating] = useState(0);
   const [showError, setShowError] = useState(false);
   const [comment, setComment] = useState('');
@@ -22,9 +19,9 @@ export const DoctorReview = ({
     setPatientReviewModal();
 
     if (comment.length > 0) {
-      handleSetActiveAfterEnd({valoracion: rating, comentario: comment});
+      handleReviewPatient({valoracion: rating, comentario: comment});
     } else {
-      handleSetActiveAfterEnd({valoracion: rating});
+      handleReviewPatient({valoracion: rating});
     }
   };
 

@@ -17,4 +17,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 5,
   },
+  logout: {
+    width: '90%',
+    alignSelf: 'center',
+    marginTop: 'auto',
+    marginBottom: 15,
+  },
 });

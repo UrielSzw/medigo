@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   FooterDoc,
   ProfileOption,
@@ -14,6 +14,7 @@ import {clearAllDoctor} from '../../../redux/doctor.slice';
 import {styles} from './PerfilDoc.styles';
 
 export const PerfilDoc = ({navigation}) => {
+  const {doctorData} = useSelector(state => state.doctorReducer);
   const dispatch = useDispatch();
   const handleActividadPress = () => {
     navigation.navigate(PATHS.ACTIVITYDOC);
@@ -34,8 +35,8 @@ export const PerfilDoc = ({navigation}) => {
   return (
     <View style={styles.wrapper}>
       <WelcomePerfilHeader
-        username="Dr.Joseph Brostito"
-        email="fedepr2345@gmail.com"
+        username={`${doctorData.nombre} ${doctorData.apellido}`}
+        email={doctorData.username}
       />
       <View style={styles.container}>
         <ProfileOption

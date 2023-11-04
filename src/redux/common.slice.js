@@ -7,6 +7,7 @@ const initialState = {
     title: '',
     message: '',
   },
+  especialidades: [],
 };
 
 export const commonSlice = createSlice({
@@ -19,9 +20,12 @@ export const commonSlice = createSlice({
     showModal: (state, action) => {
       state.showSpinner = action.payload;
     },
+    setEspecialidades: (state, action) => {
+      state.especialidades = action.payload;
+    },
   },
 });
 
-export const {showSpinner, showModal} = commonSlice.actions;
+export const {showSpinner, showModal, setEspecialidades} = commonSlice.actions;
 
 export default commonSlice.reducer;

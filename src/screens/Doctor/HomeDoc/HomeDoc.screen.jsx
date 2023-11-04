@@ -199,12 +199,12 @@ export const HomeDoc = ({navigation, route}) => {
     toggleModal('notes');
   };
 
-  const handleSetActiveAfterEnd = async formData => {
+  const handleReviewPatient = async formData => {
     try {
       const response = await apiReviewPatient(formData);
 
-      if (response) {
-        dispatch(setDoctorData({active: true}));
+      if (response.state === 'calificando') {
+        dispatch(setDoctorData({active: false}));
         dispatch(setRequestData({accepted: false}));
       }
     } catch (e) {
@@ -362,7 +362,7 @@ export const HomeDoc = ({navigation, route}) => {
         title="Calificar paciente"
         content={
           <DoctorReview
-            handleSetActiveAfterEnd={handleSetActiveAfterEnd}
+            handleReviewPatient={handleReviewPatient}
             setPatientReviewModal={() => toggleModal('review')}
           />
         }

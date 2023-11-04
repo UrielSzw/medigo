@@ -1,5 +1,6 @@
-import React, {useContext} from 'react';
-import {useSelector} from 'react-redux';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
@@ -27,11 +28,30 @@ import {
 } from '../screens';
 import {GenericModal, Spinner} from '../components';
 import {PATHS} from './paths';
+import {apiEspecialidades} from '../utils/api/userRoutes';
+import {setEspecialidades} from '../redux/common.slice';
 
 export const Routes = () => {
+  const dispatch = useDispatch();
   const Stack = createNativeStackNavigator();
   const {userData} = useSelector(state => state.userReducer);
   const {doctorData} = useSelector(state => state.doctorReducer);
+
+  const setModalDropdownsSpecialtyOptions = async () => {
+    try {
+      const response = await apiEspecialidades();
+
+      if (response) {
+        dispatch(setEspecialidades(response));
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    setModalDropdownsSpecialtyOptions();
+  }, []);
 
   return (
     <NavigationContainer>
