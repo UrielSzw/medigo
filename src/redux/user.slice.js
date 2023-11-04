@@ -61,6 +61,12 @@ const initialState = {
     license: [],
   },
   listOfDoctorsData: [],
+  familyMemberSelected: {
+    sexo: '',
+    nombre: '',
+    apellido: '',
+    dni: '',
+  },
 };
 
 export const userSlice = createSlice({
@@ -85,6 +91,9 @@ export const userSlice = createSlice({
     setListOfDoctorsData: (state, action) => {
       state.listOfDoctorsData = action.payload;
     },
+    setFamilyMemberSelected: (state, action) => {
+      state.familyMemberSelected = action.payload;
+    },
     addDoctorLicense: (state, action) => {
       state.requestDetails = [...state.requestDetails, action.payload];
     },
@@ -108,6 +117,7 @@ export const {
   setDoctorDetails,
   setRequestDetails,
   setListOfDoctorsData,
+  setFamilyMemberSelected,
   addDoctorLicense,
   removeDoctorDetails,
   removeRequestDetails,

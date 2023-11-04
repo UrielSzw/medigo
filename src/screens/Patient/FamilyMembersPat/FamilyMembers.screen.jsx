@@ -1,5 +1,5 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {View} from 'react-native';
 import {
   DoctorListItem,
@@ -9,17 +9,24 @@ import {
   WelcomePerfilHeader,
 } from '../../../components';
 import {FamilyIcon} from '../../../assets/index.js';
+import {setFamilyMemberSelected} from '../../../redux/user.slice';
 import {PATHS} from '../../../routes/paths.js';
 import {styles} from './FamilyMembers.styles.js';
 
 export const FamilyMembers = ({navigation}) => {
   const {userData} = useSelector(state => state.userReducer);
+  const family = userData?.grupoFamiliar?.slice(
+    1,
+    userData?.grupoFamiliar?.length,
+  );
+  const dispatch = useDispatch();
   const handleNavigateProfile = () => {
     navigation.navigate(PATHS.PERFILPATIENT);
   };
 
-  const handleNavigateActivity = () => {
-    navigation.navigate(PATHS.FAMILYMEMBERACTIVITY);
+  const handleNavigateFamilyMemberInfo = familyMember => {
+    dispatch(setFamilyMemberSelected(familyMember));
+    navigation.navigate(PATHS.FAMILYMEMBERINFO);
   };
 
   return (
@@ -36,13 +43,13 @@ export const FamilyMembers = ({navigation}) => {
               Miembros Familiares
             </StyledText>
           </View>
-          {userData?.grupoFamiliar?.map((fam, index) => (
+          {family?.map((fam, index) => (
             <DoctorListItem
               key={index}
-              buttonText="Ver actividad"
+              buttonText="Mas informacion"
               name={`${fam.nombre} ${fam.apellido}`}
               category={`${fam.sexo[0]}`}
-              onPress={handleNavigateActivity}
+              onPress={() => handleNavigateFamilyMemberInfo(fam)}
             />
           ))}
         </View>
