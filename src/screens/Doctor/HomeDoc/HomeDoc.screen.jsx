@@ -27,10 +27,10 @@ import {
   apiReviewPatient,
 } from '../../../utils/api/doctorRoutes';
 import {setSpinner} from '../../../utils/setSpinner';
-import {showModal} from '../../../redux/common.slice';
 import {setDoctorData, setRequestData} from '../../../redux/doctor.slice';
-import {styles} from './HomeDoc.styles';
 import {calculateTimeDifference} from '../../../utils/commonMethods';
+import {setModal as setGenericModal} from '../../../utils/setModal';
+import {styles} from './HomeDoc.styles';
 
 export const HomeDoc = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -76,7 +76,7 @@ export const HomeDoc = ({navigation, route}) => {
   useEffect(() => {
     if (permisoDenegado === false) {
       dispatch(setDoctorData({active: false}));
-      showModal({
+      setGenericModal({
         title: 'Error de geolocalización',
         message:
           'Para poder acceptar clientes, debes permitir la geolocalización',
@@ -116,7 +116,7 @@ export const HomeDoc = ({navigation, route}) => {
         if (response.result === 'cancelada') {
           dispatch(setRequestData({accepted: false}));
           console.log('bhdasiyudhgiauyshdauis', response);
-          showModal({
+          setGenericModal({
             title: 'El paciente cancelo la consulta',
             message:
               'El paciente hizo uso de su derecho de cancelar la consulta dentro de los primeros 2 minutos',

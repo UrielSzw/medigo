@@ -22,6 +22,7 @@ export const WaitingModal = ({visible, setVisible, countNumber}) => {
   );
   const dispatch = useDispatch();
   const [count, setCount] = useState(0);
+  const [endCount, setEndCount] = useState(false);
 
   const handleDoctorRequestWait = async () => {
     try {
@@ -35,6 +36,7 @@ export const WaitingModal = ({visible, setVisible, countNumber}) => {
         dispatch(
           setUserState({appointmentState: true, listOfDoctorsState: false}),
         );
+        setEndCount(true);
       } else if (requestDoctor.result === 'seleccionando medico') {
         setSpinner(true);
         console.log('seleccionando medico');
@@ -46,6 +48,7 @@ export const WaitingModal = ({visible, setVisible, countNumber}) => {
           console.log('responseDoctors.result', responseNewDoctors.result);
           dispatch(setListOfDoctorsData(responseNewDoctors.result));
           setVisible(false);
+          setEndCount(true);
           setModal({
             show: true,
             title: 'Consulta rechazada',
@@ -64,12 +67,15 @@ export const WaitingModal = ({visible, setVisible, countNumber}) => {
   useEffect(() => {
     if (count <= 0) {
       setVisible(false);
+    } else if (endCount) {
+      setCount(0);
+      setEndCount(false);
     } else {
       setTimeout(() => {
         setCount(count - 1);
       }, 1000);
 
-      if (count % 30 === 0) {
+      if (count % 10 === 0) {
         console.log('count1', count);
         handleDoctorRequestWait();
       }

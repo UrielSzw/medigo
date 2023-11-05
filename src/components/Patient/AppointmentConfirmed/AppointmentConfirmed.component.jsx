@@ -12,8 +12,8 @@ import {
   apiLastRequestState,
 } from '../../../utils/api/patientRoutes';
 import {setSpinner} from '../../../utils/setSpinner';
-import {styles} from './AppointmentConfirmed.styles';
 import {setModal} from '../../../utils/setModal';
+import {styles} from './AppointmentConfirmed.styles';
 
 const TOTAL_TIME = 1200;
 
@@ -23,6 +23,14 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
   const [count, setCount] = useState(0);
   const [disabled, setDisabled] = useState(false);
 
+  const getTitle = () => {
+    if (doctorDetails.sexo === 'F') {
+      return 'Dra.';
+    }
+
+    return 'Dr.';
+  };
+
   const handleCancelAppoinment = async () => {
     try {
       setSpinner(true);
@@ -31,6 +39,11 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
       if (cancelRequest.state === 'cancelada') {
         dispatch(setUserState({appointmentState: false}));
         dispatch(removeDoctorDetails());
+        setModal({
+          title: 'Consulta cancelada',
+          message: 'Consulta cancelada con exito',
+          show: true,
+        });
       }
     } catch (e) {
       console.log(e);
@@ -41,10 +54,10 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
 
   const checkIfAppointmentEnded = async () => {
     try {
-      setSpinner(true);
       const response = await apiLastRequestState();
 
       if (response.result === 'cancelada') {
+        setSpinner(true);
         dispatch(setUserState({appointmentState: false}));
         setModal({
           show: true,
@@ -53,6 +66,7 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
             'El medico cancelo la consulta. Puedes realizar una consulta nueva',
         });
       } else if (response.result === 'calificando') {
+        setSpinner(true);
         dispatch(setUserState({appointmentState: false}));
         setDoctorReviewModal();
       }
@@ -69,7 +83,7 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
       setTimeout(() => {
         setCount(count - 1);
       }, 1000);
-    } else if (count % 60 === 0) {
+    } else if (count % 15 === 0) {
       checkIfAppointmentEnded();
       setTimeout(() => {
         setCount(count - 1);
@@ -97,14 +111,18 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
             {logo ? logo : <DefaultProfile />}
             <View>
               <StyledText color="white" bold size="md">
-                {doctorDetails.name}
+                {`${getTitle()} ${doctorDetails.nombre} ${
+                  doctorDetails.apellido
+                }`}
               </StyledText>
-              <StyledText color="white">{doctorDetails.category}</StyledText>
+              <StyledText color="white">
+                {doctorDetails.especialidad}
+              </StyledText>
             </View>
           </View>
           <View style={styles.time}>
             <ClockIcon fill="#FFF" style={styles.icon} />
-            <StyledText color="white">{doctorDetails.time} m</StyledText>
+            <StyledText color="white">{doctorDetails.tiempo} m</StyledText>
           </View>
         </View>
       </View>

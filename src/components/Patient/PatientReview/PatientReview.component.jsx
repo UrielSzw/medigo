@@ -23,6 +23,7 @@ export const PatientReview = ({setDoctorReviewModal}) => {
 
   const handlePress = async () => {
     try {
+      console.log('handlePress');
       if (rating === 0) {
         setShowError(true);
         return;
@@ -33,8 +34,11 @@ export const PatientReview = ({setDoctorReviewModal}) => {
         comentario: comment,
       });
 
-      if (endAppointment.result === 'calificando') {
-        setDoctorReviewModal(false);
+      console.log(endAppointment);
+      console.log('endAppointment');
+
+      if (endAppointment.state === 'calificando') {
+        setDoctorReviewModal();
         dispatch(removeDoctorDetails());
         dispatch(removeRequestDetails());
         dispatch(setListOfDoctorsData([]));
@@ -65,7 +69,7 @@ export const PatientReview = ({setDoctorReviewModal}) => {
           multiline={true}
           style={styles.input}
           value={comment}
-          onChange={setComment}
+          onChangeText={text => setComment(text)}
         />
       </View>
       <View style={styles.footerBox}>

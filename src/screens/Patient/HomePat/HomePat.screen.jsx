@@ -41,6 +41,7 @@ export const HomePat = () => {
     handleSubmit,
     setError,
     clearErrors,
+    reset,
     formState: {errors},
   } = useForm();
   const {userData, userState, doctorDetails} = useSelector(
@@ -150,6 +151,7 @@ export const HomePat = () => {
       console.log(error);
     } finally {
       setSpinner(false);
+      reset();
     }
   };
 

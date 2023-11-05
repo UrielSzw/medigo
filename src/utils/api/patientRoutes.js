@@ -64,7 +64,7 @@ const apiLastRequestState = async () => {
 
 const apiCancelDoctor = async () => {
   try {
-    const responde = await api.post(`${rutaClienteColsutas}/cancelar-consulta`);
+    const responde = await api.put(`${rutaClienteColsutas}/cancelar-consulta`);
     return responde.data;
   } catch (error) {
     console.error(error);
@@ -74,7 +74,7 @@ const apiCancelDoctor = async () => {
 
 const apiReviewDoctor = async formData => {
   try {
-    const responde = await api.post(
+    const responde = await api.put(
       `${rutaClienteColsutas}/valorar-consulta`,
       formData,
     );

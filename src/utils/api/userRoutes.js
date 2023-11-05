@@ -11,6 +11,11 @@ const apiUsuariosLogin = async usuario => {
     });
     return response.data;
   } catch (error) {
+    if (error.response.status === 401) {
+      if (error.response.data.result === 'Credenciales incorrectas') {
+        return error.response.data.result;
+      }
+    }
     console.error(error);
     throw error;
   }

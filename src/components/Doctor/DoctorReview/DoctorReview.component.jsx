@@ -39,7 +39,7 @@ export const DoctorReview = ({setPatientReviewModal, handleReviewPatient}) => {
         <TextInput
           multiline={true}
           style={styles.input}
-          onChange={setComment}
+          onChangeText={text => setComment(text)}
           value={comment}
         />
       </View>
