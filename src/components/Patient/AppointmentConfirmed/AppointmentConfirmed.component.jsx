@@ -6,7 +6,12 @@ import {useDispatch, useSelector} from 'react-redux';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {ClockIcon, DefaultProfile} from '../../../assets';
 import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
-import {removeDoctorDetails, setUserState} from '../../../redux/user.slice';
+import {
+  addDoctorLicense,
+  removeDoctorDetails,
+  removeRequestDetails,
+  setUserState,
+} from '../../../redux/user.slice';
 import {
   apiCancelDoctor,
   apiLastRequestState,
@@ -39,6 +44,7 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
       if (cancelRequest.state === 'cancelada') {
         dispatch(setUserState({appointmentState: false}));
         dispatch(removeDoctorDetails());
+        dispatch(removeRequestDetails());
         setModal({
           title: 'Consulta cancelada',
           message: 'Consulta cancelada con exito',
@@ -59,6 +65,9 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
       if (response.result === 'cancelada') {
         setSpinner(true);
         dispatch(setUserState({appointmentState: false}));
+        dispatch(addDoctorLicense(doctorDetails.nroMatricula));
+        dispatch(removeDoctorDetails());
+        dispatch(removeRequestDetails());
         setModal({
           show: true,
           title: 'Consulta cancelada',
