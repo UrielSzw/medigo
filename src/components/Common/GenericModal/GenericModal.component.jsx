@@ -4,8 +4,8 @@ import {View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {StyledModal} from '../StyledModal/StyledModal.component';
 import {StyledText} from '../StyledText/StyledText.component';
-import {showModal} from '../../../redux/common.slice';
 import {StyledButton} from '../StyledButton/StyledButton.component';
+import {setModal} from '../../../utils/setModal';
 
 export const GenericModal = () => {
   const {genericModal} = useSelector(state => state.commonReducer);
@@ -20,7 +20,7 @@ export const GenericModal = () => {
           </StyledText>
           <StyledButton
             variant="warning"
-            onPress={() => showModal({title: '', message: '', show: false})}>
+            onPress={() => setModal({title: '', message: '', show: false})}>
             Cerrar
           </StyledButton>
         </View>

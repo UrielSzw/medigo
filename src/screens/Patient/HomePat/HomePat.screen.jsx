@@ -32,8 +32,9 @@ import {
   setRequestDetails,
   setUserState,
 } from '../../../redux/user.slice';
-import {styles} from './HomePat.styles';
+import {setModal as setGenericModal} from '../../../utils/setModal';
 import {setEspecialidades} from '../../../redux/common.slice';
+import {styles} from './HomePat.styles';
 
 export const HomePat = () => {
   const {

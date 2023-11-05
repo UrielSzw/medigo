@@ -18,7 +18,7 @@ export const commonSlice = createSlice({
       state.showSpinner = action.payload;
     },
     showModal: (state, action) => {
-      state.showSpinner = action.payload;
+      state.genericModal = action.payload;
     },
     setEspecialidades: (state, action) => {
       state.especialidades = action.payload;

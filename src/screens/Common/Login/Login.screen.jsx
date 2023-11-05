@@ -16,6 +16,7 @@ import {apiUsuariosLogin} from '../../../utils/api/userRoutes';
 import {setDoctorData} from '../../../redux/doctor.slice';
 import {setSpinner} from '../../../utils/setSpinner';
 import {styles} from './Login.styles';
+import {setModal} from '../../../utils/setModal';
 
 export const Login = ({navigation}) => {
   const {
@@ -32,15 +33,19 @@ export const Login = ({navigation}) => {
         const response = await apiUsuariosLogin(data);
 
         if (response) {
-          if (response.nroMatricula) {
+          if (response === 'Credenciales incorrectas') {
+            setModal({
+              title: 'Credenciales invalidas',
+              message: 'El email y/o contraseña no son correctos',
+              show: true,
+            });
+          } else if (response.nroMatricula) {
             dispatch(setDoctorData(response));
             navigation.navigate(PATHS.HOMEDOCTOR);
           } else {
             dispatch(setUserData(response));
             navigation.navigate(PATHS.HOMEPATIENT);
           }
-        } else {
-          console.log('usuario invalido');
         }
       } catch (e) {
         console.log(e);
