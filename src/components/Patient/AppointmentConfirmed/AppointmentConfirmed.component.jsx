@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
@@ -14,7 +15,7 @@ import {setSpinner} from '../../../utils/setSpinner';
 import {styles} from './AppointmentConfirmed.styles';
 import {setModal} from '../../../utils/setModal';
 
-const TOTAL_TIME = 600;
+const TOTAL_TIME = 1200;
 
 export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
   const {doctorDetails} = useSelector(state => state.userReducer);
