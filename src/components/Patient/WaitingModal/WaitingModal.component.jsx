@@ -14,6 +14,7 @@ import {
   setUserState,
 } from '../../../redux/user.slice';
 import {styles} from './WaitingModal.styles';
+import {setModal} from '../../../utils/setModal';
 
 export const WaitingModal = ({visible, setVisible, countNumber}) => {
   const {doctorDetails, requestDetails} = useSelector(
@@ -24,7 +25,9 @@ export const WaitingModal = ({visible, setVisible, countNumber}) => {
 
   const handleDoctorRequestWait = async () => {
     try {
+      console.log('count2');
       const requestDoctor = await apiLastRequestState();
+      console.log('count3', requestDoctor);
       if (requestDoctor.result === 'en curso') {
         setSpinner(true);
         console.log('en curso');
@@ -43,6 +46,12 @@ export const WaitingModal = ({visible, setVisible, countNumber}) => {
           console.log('responseDoctors.result', responseNewDoctors.result);
           dispatch(setListOfDoctorsData(responseNewDoctors.result));
           setVisible(false);
+          setModal({
+            show: true,
+            title: 'Consulta rechazada',
+            message:
+              'El medico rechazo la consulta. Puedes seleccionar otro medico',
+          });
         }
       }
     } catch (e) {
@@ -61,6 +70,7 @@ export const WaitingModal = ({visible, setVisible, countNumber}) => {
       }, 1000);
 
       if (count % 30 === 0) {
+        console.log('count1', count);
         handleDoctorRequestWait();
       }
     }
@@ -68,6 +78,7 @@ export const WaitingModal = ({visible, setVisible, countNumber}) => {
 
   useEffect(() => {
     if (visible) {
+      console.log('countNumber', countNumber);
       setCount(countNumber || 60);
     }
   }, [visible]);

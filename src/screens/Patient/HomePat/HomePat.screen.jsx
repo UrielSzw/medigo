@@ -111,8 +111,8 @@ export const HomePat = () => {
 
       if (locationData && locationData.length > 0) {
         // Si se encontró una ubicación, toma la primera coincidencia
-        const latitude = locationData[0].boundingbox[0];
-        const longitude = locationData[0].boundingbox[2];
+        const latitude = locationData[0].lat;
+        const longitude = locationData[0].lon;
 
         const nombrePaciente = grupoFamiliar.split(' ')[0];
         const apellidoPaciente = grupoFamiliar.split(' ')[1];
@@ -127,6 +127,8 @@ export const HomePat = () => {
           apellido: apellidoPaciente,
           direccion: data.direccion,
         };
+
+        console.log('formData', formData);
 
         dispatch(setRequestDetails(formData));
         const responseDoctors = await apiListOfDoctors(formData);
@@ -172,6 +174,7 @@ export const HomePat = () => {
       if (response.estado === 'solicitando medico') {
         toggleModal('doctorDetails');
         console.log('solicitando medico', response.estado);
+        console.log('response.hora', response.hora);
         setWaitingTime(calculateTimeDifference(response.hora));
         setWaiting(true);
       }

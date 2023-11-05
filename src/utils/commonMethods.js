@@ -24,14 +24,22 @@ export const calculateAge = date => {
 
 // Funcion para calcular tiempo faltante entre la hora actual y otro horario
 export const calculateTimeDifference = (dateString, secondsToAdd) => {
+  console.log('dateString', dateString);
   const originalDate = new Date(dateString);
   const currentTime = new Date();
 
-  const modifiedDate = new Date(originalDate.getTime() + secondsToAdd * 1000);
+  console.log('calculateTimeDifference', currentTime, originalDate);
+  console.log('originalDate.getTime()', originalDate.getTime());
 
+  const modifiedDate = new Date(
+    Math.round(originalDate.getTime() + secondsToAdd * 1000),
+  );
+
+  console.log('modifiedDate', modifiedDate);
   const timeDifferenceInSeconds = Math.floor(
     (modifiedDate - currentTime) / 1000,
   );
 
+  console.log('timeDifferenceInSeconds', timeDifferenceInSeconds);
   return timeDifferenceInSeconds;
 };

@@ -47,9 +47,9 @@ export const ListOfDoctors = ({
   useEffect(() => {
     let dataFiltered = sortDoctorsList(filter);
 
-    if (avoidDoctors.length > 0) {
+    if (avoidDoctors.license.length > 0) {
       dataFiltered = dataFiltered.filter(
-        dataFil => !avoidDoctors.includes(dataFil.nroMatricula),
+        dataFil => !avoidDoctors.license.includes(dataFil.nroMatricula),
       );
     }
 

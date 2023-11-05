@@ -95,7 +95,8 @@ export const userSlice = createSlice({
       state.familyMemberSelected = action.payload;
     },
     addDoctorLicense: (state, action) => {
-      state.requestDetails = [...state.requestDetails, action.payload];
+      state.avoidDoctors.license.push(action.payload);
+      console.log('nroMatricula', state.avoidDoctors.license);
     },
     removeDoctorDetails: (state, action) => {
       state.doctorDetails = initialState.doctorDetails;
