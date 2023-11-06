@@ -27,7 +27,13 @@ import {
   apiReviewPatient,
 } from '../../../utils/api/doctorRoutes';
 import {setSpinner} from '../../../utils/setSpinner';
-import {setDoctorData, setRequestData} from '../../../redux/doctor.slice';
+import {
+  changeFechaSeleccion,
+  decrementFechaSeleccion,
+  resetRequestData,
+  setDoctorData,
+  setRequestData,
+} from '../../../redux/doctor.slice';
 import {calculateTimeDifference} from '../../../utils/commonMethods';
 import {setModal as setGenericModal} from '../../../utils/setModal';
 import {styles} from './HomeDoc.styles';
@@ -48,16 +54,13 @@ export const HomeDoc = ({navigation, route}) => {
   });
 
   const [isSuccessful, setIsSuccessful] = useState(true);
-  const [count, setCount] = useState(60);
-  // const [coordenates, setCoordenates] = useState({longitud: 0, latitud: 0});
 
-  const openGoogleMaps = (
-    startLatitude = '-34.617865',
-    startLongitude = '-58.4332',
-    endLatitude = '-35.617865',
-    endLongitude = '-59.4332',
-  ) => {
-    console.log(startLatitude);
+  const openGoogleMaps = () => {
+    const startLatitude = doctorData.location.latitude;
+    const startLongitude = doctorData.location.longitud;
+    const endLatitude = requestData.latitudCliente;
+    const endLongitude = requestData.longitudCliente;
+    console.log(startLatitude, startLongitude, endLatitude, endLongitude);
     const url = `https://www.google.com/maps/dir/?api=1&origin=${startLatitude},${startLongitude}&destination=${endLatitude},${endLongitude}&travelmode=driving`;
     Linking.openURL(url);
   };
@@ -69,6 +72,10 @@ export const HomeDoc = ({navigation, route}) => {
   };
 
   useEffect(() => {
+    console.log('modal', modal);
+  }, [modal]);
+
+  useEffect(() => {
     // Si el valor de la ruta cambia, actualiza el estado
     setPermisoDenegado(route.params ? route.params.permisoDenegado : undefined);
   }, [route.params]);
@@ -76,6 +83,7 @@ export const HomeDoc = ({navigation, route}) => {
   useEffect(() => {
     if (permisoDenegado === false) {
       dispatch(setDoctorData({active: false}));
+      handleBackToInactive();
       setGenericModal({
         title: 'Error de geolocalización',
         message:
@@ -114,7 +122,9 @@ export const HomeDoc = ({navigation, route}) => {
       if (response) {
         console.log('checkIfPatientCancel', response);
         if (response.result === 'cancelada') {
+          setSpinner(true);
           dispatch(setRequestData({accepted: false}));
+          dispatch(resetRequestData());
           console.log('bhdasiyudhgiauyshdauis', response);
           setGenericModal({
             title: 'El paciente cancelo la consulta',
@@ -126,6 +136,8 @@ export const HomeDoc = ({navigation, route}) => {
       }
     } catch (e) {
       console.log(e);
+    } finally {
+      setSpinner(false);
     }
   };
 
@@ -162,6 +174,7 @@ export const HomeDoc = ({navigation, route}) => {
 
   const handleEndAppointment = async () => {
     try {
+      setSpinner(true);
       if (isSuccessful) {
         const response = await apiEndAppointment();
 
@@ -179,21 +192,25 @@ export const HomeDoc = ({navigation, route}) => {
       }
     } catch (e) {
       console.log(e);
+    } finally {
+      setSpinner(false);
     }
   };
 
   useEffect(() => {
     if (requestData.requested) {
-      if (count <= 0) {
+      if (requestData.fechaSeleccion === 0) {
         handlePatientRequestResponse(false);
         console.log('Cancelado la request');
       } else {
         setTimeout(() => {
-          setCount(count - 1);
+          dispatch(decrementFechaSeleccion());
         }, 1000);
       }
+    } else {
+      dispatch(changeFechaSeleccion(-1));
     }
-  }, [requestData.requested, count]);
+  }, [requestData.requested, requestData.fechaSeleccion]);
 
   const handleAddNotes = () => {
     toggleModal('notes');
@@ -201,6 +218,7 @@ export const HomeDoc = ({navigation, route}) => {
 
   const handleReviewPatient = async formData => {
     try {
+      setSpinner(true);
       const response = await apiReviewPatient(formData);
 
       if (response.state === 'calificando') {
@@ -209,12 +227,16 @@ export const HomeDoc = ({navigation, route}) => {
       }
     } catch (e) {
       console.log(e);
+    } finally {
+      setSpinner(false);
     }
   };
 
   const handlePatientRequest = async () => {
     try {
       const response = await apiRequireRequest();
+
+      console.log('handlePatientRequest', response);
 
       if (response.result && !requestData.requested) {
         console.log('apiRequireRequest', response.result);
@@ -225,7 +247,7 @@ export const HomeDoc = ({navigation, route}) => {
         dispatch(
           setRequestData({
             ...response.result,
-            fechaSeleccion: timeLeft,
+            fechaSeleccion: timeLeft || 50,
             requested: true,
           }),
         );
@@ -235,28 +257,49 @@ export const HomeDoc = ({navigation, route}) => {
     }
   };
 
+  const handleBackToInactive = async () => {
+    try {
+      setSpinner(true);
+      const response = await apiDoctorsUpdateState();
+
+      if (response.state === 'desconectado') {
+        dispatch(setDoctorData({active: false}));
+        dispatch(resetRequestData());
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setSpinner(false);
+    }
+  };
+
   const [requestCount, setRequestCount] = useState(0);
 
   useEffect(() => {
-    if (doctorData.active && !requestData.requested) {
-      setRequestCount(39);
+    if (doctorData.active && !requestData.requested && requestCount <= 0) {
+      setTimeout(() => {
+        console.log('dasdsa');
+        setRequestCount(1999);
+      }, 10000);
     }
   }, [doctorData.active, requestData.requested]);
 
   useEffect(() => {
-    if (requestCount % 20 === 0 && doctorData.active) {
+    if (requestCount % 10 === 0 && doctorData.active) {
       handlePatientRequest();
       console.log('funcion ejecutada');
     }
 
-    if (requestCount > 0 && !requestData.requested) {
+    if (requestData.requested || !doctorData.active) {
+      setRequestCount(-1);
+    } else if (requestCount > 0) {
       setTimeout(() => {
         setRequestCount(requestCount - 1);
       }, 1000);
     }
 
-    if (requestData.requested) {
-      setRequestCount(0);
+    if (requestCount === 0) {
+      handleBackToInactive();
     }
 
     console.log('requestCount', requestCount);
@@ -279,23 +322,11 @@ export const HomeDoc = ({navigation, route}) => {
           </StyledText>
 
           {doctorData.active && requestData.requested && (
-            <PatientRequest
-              count={count}
-              setOpenModalDetail={() => toggleModal('detail')}
-            />
+            <PatientRequest setOpenModalDetail={() => toggleModal('detail')} />
           )}
 
           {!doctorData.active && requestData.accepted && (
-            <AcceptedPatient
-              onPress={() =>
-                openGoogleMaps(
-                  '-34.617865',
-                  '-58.4332',
-                  '-35.617865',
-                  '-59.4332',
-                )
-              }
-            />
+            <AcceptedPatient onPress={() => openGoogleMaps()} />
           )}
         </View>
       </View>
@@ -348,7 +379,7 @@ export const HomeDoc = ({navigation, route}) => {
               Tiempo restante para acceptar:
             </StyledText>
             <StyledText size="s" color="white">
-              {count}
+              {requestData.fechaSeleccion}
             </StyledText>
           </View>
         }

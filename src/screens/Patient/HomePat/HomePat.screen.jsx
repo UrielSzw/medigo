@@ -167,9 +167,11 @@ export const HomePat = () => {
       setSpinner(true);
       console.log('doctorDetails.nroMatricula', {
         nroMatricula: doctorDetails.nroMatricula,
+        tiempoLLegada: doctorDetails.tiempo,
       });
       const response = await apiRequestDoctor({
         nroMatricula: doctorDetails.nroMatricula,
+        tiempoLLegada: doctorDetails.tiempo,
       });
       console.log('response', response);
 

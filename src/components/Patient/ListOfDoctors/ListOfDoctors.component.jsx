@@ -8,6 +8,7 @@ import {FilterIcon} from '../../../assets';
 import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
 import {removeRequestDetails, setUserState} from '../../../redux/user.slice';
 import {styles} from './ListOfDoctors.styles';
+import {formatTime} from '../../../utils/commonMethods';
 
 export const ListOfDoctors = ({
   especialidad,
@@ -41,17 +42,6 @@ export const ListOfDoctors = ({
         });
       default:
         return listOfDoctorsData;
-    }
-  };
-
-  const formatTime = minutes => {
-    if (minutes <= 2) {
-      return '2 - 4';
-    } else {
-      const minutesFrom = Math.floor(minutes - minutes * 0.1);
-      const minutesTo = Math.ceil(minutes + minutes * 0.1);
-
-      return `${minutesFrom} - ${minutesTo}`;
     }
   };
 

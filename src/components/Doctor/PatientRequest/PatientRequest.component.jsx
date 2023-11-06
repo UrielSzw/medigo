@@ -1,24 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
 import {ClockIcon, DefaultProfile} from '../../../assets';
+import {formatTime} from '../../../utils/commonMethods';
 import {styles} from './PatientRequest.styles';
 
 export const PatientRequest = ({logo, setOpenModalDetail}) => {
   const {requestData} = useSelector(state => state.doctorReducer);
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    setCount(60);
-  }, []);
 
   return (
     <View style={styles.wrapper}>
       <View style={styles.headerWrapper}>
         <StyledText size="s">Tiempo restante para acceptar:</StyledText>
-        <StyledText>{count}</StyledText>
+        <StyledText>{requestData.fechaSeleccion}</StyledText>
       </View>
       <View style={styles.dataWrapper}>
         <View style={styles.nameWrapper}>
@@ -31,7 +27,9 @@ export const PatientRequest = ({logo, setOpenModalDetail}) => {
         </View>
         <View style={styles.timeWrapper}>
           <ClockIcon fill="#FFF" style={styles.icon} />
-          <StyledText color="white">{requestData.tiempoLlegada} m</StyledText>
+          <StyledText color="white">
+            {formatTime(Number(requestData.tiempoLlegada))} m
+          </StyledText>
         </View>
       </View>
       <View style={styles.buttonWrapper}>

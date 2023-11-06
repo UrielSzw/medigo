@@ -131,6 +131,19 @@ const apiGetDoctorActivity = async () => {
   }
 };
 
+const apiUpdateNotes = async note => {
+  try {
+    const response = await api.put(
+      `${rutaDoctoresConsultas}/observacion-consulta`,
+      note,
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export {
   apiDoctorsRegister,
   apiAcceptRequest,
@@ -143,4 +156,5 @@ export {
   apiCancelRequest,
   apiLastRequestState,
   apiDoctorsUpdate,
+  apiUpdateNotes,
 };

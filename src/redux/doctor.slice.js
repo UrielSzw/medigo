@@ -17,7 +17,7 @@ const initialState = {
     username: '',
     location: {
       latitude: '',
-      longitude: '',
+      longitud: '',
     },
   },
   doctorActivity: {
@@ -48,7 +48,7 @@ const initialState = {
     updateAt: '',
     latitudCliente: '',
     longitudCliente: '',
-    fechaSeleccion: '',
+    fechaSeleccion: -1,
     nombre: '',
     apellido: '',
     sexo: '',
@@ -65,9 +65,19 @@ export const doctorSlice = createSlice({
     },
     setRequestData: (state, action) => {
       state.requestData = {...state.requestData, ...action.payload};
+      console.log('dasdasasd', state.requestData);
     },
     setDoctorActivity: (state, action) => {
       state.doctorActivity = action.payload;
+    },
+    resetRequestData: (state, action) => {
+      state.requestData = initialState.requestData;
+    },
+    changeFechaSeleccion: (state, action) => {
+      state.requestData.fechaSeleccion = action.payload;
+    },
+    decrementFechaSeleccion: state => {
+      state.requestData.fechaSeleccion -= 1;
     },
     clearAllDoctor: (state, action) => {
       return initialState;
@@ -79,6 +89,9 @@ export const {
   setDoctorData,
   setDoctorActivity,
   setRequestData,
+  resetRequestData,
+  changeFechaSeleccion,
+  decrementFechaSeleccion,
   clearAllDoctor,
 } = doctorSlice.actions;
 

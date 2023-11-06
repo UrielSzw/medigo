@@ -5,7 +5,7 @@ import {ClockIcon, DefaultProfile} from '../../../assets';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {Rating} from '../../Common/Rating/Rating.component';
 import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
-import {calculateAge} from '../../../utils/commonMethods';
+import {calculateAge, formatTime} from '../../../utils/commonMethods';
 import {styles} from './PatientDetailsModal.styles';
 
 export const PatientDetailsModal = ({handlePatientRequestResponse}) => {
@@ -24,7 +24,9 @@ export const PatientDetailsModal = ({handlePatientRequestResponse}) => {
         </View>
         <View style={styles.timeWrapper}>
           <ClockIcon fill="#8696BB" style={styles.icon} />
-          <StyledText color="grey">15 m</StyledText>
+          <StyledText color="grey">
+            {formatTime(Number(requestData.tiempoLlegada))} m
+          </StyledText>
         </View>
       </View>
       <View style={styles.detailsWrapper}>

@@ -43,13 +43,19 @@ export const PatInfoDoc = ({navigation}) => {
               Fecha de atencion: {formatDate(doctorActivity.date)}
             </StyledText>
             <StyledText color="grey" size="default">
-              Monto: {doctorActivity.price}
+              Monto: ${doctorActivity.price}
             </StyledText>
             <StyledText color="grey" size="default">
               Calificacion: {doctorActivity.review} estrellas
             </StyledText>
             <StyledText color="grey" size="default">
               Ubicacion de atencion: {doctorActivity.address}
+            </StyledText>
+            <StyledText color="grey" size="default">
+              Notas:
+            </StyledText>
+            <StyledText color="grey" size="default">
+              {doctorActivity.notes}
             </StyledText>
           </View>
         </View>
