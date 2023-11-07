@@ -37,9 +37,9 @@ export const WaitingModal = ({visible, setVisible, countNumber}) => {
           setUserState({appointmentState: true, listOfDoctorsState: false}),
         );
         setEndCount(true);
-      } else if (requestDoctor.result === 'seleccionando medico') {
+      } else if (requestDoctor.result === 'rechazada') {
         setSpinner(true);
-        console.log('seleccionando medico');
+        console.log('rechazada');
         dispatch(addDoctorLicense(doctorDetails.nroMatricula));
 
         const responseNewDoctors = await apiListOfDoctors(requestDetails);
