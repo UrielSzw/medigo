@@ -2,6 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {createContext, useState, useEffect} from 'react';
 import {parse} from 'cookie';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../utils/api';
 
 export const UserContext = createContext();
@@ -63,6 +64,34 @@ export const UserProvider = ({children}) => {
     _addTokenUsuarioCookieReq();
   }, [tokenUsuario]);
 
+  useEffect(() => {
+    const loadTokenFromStorage = async () => {
+      try {
+        const storedToken = await AsyncStorage.getItem('tokenUsuario');
+        if (storedToken) {
+          setTokenUsuario(storedToken);
+        }
+      } catch (error) {
+        console.error('Error loading token from AsyncStorage:', error);
+      }
+    };
+
+    loadTokenFromStorage();
+    _setTokenUsuarioRes();
+  }, []);
+
+  useEffect(() => {
+    async function saveTokenToStorage() {
+      try {
+        await AsyncStorage.setItem('tokenUsuario', tokenUsuario);
+      } catch (error) {
+        console.error('Error saving token to AsyncStorage:', error);
+      }
+    }
+
+    saveTokenToStorage();
+    _addTokenUsuarioCookieReq();
+  }, [tokenUsuario]);
   return (
     <UserContext.Provider value={{tokenUsuario, setTokenUsuario}}>
       {children}

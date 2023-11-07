@@ -44,7 +44,7 @@ export const HomePat = () => {
     reset,
     formState: {errors},
   } = useForm();
-  const {userData, userState, doctorDetails} = useSelector(
+  const {userData, userState, doctorDetails, requestDetails} = useSelector(
     state => state.userReducer,
   );
   const {especialidades} = useSelector(state => state.commonReducer);
@@ -245,7 +245,7 @@ export const HomePat = () => {
 
         {(userState.listOfDoctorsState || userState.appointmentState) && (
           <View style={styles.adressButtonWrapper}>
-            <StyledText color="grey">{userData.direccion}</StyledText>
+            <StyledText color="grey">{requestDetails.direccion}</StyledText>
           </View>
         )}
 

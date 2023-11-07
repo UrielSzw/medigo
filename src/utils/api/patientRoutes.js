@@ -6,6 +6,7 @@ const rutaClienteColsutas = 'clientes/consultas';
 
 const apiPatientUpdate = async patient => {
   try {
+    console.log('apiPatientUpdate');
     const responde = await api.put(`${rutaCliente}/actualizar-datos`, patient);
     return responde.data;
   } catch (error) {
@@ -16,6 +17,7 @@ const apiPatientUpdate = async patient => {
 
 const apiPatientRegister = async patient => {
   try {
+    console.log('apiPatientRegister');
     const responde = await api.post(`${rutaCliente}/registro`, patient);
     return responde.data;
   } catch (error) {
@@ -26,6 +28,7 @@ const apiPatientRegister = async patient => {
 
 const apiListOfDoctors = async formData => {
   try {
+    console.log('apiListOfDoctors');
     const responde = await api.post(
       `${rutaClienteColsutas}/solicitar-consulta`,
       formData,
@@ -39,6 +42,7 @@ const apiListOfDoctors = async formData => {
 
 const apiRequestDoctor = async nroMatricula => {
   try {
+    console.log('apiRequestDoctor');
     const responde = await api.post(
       `${rutaClienteColsutas}/seleccionar-medico`,
       nroMatricula,
@@ -52,6 +56,7 @@ const apiRequestDoctor = async nroMatricula => {
 
 const apiLastRequestState = async () => {
   try {
+    console.log('apiLastRequestState');
     const responde = await api.get(
       `${rutaClienteColsutas}/solicitar-estado-ultima-consulta`,
     );
@@ -64,6 +69,7 @@ const apiLastRequestState = async () => {
 
 const apiCancelDoctor = async () => {
   try {
+    console.log('apiCancelDoctor');
     const responde = await api.put(`${rutaClienteColsutas}/cancelar-consulta`);
     return responde.data;
   } catch (error) {
@@ -74,6 +80,7 @@ const apiCancelDoctor = async () => {
 
 const apiReviewDoctor = async formData => {
   try {
+    console.log('apiReviewDoctor');
     const responde = await api.put(
       `${rutaClienteColsutas}/valorar-consulta`,
       formData,
@@ -87,6 +94,7 @@ const apiReviewDoctor = async formData => {
 
 const apiGetPatientActivity = async () => {
   try {
+    console.log('apiGetPatientActivity');
     const responde = await api.get(`${rutaClienteColsutas}/historialConsultas`);
     return responde.data;
   } catch (error) {

@@ -19,7 +19,7 @@ import {clearAllUser} from '../../../redux/user.slice';
 import {styles} from './ProfilePat.styles';
 
 export const ProfilePat = ({navigation}) => {
-  const {userData} = useSelector(state => state.userReducer);
+  const {userData, userState} = useSelector(state => state.userReducer);
   const dispatch = useDispatch();
   const handleActivityPress = () => {
     navigation.navigate(PATHS.ACTIVITYPAT);
@@ -98,7 +98,11 @@ export const ProfilePat = ({navigation}) => {
         />
         <StyledButton
           variant="warning"
-          style={styles.logout}
+          style={{
+            ...styles.logout,
+            opacity: userState.appointmentState ? 0.3 : 1,
+          }}
+          // disabled={userState.appointmentState}
           onPress={handleLogout}>
           Logout
         </StyledButton>

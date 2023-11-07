@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
@@ -18,12 +18,15 @@ import {
 } from '../../../utils/api/patientRoutes';
 import {setSpinner} from '../../../utils/setSpinner';
 import {setModal} from '../../../utils/setModal';
+import {UserContext} from '../../../context/UserProvider';
+import {formatTime} from '../../../utils/commonMethods';
 import {styles} from './AppointmentConfirmed.styles';
 
 const TOTAL_TIME = 1200;
 
 export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
   const {doctorDetails} = useSelector(state => state.userReducer);
+  const {tokenUsuario} = useContext(UserContext);
   const dispatch = useDispatch();
   const [count, setCount] = useState(0);
   const [disabled, setDisabled] = useState(false);
@@ -60,24 +63,28 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
 
   const checkIfAppointmentEnded = async () => {
     try {
-      const response = await apiLastRequestState();
+      console.log('tokenUsuario', tokenUsuario);
+      if (tokenUsuario.length > 5) {
+        console.log('tokenUsuarioEntro', tokenUsuario.length);
+        const response = await apiLastRequestState();
 
-      if (response.result === 'cancelada') {
-        setSpinner(true);
-        dispatch(setUserState({appointmentState: false}));
-        dispatch(addDoctorLicense(doctorDetails.nroMatricula));
-        dispatch(removeDoctorDetails());
-        dispatch(removeRequestDetails());
-        setModal({
-          show: true,
-          title: 'Consulta cancelada',
-          message:
-            'El medico cancelo la consulta. Puedes realizar una consulta nueva',
-        });
-      } else if (response.result === 'calificando') {
-        setSpinner(true);
-        dispatch(setUserState({appointmentState: false}));
-        setDoctorReviewModal();
+        if (response.result === 'cancelada') {
+          setSpinner(true);
+          dispatch(setUserState({appointmentState: false}));
+          dispatch(addDoctorLicense(doctorDetails.nroMatricula));
+          dispatch(removeDoctorDetails());
+          dispatch(removeRequestDetails());
+          setModal({
+            show: true,
+            title: 'Consulta cancelada',
+            message:
+              'El medico cancelo la consulta. Puedes realizar una consulta nueva',
+          });
+        } else if (response.result === 'calificando') {
+          setSpinner(true);
+          dispatch(setUserState({appointmentState: false}));
+          setDoctorReviewModal();
+        }
       }
     } catch (e) {
       console.log(e);
@@ -131,7 +138,9 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
           </View>
           <View style={styles.time}>
             <ClockIcon fill="#FFF" style={styles.icon} />
-            <StyledText color="white">{doctorDetails.tiempo} m</StyledText>
+            <StyledText color="white">
+              {formatTime(doctorDetails.tiempo)} m
+            </StyledText>
           </View>
         </View>
       </View>

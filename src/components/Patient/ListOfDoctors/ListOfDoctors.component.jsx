@@ -11,12 +11,11 @@ import {styles} from './ListOfDoctors.styles';
 import {formatTime} from '../../../utils/commonMethods';
 
 export const ListOfDoctors = ({
-  especialidad,
   setFilterModal,
   handleViewMoreDetails,
   filter,
 }) => {
-  const {listOfDoctorsData, avoidDoctors} = useSelector(
+  const {listOfDoctorsData, avoidDoctors, requestDetails} = useSelector(
     state => state.userReducer,
   );
   const dispatch = useDispatch();
@@ -67,7 +66,7 @@ export const ListOfDoctors = ({
       <View>
         <View style={styles.headerWrapper}>
           <StyledText color="grey" style={styles.button}>
-            {especialidad}
+            {requestDetails.especialidad}
           </StyledText>
           <TouchableOpacity onPress={() => setFilterModal(true)}>
             <View style={styles.filterButton}>
