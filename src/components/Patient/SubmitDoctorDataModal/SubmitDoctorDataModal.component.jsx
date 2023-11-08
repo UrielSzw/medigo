@@ -22,6 +22,8 @@ export const SubmitDoctorDataModal = ({
 }) => {
   const {userData} = useSelector(state => state.userReducer);
 
+  console.log('dadadasd', userData);
+
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={styles.contentAskMedicWrapperScroll}>

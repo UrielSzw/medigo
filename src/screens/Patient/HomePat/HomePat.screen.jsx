@@ -31,6 +31,7 @@ import {
   setListOfDoctorsData,
   setRequestDetails,
   setUserState,
+  toggleUserModal,
 } from '../../../redux/user.slice';
 import {setEspecialidades} from '../../../redux/common.slice';
 import {styles} from './HomePat.styles';
@@ -44,20 +45,10 @@ export const HomePat = () => {
     reset,
     formState: {errors},
   } = useForm();
-  const {userData, userState, doctorDetails, requestDetails} = useSelector(
-    state => state.userReducer,
-  );
+  const {userData, userState, doctorDetails, requestDetails, userModals} =
+    useSelector(state => state.userReducer);
   const {especialidades} = useSelector(state => state.commonReducer);
   const dispatch = useDispatch();
-  const [modal, setModal] = useState({
-    filter: false,
-    familyMembers: false,
-    specialty: false,
-    review: false,
-    doctorDetails: false,
-    address: false,
-    request: false,
-  });
 
   const [waiting, setWaiting] = useState(false);
   const [especialidad, setEspecialidad] = useState('Seleccione especialidad');
@@ -69,9 +60,7 @@ export const HomePat = () => {
   // const [doctorDetails, setDoctorDetails] = useState(undefined);
 
   const toggleModal = name => {
-    setModal(prev => {
-      return {...prev, [name]: !prev[name]};
-    });
+    dispatch(toggleUserModal(name));
   };
 
   const onSubmit = async data => {
@@ -296,14 +285,14 @@ export const HomePat = () => {
             setOpenMedicModal={() => toggleModal('request')}
           />
         }
-        open={modal.request}
+        open={userModals.request}
       />
       <StyledModal
         title="Cambiar direccion"
         content={
           <ChangeAdressModal toggleModal={() => toggleModal('address')} />
         }
-        open={modal.address}
+        open={userModals.address}
       />
       <StyledModal
         title="Informacion del medico"
@@ -313,21 +302,21 @@ export const HomePat = () => {
             setDoctorDetailsModal={() => toggleModal('doctorDetails')}
           />
         }
-        open={modal.doctorDetails}
+        open={userModals.doctorDetails}
       />
       <StyledModal
         title="Calificar medico"
         content={
           <PatientReview setDoctorReviewModal={() => toggleModal('review')} />
         }
-        open={modal.review}
+        open={userModals.review}
       />
       <DropdownSelect
         dropdownValue={especialidad}
         setDropdownValue={setEspecialidad}
         title="Seleciona una especialidad"
         options={especialidades}
-        visible={modal.specialty}
+        visible={userModals.specialty}
         setVisible={() => toggleModal('specialty')}
       />
       <DropdownSelect
@@ -335,7 +324,7 @@ export const HomePat = () => {
         setDropdownValue={setGrupoFamiliar}
         title="Seleciona un grupoFamiliar"
         options={familyMembersOptions}
-        visible={modal.familyMembers}
+        visible={userModals.familyMembers}
         setVisible={() => toggleModal('familyMembers')}
       />
       <DropdownSelect
@@ -343,7 +332,7 @@ export const HomePat = () => {
         setDropdownValue={setFilter}
         title="Seleciona un grupoFamiliar"
         options={['Precio', 'Tiempo', 'Calificacion']}
-        visible={modal.filter}
+        visible={userModals.filter}
         setVisible={() => toggleModal('filter')}
       />
       <WaitingModal

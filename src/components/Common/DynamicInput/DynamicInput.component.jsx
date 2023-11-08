@@ -127,14 +127,13 @@ export const DynamicInput = ({control, errors}) => {
 
                   const currentDate = new Date();
 
-                  const eighteenYearsAgo =
-                    currentDate.getFullYear() - 18 < year;
+                  const eighteenYearsAgo = currentDate.getFullYear() - 1 < year;
 
                   const oneHundredTwentyYearsAgo =
                     year >= currentDate.getFullYear() - 120;
 
                   if (eighteenYearsAgo) {
-                    return 'Debe ser mayor de 18 años';
+                    return 'Debe ser mayor de 1 año';
                   }
 
                   if (!oneHundredTwentyYearsAgo) {

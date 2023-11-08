@@ -75,7 +75,7 @@ export const WaitingModal = ({visible, setVisible, countNumber}) => {
         setCount(count - 1);
       }, 1000);
 
-      if (count % 10 === 0) {
+      if (count % 6 === 0) {
         console.log('count1', count);
         handleDoctorRequestWait();
       }

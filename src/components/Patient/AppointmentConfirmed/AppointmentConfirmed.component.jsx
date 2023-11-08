@@ -21,6 +21,7 @@ import {setModal} from '../../../utils/setModal';
 import {UserContext} from '../../../context/UserProvider';
 import {formatTime} from '../../../utils/commonMethods';
 import {styles} from './AppointmentConfirmed.styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TOTAL_TIME = 1200;
 
@@ -93,24 +94,38 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
     }
   };
 
-  useEffect(() => {
-    if (count === TOTAL_TIME - 120) {
-      setDisabled(true);
-      setTimeout(() => {
-        setCount(count - 1);
-      }, 1000);
-    } else if (count % 15 === 0) {
-      if (tokenUsuario.length > 5) {
-        checkIfAppointmentEnded();
+  const checkIfAppointmentEndedWithToken = async () => {
+    try {
+      const tokenUsuarioSaved = await AsyncStorage.getItem('tokenUsuario');
+      if (tokenUsuarioSaved) {
+        await checkIfAppointmentEnded();
       }
-      setTimeout(() => {
-        setCount(count - 1);
-      }, 1000);
-    } else if (count > 0) {
-      setTimeout(() => {
-        setCount(count - 1);
-      }, 1000);
+    } catch (error) {
+      console.error('Error fetching token or making API call:', error);
     }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (count === TOTAL_TIME - 120) {
+        setDisabled(true);
+        setTimeout(() => {
+          setCount(count - 1);
+        }, 1000);
+      } else if (count % 6 === 0) {
+        await checkIfAppointmentEndedWithToken();
+
+        setTimeout(() => {
+          setCount(count - 1);
+        }, 1000);
+      } else if (count > 0) {
+        setTimeout(() => {
+          setCount(count - 1);
+        }, 1000);
+      }
+    };
+
+    fetchData();
   }, [count]);
 
   useEffect(() => {

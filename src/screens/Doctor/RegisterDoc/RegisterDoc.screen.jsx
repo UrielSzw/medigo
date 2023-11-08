@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {View, ScrollView, Text} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
@@ -16,11 +17,14 @@ import {MedigoLogoIcon} from '../../../assets';
 import {apiDoctorsRegister} from '../../../utils/api/doctorRoutes';
 import {setSpinner} from '../../../utils/setSpinner';
 import {styles} from './RegisterDoc.styles';
+import {setModal} from '../../../utils/setModal';
 
 export const RegisterDoc = ({navigation}) => {
   const {
     control,
     handleSubmit,
+    setError,
+    clearErrors,
     formState: {errors},
   } = useForm();
   const {especialidades} = useSelector(state => state.commonReducer);
@@ -29,11 +33,24 @@ export const RegisterDoc = ({navigation}) => {
 
   const onSubmit = async data => {
     if (data) {
+      if (especialidad === 'Seleccione especialidad') {
+        setError('especialidad', {
+          type: 'manual',
+          message: 'La especialidad es obligatoria',
+        });
+        return;
+      }
       try {
         setSpinner(true);
         const response = await apiDoctorsRegister(data);
 
-        if (response) {
+        if (!response.success) {
+          setModal({
+            title: 'El email escrito ya existe',
+            message: 'El email ya esta en uso, intente ingresar otro email',
+            show: true,
+          });
+        } else if (response.success) {
           navigation.navigate(PATHS.LOGIN);
         }
       } catch (e) {
@@ -47,6 +64,12 @@ export const RegisterDoc = ({navigation}) => {
   const handleNavigateRegister = () => {
     navigation.navigate(PATHS.REGISTER);
   };
+
+  useEffect(() => {
+    if (especialidad !== 'Seleccione especialidad') {
+      clearErrors('especialidad');
+    }
+  }, [especialidad]);
 
   return (
     <KeyboardAwareScrollView style={styles.container}>

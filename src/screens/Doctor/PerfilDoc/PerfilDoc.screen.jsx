@@ -14,7 +14,7 @@ import {clearAllDoctor} from '../../../redux/doctor.slice';
 import {styles} from './PerfilDoc.styles';
 
 export const PerfilDoc = ({navigation}) => {
-  const {doctorData} = useSelector(state => state.doctorReducer);
+  const {doctorData, requestData} = useSelector(state => state.doctorReducer);
   const dispatch = useDispatch();
   const handleActividadPress = () => {
     navigation.navigate(PATHS.ACTIVITYDOC);
@@ -77,7 +77,10 @@ export const PerfilDoc = ({navigation}) => {
         />
         <StyledButton
           variant="warning"
-          style={styles.logout}
+          style={{
+            ...styles.logout,
+            opacity: requestData.accepted ? 0.3 : 1,
+          }}
           onPress={handleLogout}>
           Logout
         </StyledButton>

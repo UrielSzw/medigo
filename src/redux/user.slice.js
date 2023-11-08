@@ -67,6 +67,16 @@ const initialState = {
     apellido: '',
     fechaNacimiento: '',
   },
+  userModals: {
+    filter: false,
+    familyMembers: false,
+    specialty: false,
+    review: false,
+    doctorDetails: false,
+    address: false,
+    request: false,
+    waitingTime: false,
+  },
 };
 
 export const userSlice = createSlice({
@@ -106,6 +116,12 @@ export const userSlice = createSlice({
       state.requestDetails = initialState.requestDetails;
       console.log('removeRequestDetails', state.requestDetails);
     },
+    toggleUserModal: (state, action) => {
+      const modalName = action.payload;
+      if (state.userModals.hasOwnProperty(modalName)) {
+        state.userModals[modalName] = !state.userModals[modalName];
+      }
+    },
     clearAllUser: (state, action) => {
       return initialState;
     },
@@ -123,6 +139,7 @@ export const {
   addDoctorLicense,
   removeDoctorDetails,
   removeRequestDetails,
+  toggleUserModal,
   clearAllUser,
 } = userSlice.actions;
 

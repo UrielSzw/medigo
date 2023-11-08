@@ -37,6 +37,7 @@ import {
 import {calculateTimeDifference} from '../../../utils/commonMethods';
 import {setModal as setGenericModal} from '../../../utils/setModal';
 import {styles} from './HomeDoc.styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const HomeDoc = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -114,6 +115,34 @@ export const HomeDoc = ({navigation, route}) => {
       console.log(e);
     }
   };
+
+  // const handleLeaveApp = async () => {
+  //   try {
+  //     setSpinner(true);
+  //     const response = await apiDoctorsUpdateState();
+  //     if (response.state === 'desconectado') {
+  //       dispatch(setDoctorData({active: false}));
+  //       dispatch(setRequestData({requested: false}));
+  //       console.log('desconectado');
+  //     } else {
+  //       console.log('conectado');
+  //       await apiDoctorsUpdateState();
+  //     }
+  //     toggleModal('active');
+  //   } catch (e) {
+  //     console.log(e);
+  //   } finally {
+  //     setSpinner(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   return () => {
+  //     if (doctorData.active) {
+  //       handleLeaveApp();
+  //     }
+  //   };
+  // }, []);
 
   const checkIfPatientCancel = async () => {
     try {
@@ -273,7 +302,7 @@ export const HomeDoc = ({navigation, route}) => {
     }
   };
 
-  const [requestCount, setRequestCount] = useState(0);
+  const [requestCount, setRequestCount] = useState(-1);
 
   useEffect(() => {
     if (doctorData.active && !requestData.requested && requestCount <= 0) {
@@ -284,25 +313,38 @@ export const HomeDoc = ({navigation, route}) => {
     }
   }, [doctorData.active, requestData.requested]);
 
+  const handlePatientRequestWithToken = async () => {
+    try {
+      const tokenUsuarioSaved = await AsyncStorage.getItem('tokenUsuario');
+      if (tokenUsuarioSaved) {
+        await handlePatientRequest();
+      }
+    } catch (error) {
+      console.error('Error fetching token or making API call:', error);
+    }
+  };
+
   useEffect(() => {
-    if (requestCount % 10 === 0 && doctorData.active) {
-      handlePatientRequest();
-      console.log('funcion ejecutada');
-    }
+    const fetchData = async () => {
+      if (requestCount % 10 === 0 && doctorData.active) {
+        await handlePatientRequestWithToken();
+        console.log('funcion ejecutada');
+      }
 
-    if (requestData.requested || !doctorData.active) {
-      setRequestCount(-1);
-    } else if (requestCount > 0) {
-      setTimeout(() => {
-        setRequestCount(requestCount - 1);
-      }, 1000);
-    }
+      if (requestData.requested || !doctorData.active) {
+        setRequestCount(-1);
+      } else if (requestCount > 0) {
+        setTimeout(() => {
+          setRequestCount(requestCount - 1);
+        }, 1000);
+      }
 
-    if (requestCount === 0) {
-      handleBackToInactive();
-    }
-
-    console.log('requestCount', requestCount);
+      if (requestCount === 0) {
+        handleBackToInactive();
+      }
+      console.log('requestCount', requestCount);
+    };
+    fetchData();
   }, [requestCount]);
 
   return (
