@@ -118,26 +118,26 @@ export const RegisterPat = ({navigation}) => {
                     if (!value) {
                       return 'La fecha de nacimiento es obligatoria';
                     }
-                    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+                    const datePattern = /^\d{2}-\d{2}-\d{4}$/;
                     if (!datePattern.test(value)) {
-                      return 'El formato de fecha no es válido (YYYY-MM-DD)';
+                      return 'El formato de fecha no es válido (DD-MM-YYYY)';
                     }
 
                     const parts = value.split('-');
-                    const year = parseInt(parts[0], 10);
+                    const day = parseInt(parts[0], 10);
                     const month = parseInt(parts[1], 10);
-                    const day = parseInt(parts[2], 10);
+                    const year = parseInt(parts[2], 10);
 
                     if (
-                      isNaN(year) ||
-                      isNaN(month) ||
                       isNaN(day) ||
+                      isNaN(month) ||
+                      isNaN(year) ||
                       month < 1 ||
                       month > 12 ||
                       day < 1 ||
                       day > 31
                     ) {
-                      return 'La fecha no es válida';
+                      return 'La fecha no es válida (DD-MM-YYYY)';
                     }
 
                     const currentDate = new Date();
@@ -163,7 +163,7 @@ export const RegisterPat = ({navigation}) => {
               render={({field}) => (
                 <StyledInput
                   field={field}
-                  label="Fecha de nacimiento (YYYY-MM-DD)"
+                  label="Fecha de nacimiento (DD-MM-YYYY)"
                   style={styles.input}
                   name="fechaNacimiento"
                   error={errors.fechaNacimiento?.message}
