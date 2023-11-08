@@ -20,8 +20,13 @@ export const FamilyMembers = ({navigation}) => {
     userData?.grupoFamiliar?.length,
   );
   const dispatch = useDispatch();
+
   const handleNavigateProfile = () => {
     navigation.navigate(PATHS.PERFILPATIENT);
+  };
+
+  const handleNavigateModifyFamily = () => {
+    navigation.navigate(PATHS.MODIFYFAMILY);
   };
 
   const handleNavigateFamilyMemberInfo = familyMember => {
@@ -56,8 +61,8 @@ export const FamilyMembers = ({navigation}) => {
 
         <View style={styles.buttonsContainer}>
           <StyledButton
-            onPress={handleNavigateProfile}
-            children="Modficar datos"
+            onPress={handleNavigateModifyFamily}
+            children="Agregar"
           />
 
           <StyledButton

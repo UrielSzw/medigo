@@ -65,7 +65,7 @@ const initialState = {
     sexo: '',
     nombre: '',
     apellido: '',
-    dni: '',
+    fechaNacimiento: '',
   },
 };
 
@@ -75,6 +75,7 @@ export const userSlice = createSlice({
   reducers: {
     setUserData: (state, action) => {
       state.userData = {...state.userData, ...action.payload};
+      console.log('state.userData', state.userData);
     },
     setUserState: (state, action) => {
       state.userState = {...state.userState, ...action.payload};

@@ -9,6 +9,8 @@ import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
 import {removeRequestDetails, setUserState} from '../../../redux/user.slice';
 import {styles} from './ListOfDoctors.styles';
 import {formatTime} from '../../../utils/commonMethods';
+import {setSpinner} from '../../../utils/setSpinner';
+import {apiCancelBeforeStart} from '../../../utils/api/patientRoutes';
 
 export const ListOfDoctors = ({
   setFilterModal,
@@ -56,10 +58,25 @@ export const ListOfDoctors = ({
     setData(dataFiltered);
   }, [filter, listOfDoctorsData]);
 
-  const handleBackToStart = () => {
-    dispatch(setUserState({listOfDoctorsState: false}));
-    dispatch(removeRequestDetails());
+  const handleBackToStart = async () => {
+    try {
+      setSpinner(true);
+      const response = await apiCancelBeforeStart();
+
+      if (response.state === 'cancelada') {
+        dispatch(setUserState({listOfDoctorsState: false}));
+        dispatch(removeRequestDetails());
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setSpinner(false);
+    }
   };
+
+  useEffect(() => {
+    setSpinner(false);
+  }, []);
 
   return (
     <View style={styles.wrapper}>

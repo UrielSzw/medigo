@@ -19,6 +19,7 @@ export const PATHS = {
   FAMILYMEMBERS: 'familyMembersPat',
   FAMILYMEMBERACTIVITY: 'familyMemberAct',
   FAMILYMEMBERINFO: 'familyMemberInfo',
+  MODIFYFAMILY: 'modifyFamilyData',
   HELPPAT: 'helpPat',
   HELPDOC: 'helpDoc',
 };

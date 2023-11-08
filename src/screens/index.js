@@ -20,3 +20,4 @@ export * from './Patient/HelpPat/HelpPat.screen';
 export * from './Doctor/HelpDoc/HelpDoc.screen';
 export * from './Doctor/PatInfoDoc/PatInfoDoc.component';
 export * from './Patient/FamilyMemberInfo/FamilyMemberInfo.component';
+export * from './Patient/ModifyFamily/ModifyFamily.screen';

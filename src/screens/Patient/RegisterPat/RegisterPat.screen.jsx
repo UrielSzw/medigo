@@ -13,6 +13,7 @@ import {MedigoLogoIcon} from '../../../assets';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {apiPatientRegister} from '../../../utils/api/patientRoutes';
 import {setSpinner} from '../../../utils/setSpinner';
+import {setModal} from '../../../utils/setModal';
 import {styles} from './RegisterPat.styles';
 
 export const RegisterPat = ({navigation}) => {
@@ -27,8 +28,14 @@ export const RegisterPat = ({navigation}) => {
       try {
         setSpinner(true);
         const response = await apiPatientRegister(data);
-
-        if (response) {
+        console.log(response);
+        if (!response.success) {
+          setModal({
+            title: 'El email escrito ya existe',
+            message: 'El email ya esta en uso, intente ingresar otro email',
+            show: true,
+          });
+        } else if (response.success) {
           navigation.navigate(PATHS.LOGIN);
         }
       } catch (e) {

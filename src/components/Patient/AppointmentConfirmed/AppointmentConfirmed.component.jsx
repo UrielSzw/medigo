@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState, useContext} from 'react';
-import {View} from 'react-native';
+import {AppState, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {ClockIcon, DefaultProfile} from '../../../assets';
@@ -100,7 +100,9 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
         setCount(count - 1);
       }, 1000);
     } else if (count % 15 === 0) {
-      checkIfAppointmentEnded();
+      if (tokenUsuario.length > 5) {
+        checkIfAppointmentEnded();
+      }
       setTimeout(() => {
         setCount(count - 1);
       }, 1000);

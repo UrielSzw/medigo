@@ -150,7 +150,6 @@ export const HomePat = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      setSpinner(false);
       reset();
     }
   };
@@ -230,6 +229,10 @@ export const HomePat = () => {
       clearErrors('especialidad');
     }
   }, [grupoFamiliar, especialidad]);
+
+  useEffect(() => {
+    setModalDropdownsFamilyOptions();
+  }, [userData.grupoFamiliar]);
 
   return (
     <View style={styles.wrapper}>

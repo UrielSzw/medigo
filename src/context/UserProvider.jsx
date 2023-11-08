@@ -68,6 +68,7 @@ export const UserProvider = ({children}) => {
     const loadTokenFromStorage = async () => {
       try {
         const storedToken = await AsyncStorage.getItem('tokenUsuario');
+        console.log('storedToken', storedToken);
         if (storedToken) {
           setTokenUsuario(storedToken);
         }

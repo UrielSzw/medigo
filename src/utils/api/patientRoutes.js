@@ -78,6 +78,19 @@ const apiCancelDoctor = async () => {
   }
 };
 
+const apiCancelBeforeStart = async () => {
+  try {
+    console.log('apiCancelBeforeStart');
+    const responde = await api.put(
+      `${rutaClienteColsutas}/cancelar-consulta-sin-empezar`,
+    );
+    return responde.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 const apiReviewDoctor = async formData => {
   try {
     console.log('apiReviewDoctor');
@@ -111,5 +124,6 @@ export {
   apiGetPatientActivity,
   apiLastRequestState,
   apiCancelDoctor,
+  apiCancelBeforeStart,
   apiReviewDoctor,
 };
