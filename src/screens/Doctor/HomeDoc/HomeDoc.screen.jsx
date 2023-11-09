@@ -30,6 +30,7 @@ import {setSpinner} from '../../../utils/setSpinner';
 import {
   changeFechaSeleccion,
   decrementFechaSeleccion,
+  funcionPrueba,
   resetRequestData,
   setDoctorData,
   setRequestData,
@@ -41,7 +42,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const HomeDoc = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const {doctorData, requestData} = useSelector(state => state.doctorReducer);
+  const {doctorData, requestData, prueba} = useSelector(
+    state => state.doctorReducer,
+  );
   const [permisoDenegado, setPermisoDenegado] = useState(
     route.params ? route.params.permisoDenegado : undefined,
   );
@@ -117,23 +120,23 @@ export const HomeDoc = ({navigation, route}) => {
   };
 
   // const handleLeaveApp = async () => {
-  //   try {
-  //     setSpinner(true);
-  //     const response = await apiDoctorsUpdateState();
-  //     if (response.state === 'desconectado') {
-  //       dispatch(setDoctorData({active: false}));
-  //       dispatch(setRequestData({requested: false}));
-  //       console.log('desconectado');
-  //     } else {
-  //       console.log('conectado');
-  //       await apiDoctorsUpdateState();
-  //     }
-  //     toggleModal('active');
-  //   } catch (e) {
-  //     console.log(e);
-  //   } finally {
-  //     setSpinner(false);
+  // try {
+  //   setSpinner(true);
+  //   const response = await apiDoctorsUpdateState();
+  //   if (response.state === 'desconectado') {
+  //     dispatch(setDoctorData({active: false}));
+  //     dispatch(setRequestData({requested: false}));
+  //     console.log('desconectado');
+  //   } else {
+  //     console.log('conectado');
+  //     await apiDoctorsUpdateState();
   //   }
+  //   toggleModal('active');
+  // } catch (e) {
+  //   console.log(e);
+  // } finally {
+  //   setSpinner(false);
+  // }
   // };
 
   // useEffect(() => {

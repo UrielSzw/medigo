@@ -25,4 +25,8 @@ export const styles = StyleSheet.create({
     marginBottom: 3,
     marginRight: 3,
   },
+  carIcon: {
+    marginBottom: 2,
+    marginRight: 2,
+  },
 });

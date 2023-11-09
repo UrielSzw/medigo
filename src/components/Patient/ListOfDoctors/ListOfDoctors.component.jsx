@@ -6,7 +6,11 @@ import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {DoctorListItem} from '../../Doctor/DoctorListItem/DoctorListItem.component';
 import {FilterIcon} from '../../../assets';
 import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
-import {removeRequestDetails, setUserState} from '../../../redux/user.slice';
+import {
+  removeRequestDetails,
+  setDisabledCancelDateTime,
+  setUserState,
+} from '../../../redux/user.slice';
 import {styles} from './ListOfDoctors.styles';
 import {formatTime} from '../../../utils/commonMethods';
 import {setSpinner} from '../../../utils/setSpinner';
@@ -76,6 +80,7 @@ export const ListOfDoctors = ({
 
   useEffect(() => {
     setSpinner(false);
+    dispatch(setDisabledCancelDateTime('0'));
   }, []);
 
   return (
@@ -88,7 +93,7 @@ export const ListOfDoctors = ({
           <TouchableOpacity onPress={() => setFilterModal(true)}>
             <View style={styles.filterButton}>
               <FilterIcon />
-              <StyledText color="grey">Filtro</StyledText>
+              <StyledText color="grey">Ordenar</StyledText>
             </View>
           </TouchableOpacity>
         </View>

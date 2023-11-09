@@ -21,3 +21,4 @@ export * from './icons/pin_icon';
 export * from './icons/next_icon';
 export * from './icons/star_filled_icon';
 export * from './icons/star_outlined_icon';
+export * from './icons/car_icon';

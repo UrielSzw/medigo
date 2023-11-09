@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState, useContext} from 'react';
-import {AppState, View} from 'react-native';
+import {View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {ClockIcon, DefaultProfile} from '../../../assets';
@@ -10,6 +10,7 @@ import {
   addDoctorLicense,
   removeDoctorDetails,
   removeRequestDetails,
+  setDisabledCancelDateTime,
   setUserState,
 } from '../../../redux/user.slice';
 import {
@@ -19,18 +20,22 @@ import {
 import {setSpinner} from '../../../utils/setSpinner';
 import {setModal} from '../../../utils/setModal';
 import {UserContext} from '../../../context/UserProvider';
-import {formatTime} from '../../../utils/commonMethods';
+import {formatTime, getFutureDate} from '../../../utils/commonMethods';
 import {styles} from './AppointmentConfirmed.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TOTAL_TIME = 1200;
+const DISABLED_TIME = 120;
 
 export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
-  const {doctorDetails} = useSelector(state => state.userReducer);
+  const {doctorDetails, disabledCancelDateTime} = useSelector(
+    state => state.userReducer,
+  );
   const {tokenUsuario} = useContext(UserContext);
   const dispatch = useDispatch();
   const [count, setCount] = useState(0);
   const [disabled, setDisabled] = useState(false);
+  const [disabledTimeCancel, setDisabledTimeCancel] = useState(null);
 
   const getTitle = () => {
     if (doctorDetails.sexo === 'F') {
@@ -107,7 +112,21 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (count === TOTAL_TIME - 120) {
+      const currentDate = new Date();
+
+      console.log('currentDate', currentDate);
+      console.log('disabledCancelDateTime', disabledTimeCancel);
+      console.log(
+        'currentDate >= disabledCancelDateTime',
+        currentDate >= disabledTimeCancel,
+      );
+
+      if (
+        currentDate >= disabledTimeCancel &&
+        !disabled &&
+        disabledTimeCancel
+      ) {
+        console.log('disabled', disabled);
         setDisabled(true);
         setTimeout(() => {
           setCount(count - 1);
@@ -130,6 +149,14 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
 
   useEffect(() => {
     setCount(TOTAL_TIME);
+    if (disabledCancelDateTime?.length < 4) {
+      const disabledTime = getFutureDate(DISABLED_TIME);
+      dispatch(setDisabledCancelDateTime(disabledTime.toISOString()));
+      setDisabledTimeCancel(disabledTime);
+    } else {
+      const disabledTime = new Date(disabledCancelDateTime);
+      setDisabledTimeCancel(disabledTime);
+    }
   }, []);
 
   return (

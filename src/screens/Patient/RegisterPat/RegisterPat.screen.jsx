@@ -15,6 +15,7 @@ import {apiPatientRegister} from '../../../utils/api/patientRoutes';
 import {setSpinner} from '../../../utils/setSpinner';
 import {setModal} from '../../../utils/setModal';
 import {styles} from './RegisterPat.styles';
+import {formatToDate} from '../../../utils/commonMethods';
 
 export const RegisterPat = ({navigation}) => {
   const {
@@ -23,11 +24,34 @@ export const RegisterPat = ({navigation}) => {
     formState: {errors},
   } = useForm();
 
+  const formatAllDates = formData => {
+    let familyGroupDates = [];
+
+    const firstDate = formatToDate(formData.fechaNacimiento);
+
+    if (formData.grupoFamiliar.length > 1) {
+      formData.grupoFamiliar.map(fam => {
+        familyGroupDates.push({
+          ...fam,
+          fechaNacimiento: formatToDate(fam.fechaNacimiento),
+        });
+      });
+    }
+
+    return {
+      ...formData,
+      fechaNacimiento: firstDate,
+      grupoFamiliar: familyGroupDates,
+    };
+  };
+
   const onSubmit = async data => {
     if (data) {
       try {
         setSpinner(true);
-        const response = await apiPatientRegister(data);
+
+        const response = await apiPatientRegister(formatAllDates(data));
+
         console.log(response);
         if (!response.success) {
           setModal({

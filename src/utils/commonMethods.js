@@ -54,3 +54,14 @@ export const formatTime = minutes => {
     return `${minutesFrom} - ${minutesTo}`;
   }
 };
+
+export const formatToDate = dateStr => {
+  const parts = dateStr.split('-');
+  return new Date(parts[2], parts[1] - 1, parts[0]);
+};
+
+export const getFutureDate = seconds => {
+  const currentDate = new Date();
+  currentDate.setSeconds(currentDate.getSeconds() + seconds);
+  return currentDate;
+};

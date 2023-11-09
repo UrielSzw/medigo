@@ -77,6 +77,7 @@ const initialState = {
     request: false,
     waitingTime: false,
   },
+  disabledCancelDateTime: '0',
 };
 
 export const userSlice = createSlice({
@@ -85,7 +86,7 @@ export const userSlice = createSlice({
   reducers: {
     setUserData: (state, action) => {
       state.userData = {...state.userData, ...action.payload};
-      console.log('state.userData', state.userData);
+      console.log('state.userData', state.disabledCancelDateTime);
     },
     setUserState: (state, action) => {
       state.userState = {...state.userState, ...action.payload};
@@ -104,6 +105,9 @@ export const userSlice = createSlice({
     },
     setFamilyMemberSelected: (state, action) => {
       state.familyMemberSelected = action.payload;
+    },
+    setDisabledCancelDateTime: (state, action) => {
+      state.disabledCancelDateTime = action.payload;
     },
     addDoctorLicense: (state, action) => {
       state.avoidDoctors.license.push(action.payload);
@@ -136,6 +140,7 @@ export const {
   setRequestDetails,
   setListOfDoctorsData,
   setFamilyMemberSelected,
+  setDisabledCancelDateTime,
   addDoctorLicense,
   removeDoctorDetails,
   removeRequestDetails,

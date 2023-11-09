@@ -18,6 +18,7 @@ import {apiDoctorsRegister} from '../../../utils/api/doctorRoutes';
 import {setSpinner} from '../../../utils/setSpinner';
 import {styles} from './RegisterDoc.styles';
 import {setModal} from '../../../utils/setModal';
+import {formatToDate} from '../../../utils/commonMethods';
 
 export const RegisterDoc = ({navigation}) => {
   const {
@@ -42,7 +43,10 @@ export const RegisterDoc = ({navigation}) => {
       }
       try {
         setSpinner(true);
-        const response = await apiDoctorsRegister(data);
+        const response = await apiDoctorsRegister({
+          ...data,
+          fechaNacimiento: formatToDate(data.fechaNacimiento),
+        });
 
         if (!response.success) {
           setModal({

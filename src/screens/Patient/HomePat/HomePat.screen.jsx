@@ -35,6 +35,7 @@ import {
 } from '../../../redux/user.slice';
 import {setEspecialidades} from '../../../redux/common.slice';
 import {styles} from './HomePat.styles';
+import {setModal} from '../../../utils/setModal';
 
 export const HomePat = () => {
   const {
@@ -42,6 +43,7 @@ export const HomePat = () => {
     handleSubmit,
     setError,
     clearErrors,
+    setValue,
     reset,
     formState: {errors},
   } = useForm();
@@ -104,6 +106,16 @@ export const HomePat = () => {
         const latitude = locationData[0].lat;
         const longitude = locationData[0].lon;
 
+        if (!latitude || !longitude) {
+          setModal({
+            title: 'Direccion no encontrada',
+            message:
+              'La direccion ingresada es invalida, revisa los datos y volve a intentar',
+            show: true,
+          });
+          return;
+        }
+
         const nombrePaciente = grupoFamiliar.split(' ')[0];
         const apellidoPaciente = grupoFamiliar.split(' ')[1];
 
@@ -130,16 +142,18 @@ export const HomePat = () => {
           dispatch(setListOfDoctorsData(responseDoctors.result));
         }
       } else {
-        // No se encontró una ubicación, maneja el error o muestra un mensaje
-        setError('direccion', {
-          type: 'manual',
-          message: 'Dirección no encontrada',
+        setModal({
+          title: 'Direccion no encontrada',
+          message:
+            'La direccion ingresada es invalida, revisa los datos y volve a intentar',
+          show: true,
         });
       }
     } catch (error) {
       console.log(error);
     } finally {
       reset();
+      setSpinner(false);
     }
   };
 
@@ -186,6 +200,10 @@ export const HomePat = () => {
       userData.grupoFamiliar.forEach(fam => {
         familyOptions.push(`${fam.nombre} ${fam.apellido}`);
       });
+    }
+
+    if (familyOptions.length === 1) {
+      setGrupoFamiliar(familyOptions[0]);
     }
 
     setFamilyMembersOptions(familyOptions);
@@ -283,6 +301,8 @@ export const HomePat = () => {
             handleSubmit={handleSubmit}
             onSubmit={onSubmit}
             setOpenMedicModal={() => toggleModal('request')}
+            familyMembersOptions={familyMembersOptions}
+            setValue={setValue}
           />
         }
         open={userModals.request}

@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import {ClockIcon, DefaultProfile} from '../../../assets';
+import {CarIcon, ClockIcon, DefaultProfile} from '../../../assets';
 import {StyledText} from '../StyledText/StyledText.component';
 import {styles} from './UserDataItem.styles';
 
@@ -27,6 +27,7 @@ export const UserDataItem = ({
       </View>
       {showTime && (
         <View style={styles.time}>
+          <CarIcon style={styles.carIcon} />
           <ClockIcon fill="#8696BB" style={styles.icon} />
           <StyledText color="grey">{time} m</StyledText>
         </View>

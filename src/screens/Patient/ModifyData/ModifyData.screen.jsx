@@ -13,7 +13,7 @@ import {
 } from '../../../components';
 import {PersonalDataIcon} from '../../../assets';
 import {PATHS} from '../../../routes/paths';
-import {formatDate} from '../../../utils/commonMethods';
+import {formatDate, formatToDate} from '../../../utils/commonMethods';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {apiPatientUpdate} from '../../../utils/api/patientRoutes';
 import {setSpinner} from '../../../utils/setSpinner';
@@ -36,10 +36,20 @@ export const ModifyData = ({navigation}) => {
   const onSubmit = async data => {
     try {
       setSpinner(true);
-      const response = await apiPatientUpdate(data);
+      const fechaNacimiento = formatToDate(data.fechaNacimiento);
+
+      const response = await apiPatientUpdate({
+        ...data,
+        fechaNacimiento,
+      });
 
       if (response) {
-        dispatch(setUserData(data));
+        dispatch(
+          setUserData({
+            ...data,
+            fechaNacimiento,
+          }),
+        );
         handleBackPersonalData();
       }
     } catch (e) {

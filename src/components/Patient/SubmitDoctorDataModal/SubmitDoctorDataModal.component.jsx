@@ -19,10 +19,9 @@ export const SubmitDoctorDataModal = ({
   onSubmit,
   setOpenMedicModal,
   errors,
+  familyMembersOptions,
 }) => {
   const {userData} = useSelector(state => state.userReducer);
-
-  console.log('dadadasd', userData);
 
   return (
     <KeyboardAwareScrollView
@@ -76,8 +75,11 @@ export const SubmitDoctorDataModal = ({
           <StyledButton
             style={errors?.familyGroup && {borderColor: 'red'}}
             variant="empty"
+            disabled={familyMembersOptions.length === 1}
             onPress={() => setGrupoFamiliarModal(true)}>
-            {grupoFamiliar}
+            {familyMembersOptions.length === 1
+              ? familyMembersOptions
+              : grupoFamiliar}
           </StyledButton>
           {errors?.familyGroup && (
             <StyledText size="sm" color="red">

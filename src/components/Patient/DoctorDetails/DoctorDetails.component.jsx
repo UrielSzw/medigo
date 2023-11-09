@@ -4,8 +4,9 @@ import {useSelector} from 'react-redux';
 import {UserDataItem} from '../../Common/UserDataItem/UserDataItem.component';
 import {MoneyIcon, StarIcon} from '../../../assets';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
-import {styles} from './DoctorDetails.styles';
 import {StyledButton} from '../../Common/StyledButton/StyledButton.component';
+import {formatTime} from '../../../utils/commonMethods';
+import {styles} from './DoctorDetails.styles';
 
 export const DoctorDetails = ({setDoctorDetailsModal, handleRequestDoctor}) => {
   const {doctorDetails} = useSelector(state => state.userReducer);
@@ -13,7 +14,7 @@ export const DoctorDetails = ({setDoctorDetailsModal, handleRequestDoctor}) => {
     <View>
       <UserDataItem
         showTime
-        time={doctorDetails?.tiempo}
+        time={formatTime(doctorDetails?.tiempo)}
         name={`${doctorDetails?.nombre} ${doctorDetails?.apellido}`}
         category={doctorDetails?.especialidad}
       />

@@ -12,6 +12,8 @@ import {HelpIcon, PersonalDataIcon, ActivityIcon} from '../../../assets';
 import {PATHS} from '../../../routes/paths';
 import {clearAllDoctor} from '../../../redux/doctor.slice';
 import {styles} from './PerfilDoc.styles';
+import {setSpinner} from '../../../utils/setSpinner';
+import {apiDoctorsUpdateState} from '../../../utils/api/doctorRoutes';
 
 export const PerfilDoc = ({navigation}) => {
   const {doctorData, requestData} = useSelector(state => state.doctorReducer);
@@ -29,7 +31,19 @@ export const PerfilDoc = ({navigation}) => {
   };
 
   const handleLogout = async () => {
-    dispatch(clearAllDoctor());
+    try {
+      setSpinner(true);
+
+      if (doctorData.active) {
+        await apiDoctorsUpdateState();
+      }
+
+      dispatch(clearAllDoctor());
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setSpinner(false);
+    }
   };
 
   return (
