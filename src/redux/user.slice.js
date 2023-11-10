@@ -78,6 +78,8 @@ const initialState = {
     waitingTime: false,
   },
   disabledCancelDateTime: '0',
+  waitingCount: '0',
+  waitingModal: false,
 };
 
 export const userSlice = createSlice({
@@ -108,6 +110,12 @@ export const userSlice = createSlice({
     },
     setDisabledCancelDateTime: (state, action) => {
       state.disabledCancelDateTime = action.payload;
+    },
+    setWaitingCount: (state, action) => {
+      state.waitingCount = action.payload;
+    },
+    setWaitingModal: (state, action) => {
+      state.waitingModal = action.payload;
     },
     addDoctorLicense: (state, action) => {
       state.avoidDoctors.license.push(action.payload);
@@ -141,6 +149,8 @@ export const {
   setListOfDoctorsData,
   setFamilyMemberSelected,
   setDisabledCancelDateTime,
+  setWaitingCount,
+  setWaitingModal,
   addDoctorLicense,
   removeDoctorDetails,
   removeRequestDetails,

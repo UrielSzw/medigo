@@ -68,6 +68,7 @@ const apiLastRequestState = async () => {
 };
 
 const apiCancelDoctor = async () => {
+  console.log('apiCancelDoctor');
   try {
     console.log('apiCancelDoctor');
     const responde = await api.put(`${rutaClienteColsutas}/cancelar-consulta`);
@@ -84,6 +85,17 @@ const apiCancelBeforeStart = async () => {
     const responde = await api.put(
       `${rutaClienteColsutas}/cancelar-consulta-sin-empezar`,
     );
+    return responde.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+const apiRemoveRequest = async () => {
+  try {
+    console.log('apiRemoveRequest');
+    const responde = await api.put(`${rutaClienteColsutas}/remover-consulta`);
     return responde.data;
   } catch (error) {
     console.error(error);
@@ -126,4 +138,5 @@ export {
   apiCancelDoctor,
   apiCancelBeforeStart,
   apiReviewDoctor,
+  apiRemoveRequest,
 };

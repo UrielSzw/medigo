@@ -6,23 +6,27 @@ import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {
   apiLastRequestState,
   apiListOfDoctors,
+  apiRemoveRequest,
 } from '../../../utils/api/patientRoutes';
 import {setSpinner} from '../../../utils/setSpinner';
 import {
   addDoctorLicense,
   setListOfDoctorsData,
   setUserState,
+  setWaitingCount,
+  setWaitingModal,
 } from '../../../redux/user.slice';
 import {styles} from './WaitingModal.styles';
 import {setModal} from '../../../utils/setModal';
+import {calculateTimeDifference} from '../../../utils/commonMethods';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const WaitingModal = ({visible, setVisible, countNumber}) => {
-  const {doctorDetails, requestDetails} = useSelector(
-    state => state.userReducer,
-  );
+export const WaitingModal = () => {
+  const {doctorDetails, requestDetails, waitingCount, waitingModal} =
+    useSelector(state => state.userReducer);
   const dispatch = useDispatch();
-  const [count, setCount] = useState(0);
   const [endCount, setEndCount] = useState(false);
+  const [count, setCount] = useState(-1);
 
   const handleDoctorRequestWait = async () => {
     try {
@@ -32,7 +36,7 @@ export const WaitingModal = ({visible, setVisible, countNumber}) => {
       if (requestDoctor.result === 'en curso') {
         setSpinner(true);
         console.log('en curso');
-        setVisible(false);
+        dispatch(setWaitingModal(false));
         dispatch(
           setUserState({appointmentState: true, listOfDoctorsState: false}),
         );
@@ -47,7 +51,7 @@ export const WaitingModal = ({visible, setVisible, countNumber}) => {
         if (responseNewDoctors.result) {
           console.log('responseDoctors.result', responseNewDoctors.result);
           dispatch(setListOfDoctorsData(responseNewDoctors.result));
-          setVisible(false);
+          dispatch(setWaitingModal(false));
           setEndCount(true);
           setModal({
             show: true,
@@ -64,33 +68,88 @@ export const WaitingModal = ({visible, setVisible, countNumber}) => {
     }
   };
 
-  useEffect(() => {
-    if (count <= 0) {
-      setVisible(false);
-    } else if (endCount) {
-      setCount(0);
-      setEndCount(false);
-    } else {
-      setTimeout(() => {
-        setCount(count - 1);
-      }, 1000);
+  const handleRequestTimeOver = async () => {
+    try {
+      setSpinner(true);
+      dispatch(addDoctorLicense(doctorDetails.nroMatricula));
 
-      if (count % 6 === 0) {
-        console.log('count1', count);
-        handleDoctorRequestWait();
+      const result = await apiRemoveRequest();
+
+      if (result.state === 'cancelada') {
+        const responseNewDoctors = await apiListOfDoctors(requestDetails);
+
+        if (responseNewDoctors.result) {
+          dispatch(setListOfDoctorsData(responseNewDoctors.result));
+          dispatch(setWaitingCount('0'));
+          dispatch(setWaitingModal(false));
+        }
       }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setSpinner(false);
     }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (waitingModal) {
+        if (count > 0) {
+          setTimeout(() => {
+            setCount(count - 1);
+          }, 1000);
+        }
+
+        if (count === 0 || count < -1) {
+          await handleRequestTimeOver();
+        } else if (endCount) {
+          setCount(-1);
+          setEndCount(false);
+        } else if (count % 6 === 0) {
+          await handleDoctorRequestWait();
+        }
+      }
+    };
+    fetchData();
   }, [count]);
 
-  useEffect(() => {
-    if (visible) {
-      console.log('countNumber', countNumber);
-      setCount(countNumber || 60);
+  const handleDoctorRequestWaitWithToken = async () => {
+    try {
+      const tokenUsuarioSaved = await AsyncStorage.getItem('tokenUsuario');
+      if (tokenUsuarioSaved) {
+        await handleDoctorRequestWait();
+      }
+    } catch (error) {
+      console.error('Error fetching token or making API call:', error);
     }
-  }, [visible]);
+  };
+
+  useEffect(() => {
+    console.log('waitingCount', waitingCount);
+    const firstLoad = async () => {
+      if (waitingModal && waitingCount.length > 4) {
+        const time = new Date(waitingCount);
+        console.log('time', time);
+        const timeLeft = calculateTimeDifference(time, 60);
+        console.log('timeLeft', timeLeft);
+
+        if (timeLeft < 0) {
+          setSpinner(true);
+          await handleDoctorRequestWaitWithToken();
+        }
+
+        setCount(timeLeft);
+      }
+    };
+    firstLoad();
+  }, [waitingModal, waitingCount]);
+
+  if (!waitingModal) {
+    return null;
+  }
 
   return (
-    <Modal visible={visible} transparent>
+    <Modal visible={waitingModal} transparent>
       <View style={styles.background}>
         <StyledText style={styles.text} color="white">
           {count}

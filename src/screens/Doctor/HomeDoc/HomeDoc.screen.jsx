@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {View, Linking} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -30,10 +30,11 @@ import {setSpinner} from '../../../utils/setSpinner';
 import {
   changeFechaSeleccion,
   decrementFechaSeleccion,
-  funcionPrueba,
   resetRequestData,
   setDoctorData,
   setRequestData,
+  setTimeLeftInRequest,
+  toggleDoctorModal,
 } from '../../../redux/doctor.slice';
 import {calculateTimeDifference} from '../../../utils/commonMethods';
 import {setModal as setGenericModal} from '../../../utils/setModal';
@@ -42,20 +43,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const HomeDoc = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const {doctorData, requestData, prueba} = useSelector(
-    state => state.doctorReducer,
-  );
+  const {doctorData, requestData, doctorModals, timeLeftInRequest} =
+    useSelector(state => state.doctorReducer);
   const [permisoDenegado, setPermisoDenegado] = useState(
     route.params ? route.params.permisoDenegado : undefined,
   );
-
-  const [modal, setModal] = useState({
-    notes: false,
-    detail: false,
-    review: false,
-    active: false,
-    end: false,
-  });
 
   const [isSuccessful, setIsSuccessful] = useState(true);
 
@@ -70,14 +62,8 @@ export const HomeDoc = ({navigation, route}) => {
   };
 
   const toggleModal = name => {
-    setModal(prev => {
-      return {...prev, [name]: !prev[name]};
-    });
+    dispatch(toggleDoctorModal(name));
   };
-
-  useEffect(() => {
-    console.log('modal', modal);
-  }, [modal]);
 
   useEffect(() => {
     // Si el valor de la ruta cambia, actualiza el estado
@@ -192,7 +178,6 @@ export const HomeDoc = ({navigation, route}) => {
         const response = await apiDeclineRequest();
 
         if (response.state === 'seleccionando medico') {
-          toggleModal('detail');
           dispatch(setDoctorData({active: false}));
           dispatch(setRequestData({requested: false}));
         }
@@ -229,19 +214,33 @@ export const HomeDoc = ({navigation, route}) => {
     }
   };
 
+  const timer = useRef();
+
   useEffect(() => {
     if (requestData.requested) {
       if (requestData.fechaSeleccion === 0) {
         handlePatientRequestResponse(false);
         console.log('Cancelado la request');
       } else {
-        setTimeout(() => {
+        if (timer.current) {
+          clearTimeout(timer.current);
+        }
+        timer.current = setTimeout(() => {
           dispatch(decrementFechaSeleccion());
         }, 1000);
       }
     } else {
+      if (timer.current) {
+        clearTimeout(timer.current);
+      }
       dispatch(changeFechaSeleccion(-1));
     }
+
+    return () => {
+      if (timer.current) {
+        clearTimeout(timer.current);
+      }
+    };
   }, [requestData.requested, requestData.fechaSeleccion]);
 
   const handleAddNotes = () => {
@@ -276,13 +275,19 @@ export const HomeDoc = ({navigation, route}) => {
           response.result.fechaSeleccion,
           60,
         );
-        dispatch(
-          setRequestData({
-            ...response.result,
-            fechaSeleccion: timeLeft || 50,
-            requested: true,
-          }),
-        );
+
+        if (timeLeft > 1) {
+          const dateForString = new Date(response.result.fechaSeleccion);
+
+          dispatch(setTimeLeftInRequest(dateForString.toISOString()));
+          dispatch(
+            setRequestData({
+              ...response.result,
+              fechaSeleccion: timeLeft,
+              requested: true,
+            }),
+          );
+        }
       }
     } catch (e) {
       console.log(e);
@@ -350,6 +355,24 @@ export const HomeDoc = ({navigation, route}) => {
     fetchData();
   }, [requestCount]);
 
+  useEffect(() => {
+    if (requestData.requested && timeLeftInRequest.length > 4) {
+      const time = new Date(timeLeftInRequest);
+      const timeLeft = calculateTimeDifference(time, 60);
+
+      if (timeLeft <= 0) {
+        dispatch(resetRequestData());
+        dispatch(setTimeLeftInRequest('0'));
+      }
+
+      dispatch(
+        setRequestData({
+          fechaSeleccion: timeLeft || 50,
+        }),
+      );
+    }
+  }, []);
+
   return (
     <View style={styles.wrapper}>
       <View>
@@ -414,10 +437,10 @@ export const HomeDoc = ({navigation, route}) => {
             </View>
           </View>
         }
-        open={modal.active}
+        open={doctorModals.active}
       />
       <StyledModal
-        open={modal.detail}
+        open={doctorModals.detail}
         title={
           <View style={styles.headerModalWrapper}>
             <StyledText color="white" size="xs">
@@ -442,7 +465,7 @@ export const HomeDoc = ({navigation, route}) => {
             setPatientReviewModal={() => toggleModal('review')}
           />
         }
-        open={modal.review}
+        open={doctorModals.review}
       />
       <StyledModal
         title="Estado de la consulta"
@@ -453,12 +476,12 @@ export const HomeDoc = ({navigation, route}) => {
             handleEndAppointment={handleEndAppointment}
           />
         }
-        open={modal.end}
+        open={doctorModals.end}
       />
       <StyledModal
         title="Agregar Notas"
         content={<AddNotesModal setNotesModal={() => toggleModal('notes')} />}
-        open={modal.notes}
+        open={doctorModals.notes}
       />
     </View>
   );

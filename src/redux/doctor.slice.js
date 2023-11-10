@@ -54,6 +54,14 @@ const initialState = {
     sexo: '',
     fechaNacimiento: '',
   },
+  doctorModals: {
+    notes: false,
+    detail: false,
+    review: false,
+    active: false,
+    end: false,
+  },
+  timeLeftInRequest: '0',
 };
 
 export const doctorSlice = createSlice({
@@ -70,6 +78,9 @@ export const doctorSlice = createSlice({
     setDoctorActivity: (state, action) => {
       state.doctorActivity = action.payload;
     },
+    setTimeLeftInRequest: (state, action) => {
+      state.timeLeftInRequest = action.payload;
+    },
     resetRequestData: (state, action) => {
       state.requestData = initialState.requestData;
     },
@@ -78,6 +89,12 @@ export const doctorSlice = createSlice({
     },
     decrementFechaSeleccion: state => {
       state.requestData.fechaSeleccion -= 1;
+    },
+    toggleDoctorModal: (state, action) => {
+      const modalName = action.payload;
+      if (state.doctorModals.hasOwnProperty(modalName)) {
+        state.doctorModals[modalName] = !state.doctorModals[modalName];
+      }
     },
     clearAllDoctor: (state, action) => {
       return initialState;
@@ -89,9 +106,11 @@ export const {
   setDoctorData,
   setDoctorActivity,
   setRequestData,
+  setTimeLeftInRequest,
   resetRequestData,
   changeFechaSeleccion,
   decrementFechaSeleccion,
+  toggleDoctorModal,
   clearAllDoctor,
 } = doctorSlice.actions;
 

@@ -31,6 +31,8 @@ import {
   setListOfDoctorsData,
   setRequestDetails,
   setUserState,
+  setWaitingCount,
+  setWaitingModal,
   toggleUserModal,
 } from '../../../redux/user.slice';
 import {setEspecialidades} from '../../../redux/common.slice';
@@ -47,12 +49,18 @@ export const HomePat = () => {
     reset,
     formState: {errors},
   } = useForm();
-  const {userData, userState, doctorDetails, requestDetails, userModals} =
-    useSelector(state => state.userReducer);
+  const {
+    userData,
+    userState,
+    doctorDetails,
+    requestDetails,
+    userModals,
+    waitingModal,
+  } = useSelector(state => state.userReducer);
   const {especialidades} = useSelector(state => state.commonReducer);
   const dispatch = useDispatch();
 
-  const [waiting, setWaiting] = useState(false);
+  // const [waiting, setWaiting] = useState(false);
   const [especialidad, setEspecialidad] = useState('Seleccione especialidad');
   const [grupoFamiliar, setGrupoFamiliar] = useState(
     'Seleccione grupo familiar',
@@ -162,8 +170,6 @@ export const HomePat = () => {
     toggleModal('doctorDetails');
   };
 
-  const [waitingTime, setWaitingTime] = useState(0);
-
   const handleRequestDoctor = async () => {
     try {
       setSpinner(true);
@@ -178,11 +184,14 @@ export const HomePat = () => {
       console.log('response', response);
 
       if (response.estado === 'solicitando medico') {
+        const currentDate = new Date();
+        // const timeLeft = calculateTimeDifference(currentDate, 60);
+        console.log('currentDate.toISOString()', currentDate.toISOString());
+        dispatch(setWaitingCount(currentDate.toISOString()));
         toggleModal('doctorDetails');
         console.log('solicitando medico', response.estado);
         console.log('response.hora', response.hora);
-        setWaitingTime(calculateTimeDifference(response.hora));
-        setWaiting(true);
+        dispatch(setWaitingModal(true));
       }
     } catch (e) {
       console.log(e);
@@ -355,11 +364,7 @@ export const HomePat = () => {
         visible={userModals.filter}
         setVisible={() => toggleModal('filter')}
       />
-      <WaitingModal
-        visible={waiting}
-        setVisible={setWaiting}
-        countNumber={waitingTime}
-      />
+      <WaitingModal />
     </View>
   );
 };
