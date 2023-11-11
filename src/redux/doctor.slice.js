@@ -73,7 +73,6 @@ export const doctorSlice = createSlice({
     },
     setRequestData: (state, action) => {
       state.requestData = {...state.requestData, ...action.payload};
-      console.log('dasdasasd', state.requestData);
     },
     setDoctorActivity: (state, action) => {
       state.doctorActivity = action.payload;

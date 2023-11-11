@@ -88,7 +88,6 @@ export const userSlice = createSlice({
   reducers: {
     setUserData: (state, action) => {
       state.userData = {...state.userData, ...action.payload};
-      console.log('state.userData', state.disabledCancelDateTime);
     },
     setUserState: (state, action) => {
       state.userState = {...state.userState, ...action.payload};
@@ -128,8 +127,6 @@ export const userSlice = createSlice({
         fechaNacimientoViejo,
       } = action.payload;
 
-      console.log('ANTES', state.userData.grupoFamiliar);
-
       const newFamilyGroup = state.userData.grupoFamiliar.map(fam => {
         if (
           fam.nombre === nombreViejo &&
@@ -155,19 +152,15 @@ export const userSlice = createSlice({
       });
 
       state.userData.grupoFamiliar = newFamilyGroup;
-
-      console.log('DESPUES', state.userData.grupoFamiliar);
     },
     addDoctorLicense: (state, action) => {
       state.avoidDoctors.license.push(action.payload);
-      console.log('nroMatricula', state.avoidDoctors.license);
     },
     removeDoctorDetails: (state, action) => {
       state.doctorDetails = initialState.doctorDetails;
     },
     removeRequestDetails: (state, action) => {
       state.requestDetails = initialState.requestDetails;
-      console.log('removeRequestDetails', state.requestDetails);
     },
     toggleUserModal: (state, action) => {
       const modalName = action.payload;

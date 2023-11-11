@@ -23,7 +23,6 @@ export const UserProvider = ({children}) => {
           const {tokenUsuario} = parsedCookies;
           console.log('tokenUsuario', tokenUsuario);
           if (tokenUsuario && tokenUsuario !== '') {
-            console.log('5', tokenUsuario);
             response.tokenUsuario = tokenUsuario;
             setTokenUsuario(tokenUsuario);
           }
@@ -56,7 +55,6 @@ export const UserProvider = ({children}) => {
   // hace que el header con la cookie se agregue a cada peticion al servidor
   const _addTokenUsuarioCookieReq = () =>
     api.interceptors.request.use(config => _setearRequest(config));
-  console.log('4');
   // actualiza la cookie para las peticiones al servidor cada vez que esta cambia
   useEffect(() => {
     //primero limpia las cookies que existian
@@ -72,7 +70,6 @@ export const UserProvider = ({children}) => {
         console.log('storedToken', storedToken);
         if (storedToken) {
           setTokenUsuario(storedToken);
-          console.log('2');
         }
       } catch (error) {
         console.error('Error loading token from AsyncStorage:', error);
@@ -87,7 +84,6 @@ export const UserProvider = ({children}) => {
     async function saveTokenToStorage() {
       try {
         await AsyncStorage.setItem('tokenUsuario', tokenUsuario);
-        console.log('3');
       } catch (error) {
         console.error('Error saving token to AsyncStorage:', error);
       }

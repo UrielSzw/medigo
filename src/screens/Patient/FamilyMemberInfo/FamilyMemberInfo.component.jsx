@@ -41,12 +41,6 @@ export const FamilyMemberInfo = ({navigation}) => {
         fam => fam.nombre !== familyMemberSelected.nombre,
       );
 
-      console.log('dasughduaysd', {
-        nombre: familyMemberSelected.nombre,
-        apellido: familyMemberSelected.apellido,
-        fechaNacimiento: familyMemberSelected.fechaNacimiento,
-      });
-
       const response = await apiDeleteFamilyMember({
         nombre: familyMemberSelected.nombre,
         apellido: familyMemberSelected.apellido,

@@ -85,16 +85,13 @@ export const HomeDoc = ({navigation, route}) => {
 
   const handleConfirmarClick = async () => {
     try {
-      console.log('handleConfirmarClick');
       setSpinner(true);
       const response = await apiDoctorsUpdateState();
       if (response.state === 'desconectado') {
         setSpinner(false);
         dispatch(setDoctorData({active: false}));
         dispatch(setRequestData({requested: false}));
-        console.log('desconectado');
       } else {
-        console.log('conectado');
         navigation.navigate(PATHS.MAP);
         dispatch(setDoctorData({active: true}));
         setPermisoDenegado(true);
@@ -105,45 +102,15 @@ export const HomeDoc = ({navigation, route}) => {
     }
   };
 
-  // const handleLeaveApp = async () => {
-  // try {
-  //   setSpinner(true);
-  //   const response = await apiDoctorsUpdateState();
-  //   if (response.state === 'desconectado') {
-  //     dispatch(setDoctorData({active: false}));
-  //     dispatch(setRequestData({requested: false}));
-  //     console.log('desconectado');
-  //   } else {
-  //     console.log('conectado');
-  //     await apiDoctorsUpdateState();
-  //   }
-  //   toggleModal('active');
-  // } catch (e) {
-  //   console.log(e);
-  // } finally {
-  //   setSpinner(false);
-  // }
-  // };
-
-  // useEffect(() => {
-  //   return () => {
-  //     if (doctorData.active) {
-  //       handleLeaveApp();
-  //     }
-  //   };
-  // }, []);
-
   const checkIfPatientCancel = async () => {
     try {
       const response = await apiLastRequestState();
 
       if (response) {
-        console.log('checkIfPatientCancel', response);
         if (response.result === 'cancelada') {
           setSpinner(true);
           dispatch(setRequestData({accepted: false}));
           dispatch(resetRequestData());
-          console.log('bhdasiyudhgiauyshdauis', response);
           setGenericModal({
             title: 'El paciente cancelo la consulta',
             message:
@@ -220,7 +187,6 @@ export const HomeDoc = ({navigation, route}) => {
     if (requestData.requested) {
       if (requestData.fechaSeleccion === 0) {
         handlePatientRequestResponse(false);
-        console.log('Cancelado la request');
       } else {
         if (timer.current) {
           clearTimeout(timer.current);
@@ -267,10 +233,7 @@ export const HomeDoc = ({navigation, route}) => {
     try {
       const response = await apiRequireRequest();
 
-      console.log('handlePatientRequest', response);
-
       if (response.result && !requestData.requested) {
-        console.log('apiRequireRequest', response.result);
         const timeLeft = calculateTimeDifference(
           response.result.fechaSeleccion,
           60,
@@ -315,7 +278,6 @@ export const HomeDoc = ({navigation, route}) => {
   useEffect(() => {
     if (doctorData.active && !requestData.requested && requestCount <= 0) {
       setTimeout(() => {
-        console.log('dasdsa');
         setRequestCount(1999);
       }, 10000);
     }
@@ -336,7 +298,6 @@ export const HomeDoc = ({navigation, route}) => {
     const fetchData = async () => {
       if (requestCount % 10 === 0 && doctorData.active) {
         await handlePatientRequestWithToken();
-        console.log('funcion ejecutada');
       }
 
       if (requestData.requested || !doctorData.active) {
@@ -350,7 +311,6 @@ export const HomeDoc = ({navigation, route}) => {
       if (requestCount === 0) {
         handleBackToInactive();
       }
-      console.log('requestCount', requestCount);
     };
     fetchData();
   }, [requestCount]);

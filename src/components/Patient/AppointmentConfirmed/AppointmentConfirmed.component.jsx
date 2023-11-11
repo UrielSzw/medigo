@@ -69,9 +69,7 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
 
   const checkIfAppointmentEnded = async () => {
     try {
-      console.log('tokenUsuario', tokenUsuario);
       if (tokenUsuario.length > 5) {
-        console.log('tokenUsuarioEntro', tokenUsuario.length);
         const response = await apiLastRequestState();
 
         if (response.result === 'cancelada') {
@@ -114,19 +112,11 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
     const fetchData = async () => {
       const currentDate = new Date();
 
-      console.log('currentDate', currentDate);
-      console.log('disabledCancelDateTime', disabledTimeCancel);
-      console.log(
-        'currentDate >= disabledCancelDateTime',
-        currentDate >= disabledTimeCancel,
-      );
-
       if (
         currentDate >= disabledTimeCancel &&
         !disabled &&
         disabledTimeCancel
       ) {
-        console.log('disabled', disabled);
         setDisabled(true);
         setTimeout(() => {
           setCount(count - 1);

@@ -30,12 +30,9 @@ export const WaitingModal = () => {
 
   const handleDoctorRequestWait = async () => {
     try {
-      console.log('count2');
       const requestDoctor = await apiLastRequestState();
-      console.log('count3', requestDoctor);
       if (requestDoctor.result === 'en curso') {
         setSpinner(true);
-        console.log('en curso');
         dispatch(setWaitingModal(false));
         dispatch(
           setUserState({appointmentState: true, listOfDoctorsState: false}),
@@ -43,13 +40,11 @@ export const WaitingModal = () => {
         setEndCount(true);
       } else if (requestDoctor.result === 'rechazada') {
         setSpinner(true);
-        console.log('rechazada');
         dispatch(addDoctorLicense(doctorDetails.nroMatricula));
 
         const responseNewDoctors = await apiListOfDoctors(requestDetails);
 
         if (responseNewDoctors.result) {
-          console.log('responseDoctors.result', responseNewDoctors.result);
           dispatch(setListOfDoctorsData(responseNewDoctors.result));
           dispatch(setWaitingModal(false));
           setEndCount(true);
@@ -125,13 +120,10 @@ export const WaitingModal = () => {
   };
 
   useEffect(() => {
-    console.log('waitingCount', waitingCount);
     const firstLoad = async () => {
       if (waitingModal && waitingCount.length > 4) {
         const time = new Date(waitingCount);
-        console.log('time', time);
         const timeLeft = calculateTimeDifference(time, 60);
-        console.log('timeLeft', timeLeft);
 
         if (timeLeft < 0) {
           setSpinner(true);

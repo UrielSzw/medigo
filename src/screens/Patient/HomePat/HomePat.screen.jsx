@@ -138,13 +138,10 @@ export const HomePat = () => {
           direccion: data.direccion,
         };
 
-        console.log('formData', formData);
-
         dispatch(setRequestDetails(formData));
         const responseDoctors = await apiListOfDoctors(formData);
 
         if (responseDoctors.result) {
-          console.log('responseDoctors.result', responseDoctors.result);
           dispatch(setUserState({listOfDoctorsState: true}));
           toggleModal('request');
           dispatch(setListOfDoctorsData(responseDoctors.result));
@@ -173,24 +170,15 @@ export const HomePat = () => {
   const handleRequestDoctor = async () => {
     try {
       setSpinner(true);
-      console.log('doctorDetails.nroMatricula', {
-        nroMatricula: doctorDetails.nroMatricula,
-        tiempoLLegada: doctorDetails.tiempo,
-      });
       const response = await apiRequestDoctor({
         nroMatricula: doctorDetails.nroMatricula,
         tiempoLLegada: doctorDetails.tiempo,
       });
-      console.log('response', response);
 
       if (response.estado === 'solicitando medico') {
         const currentDate = new Date();
-        // const timeLeft = calculateTimeDifference(currentDate, 60);
-        console.log('currentDate.toISOString()', currentDate.toISOString());
         dispatch(setWaitingCount(currentDate.toISOString()));
         toggleModal('doctorDetails');
-        console.log('solicitando medico', response.estado);
-        console.log('response.hora', response.hora);
         dispatch(setWaitingModal(true));
       }
     } catch (e) {

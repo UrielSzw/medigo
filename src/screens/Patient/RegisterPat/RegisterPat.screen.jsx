@@ -52,7 +52,6 @@ export const RegisterPat = ({navigation}) => {
 
         const response = await apiPatientRegister(formatAllDates(data));
 
-        console.log(response);
         if (!response.success) {
           setModal({
             title: 'El email escrito ya existe',

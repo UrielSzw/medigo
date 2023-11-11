@@ -48,7 +48,6 @@ export const ActivityPat = ({navigation}) => {
 
       if (response) {
         setActivityList(response.result);
-        console.log(response.result);
       }
     } catch (e) {
       console.log(e);

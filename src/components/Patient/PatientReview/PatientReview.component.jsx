@@ -23,7 +23,6 @@ export const PatientReview = ({setDoctorReviewModal}) => {
 
   const handlePress = async () => {
     try {
-      console.log('handlePress');
       if (rating === 0) {
         setShowError(true);
         return;
@@ -33,9 +32,6 @@ export const PatientReview = ({setDoctorReviewModal}) => {
         valoracion: rating,
         comentario: comment,
       });
-
-      console.log(endAppointment);
-      console.log('endAppointment');
 
       if (endAppointment.state === 'calificando') {
         setDoctorReviewModal();
