@@ -10,6 +10,7 @@ import {FooterDoc, StyledButton, StyledText} from '../../../components';
 import {PATHS} from '../../../routes/paths';
 import {styles} from './Map.Styles';
 import {setSpinner} from '../../../utils/setSpinner';
+import {PinIcon} from '../../../assets';
 
 export const Map = ({navigation}) => {
   const [currentLocation, setCurrentLocation] = useState(null);
@@ -59,6 +60,7 @@ export const Map = ({navigation}) => {
     };
 
     getLocation();
+    setSpinner(false);
 
     return () => {};
   }, []);
@@ -76,7 +78,6 @@ export const Map = ({navigation}) => {
       {currentLocation && (
         <MapView
           style={styles.map}
-          onMapLoaded={() => setSpinner(false)}
           initialRegion={{
             latitude: currentLocation.latitude,
             longitude: currentLocation.longitude,
@@ -91,9 +92,9 @@ export const Map = ({navigation}) => {
               longitude: currentLocation.longitude,
             }}
             title="Tu ubicación actual"
-            description="Manten para mover"
-            image={require('../../../assets/icons/pin_map.png')}
-          />
+            description="Manten para mover">
+            <PinIcon />
+          </Marker>
         </MapView>
       )}
 

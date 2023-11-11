@@ -339,7 +339,7 @@ export const HomePat = () => {
       <DropdownSelect
         dropdownValue={grupoFamiliar}
         setDropdownValue={setGrupoFamiliar}
-        title="Seleciona un grupoFamiliar"
+        title="Seleciona un grupo familiar"
         options={familyMembersOptions}
         visible={userModals.familyMembers}
         setVisible={() => toggleModal('familyMembers')}
@@ -347,7 +347,7 @@ export const HomePat = () => {
       <DropdownSelect
         dropdownValue={filter}
         setDropdownValue={setFilter}
-        title="Seleciona un grupoFamiliar"
+        title="Seleciona un filtro"
         options={['Precio', 'Tiempo', 'Calificacion']}
         visible={userModals.filter}
         setVisible={() => toggleModal('filter')}
