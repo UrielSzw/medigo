@@ -207,7 +207,7 @@ export const HomePat = () => {
 
     if (userData.grupoFamiliar.length > 0) {
       userData.grupoFamiliar.forEach(fam => {
-        familyOptions.push(`${fam.nombre} ${fam.apellido}`);
+        familyOptions.push(`${fam?.nombre} ${fam?.apellido}`);
       });
     }
 

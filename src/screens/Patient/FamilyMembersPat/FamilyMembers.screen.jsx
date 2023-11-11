@@ -1,6 +1,6 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {View} from 'react-native';
+import {View, ScrollView} from 'react-native';
 import {
   DoctorListItem,
   FooterPatient,
@@ -48,15 +48,22 @@ export const FamilyMembers = ({navigation}) => {
               Miembros Familiares
             </StyledText>
           </View>
-          {family?.map((fam, index) => (
-            <DoctorListItem
-              key={index}
-              buttonText="Mas informacion"
-              name={`${fam.nombre} ${fam.apellido}`}
-              category={`${fam.sexo[0]}`}
-              onPress={() => handleNavigateFamilyMemberInfo(fam)}
-            />
-          ))}
+          <ScrollView
+            contentContainerStyle={styles.contentScroll}
+            style={styles.scroll}>
+            {family?.map((fam, index) => (
+              <DoctorListItem
+                key={index}
+                buttonText="Mas informacion"
+                name={`${fam?.nombre} ${fam?.apellido}`}
+                category={`${fam?.sexo}`}
+                onPress={() => handleNavigateFamilyMemberInfo(fam)}
+              />
+            ))}
+            {family?.length === 0 && (
+              <StyledText>No tienes miembros en el grupo familiar</StyledText>
+            )}
+          </ScrollView>
         </View>
 
         <View style={styles.buttonsContainer}>

@@ -27,6 +27,7 @@ import {
   PatInfoDoc,
   FamilyMemberInfo,
   ModifyFamily,
+  ModifyFamilyMember,
 } from '../screens';
 import {GenericModal, Spinner} from '../components';
 import {PATHS} from './paths';
@@ -100,6 +101,10 @@ export const Routes = () => {
             />
             <Stack.Screen name={PATHS.MODIFYPATDATA} component={ModifyData} />
             <Stack.Screen name={PATHS.MODIFYFAMILY} component={ModifyFamily} />
+            <Stack.Screen
+              name={PATHS.MODIFYFAMILYMEMBER}
+              component={ModifyFamilyMember}
+            />
           </>
         ) : (
           <>

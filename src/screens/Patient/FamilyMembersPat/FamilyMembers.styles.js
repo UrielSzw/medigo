@@ -22,6 +22,12 @@ export const styles = StyleSheet.create({
   addressTop: {
     alignSelf: 'center',
   },
+  contentScroll: {
+    gap: 10,
+  },
+  scroll: {
+    height: 450,
+  },
   filterContainer: {
     flexDirection: 'row',
     gap: 4,

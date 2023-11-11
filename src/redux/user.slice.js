@@ -117,6 +117,47 @@ export const userSlice = createSlice({
     setWaitingModal: (state, action) => {
       state.waitingModal = action.payload;
     },
+    updateFamilyMember: (state, action) => {
+      const {
+        nombreViejo,
+        apellidoViejo,
+        nombreNuevo,
+        apellidoNuevo,
+        sexoNuevo,
+        fechaNacimientoNuevo,
+        fechaNacimientoViejo,
+      } = action.payload;
+
+      console.log('ANTES', state.userData.grupoFamiliar);
+
+      const newFamilyGroup = state.userData.grupoFamiliar.map(fam => {
+        if (
+          fam.nombre === nombreViejo &&
+          fam.apellido === apellidoViejo &&
+          fam.fechaNacimiento === fechaNacimientoViejo
+        ) {
+          state.familyMemberSelected = {
+            sexo: sexoNuevo,
+            nombre: nombreNuevo,
+            apellido: apellidoNuevo,
+            fechaNacimiento: fechaNacimientoNuevo,
+          };
+
+          return {
+            sexo: sexoNuevo,
+            nombre: nombreNuevo,
+            apellido: apellidoNuevo,
+            fechaNacimiento: fechaNacimientoNuevo,
+          };
+        } else {
+          return fam;
+        }
+      });
+
+      state.userData.grupoFamiliar = newFamilyGroup;
+
+      console.log('DESPUES', state.userData.grupoFamiliar);
+    },
     addDoctorLicense: (state, action) => {
       state.avoidDoctors.license.push(action.payload);
       console.log('nroMatricula', state.avoidDoctors.license);
@@ -151,6 +192,7 @@ export const {
   setDisabledCancelDateTime,
   setWaitingCount,
   setWaitingModal,
+  updateFamilyMember,
   addDoctorLicense,
   removeDoctorDetails,
   removeRequestDetails,

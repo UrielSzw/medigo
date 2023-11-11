@@ -26,6 +26,48 @@ const apiPatientRegister = async patient => {
   }
 };
 
+const apiDeleteFamilyMember = async famMember => {
+  try {
+    console.log('apiDeleteFamilyMember');
+    const responde = await api.put(
+      `${rutaCliente}/eliminar-miembro`,
+      famMember,
+    );
+    return responde.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+const apiAddFamilyMember = async famMember => {
+  try {
+    console.log('apiAddFamilyMember');
+    const responde = await api.post(
+      `${rutaCliente}/agregar-miembro`,
+      famMember,
+    );
+    return responde.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+const apiUpdateFamilyMember = async famMember => {
+  try {
+    console.log('apiUpdateFamilyMember');
+    const responde = await api.put(
+      `${rutaCliente}/modificar-miembro`,
+      famMember,
+    );
+    return responde.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 const apiListOfDoctors = async formData => {
   try {
     console.log('apiListOfDoctors');
@@ -131,6 +173,9 @@ const apiGetPatientActivity = async () => {
 export {
   apiPatientUpdate,
   apiPatientRegister,
+  apiDeleteFamilyMember,
+  apiAddFamilyMember,
+  apiUpdateFamilyMember,
   apiListOfDoctors,
   apiRequestDoctor,
   apiGetPatientActivity,

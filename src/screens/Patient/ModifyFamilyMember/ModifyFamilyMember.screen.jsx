@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, ScrollView} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {
@@ -10,17 +11,20 @@ import {
   WelcomePerfilHeader,
 } from '../../../components';
 import {PersonalDataIcon} from '../../../assets';
-import {styles} from './ModifyFamily.styles';
 import {useDispatch, useSelector} from 'react-redux';
 import {Controller, useForm} from 'react-hook-form';
 import {setSpinner} from '../../../utils/setSpinner';
 import {useNavigation} from '@react-navigation/native';
 import {PATHS} from '../../../routes/paths';
-import {setUserData} from '../../../redux/user.slice';
-import {apiAddFamilyMember} from '../../../utils/api/patientRoutes';
+import {styles} from './ModifyFamilyMember.styles';
+import {apiUpdateFamilyMember} from '../../../utils/api/patientRoutes';
+import {updateFamilyMember} from '../../../redux/user.slice';
+import {formatDate} from '../../../utils/commonMethods';
 
-export const ModifyFamily = () => {
-  const {userData} = useSelector(state => state.userReducer);
+export const ModifyFamilyMember = () => {
+  const {userData, familyMemberSelected} = useSelector(
+    state => state.userReducer,
+  );
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const {
@@ -29,23 +33,32 @@ export const ModifyFamily = () => {
     formState: {errors},
   } = useForm();
 
+  const [prevData, setPrevData] = useState({
+    nombreViejo: '',
+    apellidoViejo: '',
+    fechaNacimientoViejo: '',
+  });
+
   const handleBackFamilyMembers = () => {
-    navigation.navigate(PATHS.FAMILYMEMBERS);
+    navigation.navigate(PATHS.FAMILYMEMBERINFO);
   };
 
   const onSubmit = async data => {
     try {
       setSpinner(true);
-      const newFamilyMembers = [...userData.grupoFamiliar, data];
 
-      const response = await apiAddFamilyMember(data);
+      const famToEdit = {
+        ...prevData,
+        nombreNuevo: data.nombre,
+        apellidoNuevo: data.apellido,
+        sexoNuevo: data.sexo,
+        fechaNacimientoNuevo: data.fechaNacimiento,
+      };
+
+      const response = await apiUpdateFamilyMember(famToEdit);
 
       if (response.success) {
-        dispatch(
-          setUserData({
-            grupoFamiliar: newFamilyMembers,
-          }),
-        );
+        dispatch(updateFamilyMember(famToEdit));
         handleBackFamilyMembers();
       }
     } catch (e) {
@@ -54,6 +67,14 @@ export const ModifyFamily = () => {
       setSpinner(false);
     }
   };
+
+  useEffect(() => {
+    setPrevData({
+      nombreViejo: familyMemberSelected.nombre,
+      apellidoViejo: familyMemberSelected.apellido,
+      fechaNacimientoViejo: familyMemberSelected.fechaNacimiento,
+    });
+  }, []);
 
   return (
     <KeyboardAwareScrollView
@@ -67,13 +88,14 @@ export const ModifyFamily = () => {
         <View style={styles.wrapperTitle}>
           <PersonalDataIcon />
           <StyledText size="md" bold style={styles.wrapperTitleText}>
-            Crear nuevo miembro familiar
+            Modificar miembro familiar
           </StyledText>
         </View>
         <ScrollView>
           <View>
             <Controller
               control={control}
+              defaultValue={familyMemberSelected.nombre}
               name="nombre"
               rules={{
                 required: 'El nombre es obligatorio',
@@ -90,6 +112,7 @@ export const ModifyFamily = () => {
             <Controller
               control={control}
               name="apellido"
+              defaultValue={familyMemberSelected.apellido}
               rules={{
                 required: 'El apellido es obligatorio',
               }}
@@ -105,6 +128,7 @@ export const ModifyFamily = () => {
             <Controller
               control={control}
               name="sexo"
+              defaultValue={familyMemberSelected.sexo[0].toUpperCase()}
               rules={{
                 required: 'El sexo es obligatorio',
                 validate: {
@@ -124,6 +148,11 @@ export const ModifyFamily = () => {
             <Controller
               control={control}
               name="fechaNacimiento"
+              defaultValue={
+                familyMemberSelected.fechaNacimiento.length > 12
+                  ? formatDate(familyMemberSelected.fechaNacimiento)
+                  : familyMemberSelected.fechaNacimiento
+              }
               rules={{
                 required: 'La fecha de nacimiento es obligatoria',
                 validate: {

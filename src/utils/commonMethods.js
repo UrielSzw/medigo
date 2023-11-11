@@ -6,7 +6,7 @@ export const formatDate = date => {
   const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
   const year = dateObj.getFullYear();
 
-  const dateFormateada = `${year}-${month}-${day}`;
+  const dateFormateada = `${day}-${month}-${year}`;
 
   return dateFormateada;
 };

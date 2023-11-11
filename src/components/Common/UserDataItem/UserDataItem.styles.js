@@ -8,13 +8,15 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   wrapperCenter: {
-    flexDirection: 'row',
-    width: '100%',
+    // flexDirection: 'row',
+    // width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
   },
   dataWrapper: {
+    // borderWidth: 1,
     flexDirection: 'row',
+    width: 190,
     gap: 15,
   },
   time: {

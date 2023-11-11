@@ -1,9 +1,11 @@
-import React from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState} from 'react';
 import {View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   FooterPatient,
   StyledButton,
+  StyledModal,
   StyledText,
   WelcomePerfilHeader,
 } from '../../../components';
@@ -13,12 +15,19 @@ import {styles} from './FamilyMemberInfo.styles';
 import {formatDate} from '../../../utils/commonMethods';
 import {setSpinner} from '../../../utils/setSpinner';
 import {setUserData} from '../../../redux/user.slice';
+import {apiDeleteFamilyMember} from '../../../utils/api/patientRoutes';
 
 export const FamilyMemberInfo = ({navigation}) => {
   const {familyMemberSelected, userData} = useSelector(
     state => state.userReducer,
   );
   const dispatch = useDispatch();
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleEditFamilyMembers = () => {
+    navigation.navigate(PATHS.MODIFYFAMILYMEMBER);
+  };
+
   const handleBackFamilyMembers = () => {
     navigation.navigate(PATHS.FAMILYMEMBERS);
   };
@@ -26,20 +35,25 @@ export const FamilyMemberInfo = ({navigation}) => {
   const handleDeleteFamilyMember = async () => {
     try {
       setSpinner(true);
+      setOpenModal(false);
 
       const newFamilyMembers = userData.grupoFamiliar.filter(
         fam => fam.nombre !== familyMemberSelected.nombre,
       );
 
-      //   const response = await apiPatientUpdate({
-      //     grupoFamiliar: newFamilyMembers,
-      //   });
+      console.log('dasughduaysd', {
+        nombre: familyMemberSelected.nombre,
+        apellido: familyMemberSelected.apellido,
+        fechaNacimiento: familyMemberSelected.fechaNacimiento,
+      });
 
-      console.log(newFamilyMembers);
+      const response = await apiDeleteFamilyMember({
+        nombre: familyMemberSelected.nombre,
+        apellido: familyMemberSelected.apellido,
+        fechaNacimiento: familyMemberSelected.fechaNacimiento,
+      });
 
-      const response = true;
-
-      if (response) {
+      if (response.success) {
         dispatch(
           setUserData({
             grupoFamiliar: newFamilyMembers,
@@ -82,15 +96,34 @@ export const FamilyMemberInfo = ({navigation}) => {
         </View>
 
         <View style={styles.buttonsContainer}>
-          <StyledButton onPress={handleBackFamilyMembers} children="Volver" />
+          <StyledButton onPress={handleEditFamilyMembers} children="Editar" />
           <StyledButton
-            variant="warning"
-            onPress={handleDeleteFamilyMember}
+            onPress={handleBackFamilyMembers}
+            children="Volver"
+            variant="secondary"
+          />
+          <StyledButton
+            onPress={() => setOpenModal(true)}
             children="Eliminar"
+            variant="warning"
           />
         </View>
       </View>
       <FooterPatient current="profile" />
+      <StyledModal
+        title="Eliminar miembro familiar"
+        open={openModal}
+        content={
+          <View style={{gap: 40}}>
+            <StyledText style={{textAlign: 'center'}}>
+              ¿Estas seguro que deseas eliminar este miembro del grupo familiar?
+            </StyledText>
+            <StyledButton onPress={handleDeleteFamilyMember} variant="warning">
+              Eliminar
+            </StyledButton>
+          </View>
+        }
+      />
     </View>
   );
 };
