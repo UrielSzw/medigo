@@ -6,6 +6,9 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     flex: 1,
   },
+  background: {
+    flex: 1,
+  },
   body: {
     flex: 1,
     paddingHorizontal: '5%',
