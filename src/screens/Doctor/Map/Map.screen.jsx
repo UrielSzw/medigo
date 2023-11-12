@@ -1,6 +1,7 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import MapView, {Marker} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
@@ -11,10 +12,12 @@ import {PATHS} from '../../../routes/paths';
 import {styles} from './Map.Styles';
 import {setSpinner} from '../../../utils/setSpinner';
 import {PinIcon} from '../../../assets';
+import {theme} from '../../../theme/theme';
 
 export const Map = ({navigation}) => {
-  const [currentLocation, setCurrentLocation] = useState(null);
   const dispatch = useDispatch();
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [mapSpinner, setMapSpinner] = useState(false);
 
   const handleNavigateRegister = () => {
     navigation.navigate(PATHS.HOMEDOCTOR);
@@ -61,6 +64,7 @@ export const Map = ({navigation}) => {
 
     getLocation();
     setSpinner(false);
+    setMapSpinner(true);
 
     return () => {};
   }, []);
@@ -78,6 +82,7 @@ export const Map = ({navigation}) => {
       {currentLocation && (
         <MapView
           style={styles.map}
+          onMapLoaded={() => setMapSpinner(false)}
           initialRegion={{
             latitude: currentLocation.latitude,
             longitude: currentLocation.longitude,
@@ -100,10 +105,18 @@ export const Map = ({navigation}) => {
 
       <StyledButton
         onPress={handleNavigateRegister}
-        style={styles.principalButton}>
+        disabled={mapSpinner}
+        style={{...styles.principalButton, opacity: mapSpinner ? 0.7 : 1}}>
         Confirmar Ubicación
       </StyledButton>
       <FooterDoc style={styles.footer} />
+      {mapSpinner && (
+        <ActivityIndicator
+          size="large"
+          color={theme.colors.blue}
+          style={styles.spinner}
+        />
+      )}
     </View>
   );
 };

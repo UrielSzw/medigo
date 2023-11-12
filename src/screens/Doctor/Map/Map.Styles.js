@@ -20,6 +20,11 @@ export const styles = StyleSheet.create({
     borderColor: theme.colors.grey,
     pointerEvents: 'none',
   },
+  spinner: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+  },
   confirmLocation: {
     position: 'absolute',
     top: 35,

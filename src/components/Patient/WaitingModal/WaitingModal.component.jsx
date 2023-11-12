@@ -77,6 +77,12 @@ export const WaitingModal = () => {
           dispatch(setListOfDoctorsData(responseNewDoctors.result));
           dispatch(setWaitingCount('0'));
           dispatch(setWaitingModal(false));
+          setModal({
+            show: true,
+            title: 'Medico no respondio',
+            message:
+              'El medico no respondio a la consulta. Puedes seleccionar otro medico',
+          });
         }
       }
     } catch (e) {

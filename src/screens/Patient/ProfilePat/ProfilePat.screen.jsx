@@ -100,9 +100,12 @@ export const ProfilePat = ({navigation}) => {
           variant="warning"
           style={{
             ...styles.logout,
-            opacity: userState.appointmentState ? 0.3 : 1,
+            opacity:
+              userState.appointmentState || userState.listOfDoctorsState
+                ? 0.3
+                : 1,
           }}
-          // disabled={userState.appointmentState}
+          disabled={userState.appointmentState || userState.listOfDoctorsState}
           onPress={handleLogout}>
           Logout
         </StyledButton>

@@ -91,6 +91,7 @@ export const PerfilDoc = ({navigation}) => {
         />
         <StyledButton
           variant="warning"
+          disabled={requestData.accepted}
           style={{
             ...styles.logout,
             opacity: requestData.accepted ? 0.3 : 1,
