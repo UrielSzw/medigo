@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Controller} from 'react-hook-form';
-import {View, ScrollView} from 'react-native';
+import {View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {StyledInput} from '../../Common/StyledInput/StyledInput.component';
@@ -20,8 +20,13 @@ export const SubmitDoctorDataModal = ({
   setOpenMedicModal,
   errors,
   familyMembersOptions,
+  setValue,
 }) => {
   const {userData} = useSelector(state => state.userReducer);
+
+  useEffect(() => {
+    setValue('direccion', userData.direccion);
+  }, [userData.direccion, setValue]);
 
   return (
     <View style={styles.contentAskMedicWrapperScroll}>

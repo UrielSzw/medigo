@@ -23,5 +23,6 @@ export const styles = StyleSheet.create({
     textAlignVertical: 'top',
     paddingHorizontal: 8,
     fontSize: 16,
+    color: 'black',
   },
 });

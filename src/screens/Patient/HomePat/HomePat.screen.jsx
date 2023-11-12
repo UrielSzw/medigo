@@ -25,7 +25,6 @@ import {
   apiRequestDoctor,
 } from '../../../utils/api/patientRoutes';
 import {setSpinner} from '../../../utils/setSpinner';
-import {calculateTimeDifference} from '../../../utils/commonMethods';
 import {
   setDoctorDetails,
   setListOfDoctorsData,
@@ -49,14 +48,8 @@ export const HomePat = () => {
     reset,
     formState: {errors},
   } = useForm();
-  const {
-    userData,
-    userState,
-    doctorDetails,
-    requestDetails,
-    userModals,
-    waitingModal,
-  } = useSelector(state => state.userReducer);
+  const {userData, userState, doctorDetails, requestDetails, userModals} =
+    useSelector(state => state.userReducer);
   const {especialidades} = useSelector(state => state.commonReducer);
   const dispatch = useDispatch();
 
