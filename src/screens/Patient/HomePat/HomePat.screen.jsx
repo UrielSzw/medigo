@@ -128,7 +128,9 @@ export const HomePat = () => {
           longitud: longitude,
           nombre: nombrePaciente,
           apellido: apellidoPaciente,
-          direccion: data.direccion,
+          direccion: data.direccion || null,
+          piso: data.piso,
+          departamento: data.departamento || null,
         };
 
         dispatch(setRequestDetails(formData));

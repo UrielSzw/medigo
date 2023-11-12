@@ -11,6 +11,8 @@ const initialState = {
     telefono: '',
     sexo: '',
     direccion: '',
+    piso: '',
+    departamento: '',
     ciudad: '',
     codigoPostal: '',
     location: {

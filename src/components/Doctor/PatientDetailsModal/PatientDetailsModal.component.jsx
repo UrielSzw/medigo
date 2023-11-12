@@ -40,6 +40,12 @@ export const PatientDetailsModal = ({handlePatientRequestResponse}) => {
         <StyledText color="grey" size="default">
           Ubicacion de atencion: {requestData.direccion}
         </StyledText>
+        <StyledText color="grey" size="default">
+          Piso: {requestData.piso}
+        </StyledText>
+        <StyledText color="grey" size="default">
+          Departamento: {requestData.departamento}
+        </StyledText>
         <View>
           <StyledText color="grey" size="default">
             Motivo:

@@ -259,6 +259,71 @@ export const ModifyData = ({navigation}) => {
             />
           )}
         />
+        <Controller
+          control={control}
+          name="piso"
+          defaultValue={userData.piso}
+          render={({field}) => (
+            <StyledInput
+              error={errors.piso?.message}
+              label="Piso (opcional)"
+              style={styles.input}
+              field={field}
+              name="piso"
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="departamento"
+          defaultValue={userData.departamento}
+          render={({field}) => (
+            <StyledInput
+              error={errors.departamento?.message}
+              label="Departamento (opcional)"
+              style={styles.input}
+              field={field}
+              name="departamento"
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="ciudad"
+          defaultValue={userData.ciudad}
+          rules={{
+            required: 'La ciudad es obligatoria',
+          }}
+          render={({field}) => (
+            <StyledInput
+              label="Ciudad"
+              style={styles.input}
+              field={field}
+              name="ciudad"
+              error={errors.ciudad?.message}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="codigoPostal"
+          defaultValue={userData.codigoPostal}
+          rules={{
+            required: 'El codigo postal es obligatorio',
+          }}
+          render={({field}) => (
+            <StyledInput
+              label="Codigo postal"
+              keyboardType="numeric"
+              style={styles.input}
+              field={field}
+              name="codigoPostal"
+              error={errors.codigoPostal?.message}
+            />
+          )}
+        />
         <View style={styles.wrapperButtons}>
           <StyledButton onPress={handleSubmit(onSubmit)} children="Confirmar" />
 

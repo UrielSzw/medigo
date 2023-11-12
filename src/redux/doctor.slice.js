@@ -43,6 +43,8 @@ const initialState = {
     comentarioDelCliente: '',
     comentarioDelMedico: '',
     direccion: '',
+    piso: '',
+    departamento: '',
     observacion: '',
     createdAt: '',
     updateAt: '',

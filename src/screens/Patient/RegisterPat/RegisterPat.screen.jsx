@@ -292,6 +292,35 @@ export const RegisterPat = ({navigation}) => {
                 />
               )}
             />
+
+            <Controller
+              control={control}
+              name="piso"
+              render={({field}) => (
+                <StyledInput
+                  error={errors.piso?.message}
+                  label="Piso (opcional)"
+                  style={styles.input}
+                  field={field}
+                  name="piso"
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="departamento"
+              render={({field}) => (
+                <StyledInput
+                  error={errors.departamento?.message}
+                  label="Departamento (opcional)"
+                  style={styles.input}
+                  field={field}
+                  name="departamento"
+                />
+              )}
+            />
+
             <Controller
               control={control}
               name="ciudad"

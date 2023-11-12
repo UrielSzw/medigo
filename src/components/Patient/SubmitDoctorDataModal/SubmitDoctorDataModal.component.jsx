@@ -111,6 +111,34 @@ export const SubmitDoctorDataModal = ({
 
         <Controller
           control={control}
+          name="piso"
+          defaultValue={userData.piso}
+          render={({field}) => (
+            <StyledInput
+              error={errors.piso?.message}
+              label="Piso (opcional)"
+              field={field}
+              name="piso"
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="departamento"
+          defaultValue={userData.departamento}
+          render={({field}) => (
+            <StyledInput
+              error={errors.departamento?.message}
+              label="Departamento (opcional)"
+              field={field}
+              name="departamento"
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
           name="ciudad"
           defaultValue={userData.ciudad}
           render={({field}) => (
