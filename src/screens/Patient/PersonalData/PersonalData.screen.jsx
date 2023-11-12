@@ -41,7 +41,10 @@ export const PersonalData = ({navigation}) => {
             Telefono: {userData.telefono}
           </StyledText>
           <StyledText color="grey" size="default">
-            Fecha de Nacimiento: {formatDate(userData.fechaNacimiento)}
+            Fecha de Nacimiento:{' '}
+            {userData.fechaNacimiento.length > 12
+              ? formatDate(userData.fechaNacimiento)
+              : userData.fechaNacimiento}
           </StyledText>
           <StyledText color="grey" size="default">
             Sexo: {userData.sexo}

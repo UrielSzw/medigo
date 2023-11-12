@@ -43,12 +43,7 @@ export const ModifyData = ({navigation}) => {
       });
 
       if (response) {
-        dispatch(
-          setUserData({
-            ...data,
-            fechaNacimiento,
-          }),
-        );
+        dispatch(setUserData(data));
         handleBackPersonalData();
       }
     } catch (e) {
@@ -120,7 +115,11 @@ export const ModifyData = ({navigation}) => {
         <Controller
           control={control}
           name="fechaNacimiento"
-          defaultValue={formatDate(userData.fechaNacimiento)}
+          defaultValue={
+            userData.fechaNacimiento.length > 12
+              ? formatDate(userData.fechaNacimiento)
+              : userData.fechaNacimiento
+          }
           rules={{
             required: 'La fecha de nacimiento es obligatoria',
             validate: {
@@ -240,6 +239,23 @@ export const ModifyData = ({navigation}) => {
               field={field}
               name="telefono"
               error={errors.telefono?.message}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="direccion"
+          defaultValue={userData.direccion}
+          rules={{
+            required: 'La direccion es obligatoria',
+          }}
+          render={({field}) => (
+            <StyledInput
+              label="Direccion"
+              style={styles.input}
+              field={field}
+              name="direccion"
+              error={errors.direccion?.message}
             />
           )}
         />
