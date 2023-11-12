@@ -248,6 +248,21 @@ export const ModifyData = ({navigation}) => {
           defaultValue={userData.direccion}
           rules={{
             required: 'La direccion es obligatoria',
+            validate: address => {
+              const regex = /^(?=.*[a-zA-Z])(?=.*\d).+/;
+              const isValid = regex.test(address);
+              const hasRightAv = /avda|avenida/i.test(address);
+
+              if (!isValid) {
+                return 'La dirección debe contener calle y altura';
+              }
+
+              if (hasRightAv) {
+                return 'La avenida debe escribirse como "Av" o "Av."';
+              }
+
+              return true;
+            },
           }}
           render={({field}) => (
             <StyledInput

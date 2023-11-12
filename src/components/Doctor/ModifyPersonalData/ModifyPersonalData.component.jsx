@@ -13,6 +13,7 @@ import {apiDoctorsUpdate} from '../../../utils/api/doctorRoutes';
 import {styles} from './ModifyPersonalData.styles';
 import {setDoctorData} from '../../../redux/doctor.slice';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {validateAddress} from '../../../utils/commonMethods';
 
 export const ModifyPersonalData = ({setHideFooter}) => {
   const navigation = useNavigation();
@@ -151,6 +152,21 @@ export const ModifyPersonalData = ({setHideFooter}) => {
           defaultValue={doctorData.direccion}
           rules={{
             required: 'La dirección es obligatoria',
+            validate: address => {
+              const regex = /^(?=.*[a-zA-Z])(?=.*\d).+/;
+              const isValid = regex.test(address);
+              const hasRightAv = /avda|avenida/i.test(address);
+
+              if (!isValid) {
+                return 'La dirección debe contener calle y altura';
+              }
+
+              if (hasRightAv) {
+                return 'La avenida debe escribirse como "Av" o "Av."';
+              }
+
+              return true;
+            },
           }}
           render={({field}) => (
             <StyledInput

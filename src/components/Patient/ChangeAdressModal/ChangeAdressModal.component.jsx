@@ -43,6 +43,21 @@ export const ChangeAdressModal = ({toggleModal}) => {
         defaultValue={userData.direccion}
         rules={{
           required: 'La dirección es obligatoria',
+          validate: address => {
+            const regex = /^(?=.*[a-zA-Z])(?=.*\d).+/;
+            const isValid = regex.test(address);
+            const hasRightAv = /avda|avenida/i.test(address);
+
+            if (!isValid) {
+              return 'La dirección debe contener calle y altura';
+            }
+
+            if (hasRightAv) {
+              return 'La avenida debe escribirse como "Av" o "Av."';
+            }
+
+            return true;
+          },
         }}
         render={({field}) => (
           <StyledInput
@@ -53,11 +68,7 @@ export const ChangeAdressModal = ({toggleModal}) => {
           />
         )}
       />
-      {errors?.direccion && (
-        <StyledText color="red" size="sm">
-          {errors?.direccion.message}
-        </StyledText>
-      )}
+
       <Controller
         control={control}
         name="piso"

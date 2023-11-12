@@ -380,8 +380,8 @@ export const HomeDoc = ({navigation, route}) => {
       <StyledModal
         title={
           doctorData.active
-            ? '¿Estas seguro que desea desactivar y dejar de recibir consultas?'
-            : '¿Estas seguro que desea activar y comenzar a recibir consultas?'
+            ? '¿Estas seguro que deseas desactivar y dejar de recibir consultas?'
+            : '¿Estas seguro que deseas activar y comenzar a recibir consultas?'
         }
         content={
           <View style={styles.contentWrapper}>

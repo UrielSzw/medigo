@@ -109,7 +109,7 @@ export const Map = ({navigation}) => {
         style={{...styles.principalButton, opacity: mapSpinner ? 0.7 : 1}}>
         Confirmar Ubicación
       </StyledButton>
-      <FooterDoc style={styles.footer} />
+      <FooterDoc style={styles.footer} current="map" />
       {mapSpinner && (
         <ActivityIndicator
           size="large"

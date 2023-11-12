@@ -161,6 +161,21 @@ export const ModifyPersonalDataDoc = () => {
           defaultValue={doctorData.direccion}
           rules={{
             required: 'La dirección es obligatoria',
+            validate: address => {
+              const regex = /^(?=.*[a-zA-Z])(?=.*\d).+/;
+              const isValid = regex.test(address);
+              const hasRightAv = /avda|avenida/i.test(address);
+
+              if (!isValid) {
+                return 'La dirección debe contener calle y altura';
+              }
+
+              if (hasRightAv) {
+                return 'La avenida debe escribirse como "Av" o "Av."';
+              }
+
+              return true;
+            },
           }}
           render={({field}) => (
             <StyledInput
