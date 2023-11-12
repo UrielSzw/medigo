@@ -28,6 +28,14 @@ export const SubmitDoctorDataModal = ({
     setValue('direccion', userData.direccion);
   }, [userData.direccion, setValue]);
 
+  useEffect(() => {
+    setValue('piso', userData.piso);
+  }, [userData.piso, setValue]);
+
+  useEffect(() => {
+    setValue('departamento', userData.departamento);
+  }, [userData.departamento, setValue]);
+
   return (
     <View style={styles.contentAskMedicWrapperScroll}>
       <KeyboardAwareScrollView
