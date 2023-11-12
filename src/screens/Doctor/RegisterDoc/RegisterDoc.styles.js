@@ -15,19 +15,18 @@ export const styles = StyleSheet.create({
   },
   bodyWrapper: {
     width: '100%',
-    height: 300,
   },
   input: {
     marginBottom: 8,
   },
   footerWrapper: {
     marginTop: 20,
+    marginBottom: 25,
     gap: 5,
   },
   logo: {
-    position: 'relative',
-    bottom: 2,
     alignSelf: 'center',
+    marginLeft: 8,
   },
   secondaryButtonText: {
     color: theme.colors.blue,

@@ -17,11 +17,11 @@ export const styles = StyleSheet.create({
   body: {
     alignItems: 'center',
     paddingHorizontal: '5%',
-    paddingTop: 10,
+    paddingTop: 25,
+    marginBottom: 10,
   },
   inputWrapper: {
     width: '100%',
-    height: 300,
   },
   input: {
     marginBottom: 8,
@@ -30,8 +30,8 @@ export const styles = StyleSheet.create({
     marginBottom: 15,
   },
   logo: {
-    position: 'relative',
-    bottom: -5,
+    marginLeft: 8,
+    marginTop: 15,
     alignSelf: 'center',
   },
 });

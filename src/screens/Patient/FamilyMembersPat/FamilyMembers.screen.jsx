@@ -78,8 +78,8 @@ export const FamilyMembers = ({navigation}) => {
             children="Volver"
           />
         </View>
+        <FooterPatient current="profile" />
       </View>
-      <FooterPatient current="profile" />
     </View>
   );
 };

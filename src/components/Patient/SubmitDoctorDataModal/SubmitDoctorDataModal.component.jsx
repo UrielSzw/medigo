@@ -24,9 +24,8 @@ export const SubmitDoctorDataModal = ({
   const {userData} = useSelector(state => state.userReducer);
 
   return (
-    <KeyboardAwareScrollView
-      contentContainerStyle={styles.contentAskMedicWrapperScroll}>
-      <ScrollView
+    <View style={styles.contentAskMedicWrapperScroll}>
+      <KeyboardAwareScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}>
         <Controller
@@ -139,16 +138,18 @@ export const SubmitDoctorDataModal = ({
             required: 'El codigo postal es obligatorio',
           }}
         />
-      </ScrollView>
-      <View style={styles.buttonsWrapper}>
-        <StyledButton onPress={handleSubmit(onSubmit)}>
-          Ver medicos disponibles
-        </StyledButton>
+        <View style={styles.buttonsWrapper}>
+          <StyledButton onPress={handleSubmit(onSubmit)}>
+            Ver medicos disponibles
+          </StyledButton>
 
-        <StyledButton variant="empty" onPress={() => setOpenMedicModal(false)}>
-          Cancelar
-        </StyledButton>
-      </View>
-    </KeyboardAwareScrollView>
+          <StyledButton
+            variant="empty"
+            onPress={() => setOpenMedicModal(false)}>
+            Cancelar
+          </StyledButton>
+        </View>
+      </KeyboardAwareScrollView>
+    </View>
   );
 };

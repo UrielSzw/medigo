@@ -2,7 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {View, ScrollView, Text} from 'react-native';
+import {View, ScrollView, Text, Platform} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {useSelector} from 'react-redux';
 import {
@@ -76,7 +76,7 @@ export const RegisterDoc = ({navigation}) => {
   }, [especialidad]);
 
   return (
-    <KeyboardAwareScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.background}>
         <Banner />
         <View style={styles.body}>
@@ -376,17 +376,17 @@ export const RegisterDoc = ({navigation}) => {
                 />
               )}
             />
+            <View style={styles.footerWrapper}>
+              <StyledButton onPress={handleSubmit(onSubmit)}>
+                Siguiente
+              </StyledButton>
+              <StyledButton variant="empty" onPress={handleNavigateRegister}>
+                <Text style={styles.secondaryButtonText}>Volver</Text>
+              </StyledButton>
+              <MedigoLogoIcon style={styles.logo} />
+            </View>
           </ScrollView>
-          <View style={styles.footerWrapper}>
-            <StyledButton onPress={handleSubmit(onSubmit)}>
-              Siguiente
-            </StyledButton>
-            <StyledButton variant="empty" onPress={handleNavigateRegister}>
-              <Text style={styles.secondaryButtonText}>Volver</Text>
-            </StyledButton>
-          </View>
         </View>
-        <MedigoLogoIcon style={styles.logo} />
         <DropdownSelect
           dropdownValue={especialidad}
           setDropdownValue={setEspecialidad}
@@ -396,6 +396,6 @@ export const RegisterDoc = ({navigation}) => {
           setVisible={() => setEspecialidadModal(false)}
         />
       </View>
-    </KeyboardAwareScrollView>
+    </View>
   );
 };

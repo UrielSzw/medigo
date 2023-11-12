@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import {Controller, useForm} from 'react-hook-form';
@@ -61,8 +60,7 @@ export const ModifyData = ({navigation}) => {
 
   const Form = () => {
     return (
-      <ScrollView
-        style={styles.wrapperForm}
+      <KeyboardAwareScrollView
         contentContainerStyle={styles.wrapperFormContent}>
         <Controller
           control={control}
@@ -245,14 +243,21 @@ export const ModifyData = ({navigation}) => {
             />
           )}
         />
-      </ScrollView>
+        <View style={styles.wrapperButtons}>
+          <StyledButton onPress={handleSubmit(onSubmit)} children="Confirmar" />
+
+          <StyledButton
+            variant="secondary"
+            onPress={handleBackPersonalData}
+            children="Volver"
+          />
+        </View>
+      </KeyboardAwareScrollView>
     );
   };
 
   return (
-    <KeyboardAwareScrollView
-      style={styles.container}
-      contentContainerStyle={{paddingTop: 5}}>
+    <View style={styles.container}>
       <WelcomePerfilHeader
         username={`${userData.nombre} ${userData.apellido}`}
         email={userData.username}
@@ -263,17 +268,9 @@ export const ModifyData = ({navigation}) => {
           <StyledText bold>Datos personales</StyledText>
         </View>
         <Form />
-        <View style={styles.wrapperButtons}>
-          <StyledButton onPress={handleSubmit(onSubmit)} children="Confirmar" />
 
-          <StyledButton
-            variant="secondary"
-            onPress={handleBackPersonalData}
-            children="Volver"
-          />
-        </View>
         <FooterPatient current="profile" />
       </View>
-    </KeyboardAwareScrollView>
+    </View>
   );
 };

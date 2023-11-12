@@ -1,16 +1,14 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {theme} from '../../../theme/theme';
-
-const {height} = Dimensions.get('screen');
 
 export const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.white,
-    height: height,
+    flex: 1,
+    paddingTop: 20,
   },
   wrapper: {
-    height: height - 130,
-
+    flex: 1,
     paddingHorizontal: '5%',
     justifyContent: 'space-between',
     gap: 10,
@@ -19,9 +17,6 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
     flexDirection: 'row',
     gap: 2,
-  },
-  wrapperForm: {
-    height: 350,
   },
   wrapperFormContent: {
     gap: 15,

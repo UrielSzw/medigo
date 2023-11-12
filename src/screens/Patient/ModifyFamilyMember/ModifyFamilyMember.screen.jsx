@@ -77,9 +77,7 @@ export const ModifyFamilyMember = () => {
   }, []);
 
   return (
-    <KeyboardAwareScrollView
-      style={styles.container}
-      contentContainerStyle={{paddingTop: 5}}>
+    <View style={styles.container}>
       <WelcomePerfilHeader
         username={`${userData.nombre} ${userData.apellido}`}
         email={userData.username}
@@ -91,7 +89,7 @@ export const ModifyFamilyMember = () => {
             Modificar miembro familiar
           </StyledText>
         </View>
-        <ScrollView>
+        <KeyboardAwareScrollView>
           <View>
             <Controller
               control={control}
@@ -212,18 +210,21 @@ export const ModifyFamilyMember = () => {
               )}
             />
           </View>
-        </ScrollView>
-        <View style={styles.wrapperButtons}>
-          <StyledButton children="Confirmar" onPress={handleSubmit(onSubmit)} />
+          <View style={styles.wrapperButtons}>
+            <StyledButton
+              children="Confirmar"
+              onPress={handleSubmit(onSubmit)}
+            />
 
-          <StyledButton
-            variant="secondary"
-            onPress={handleBackFamilyMembers}
-            children="Volver"
-          />
-        </View>
+            <StyledButton
+              variant="secondary"
+              onPress={handleBackFamilyMembers}
+              children="Volver"
+            />
+          </View>
+        </KeyboardAwareScrollView>
         <FooterPatient current="profile" />
       </View>
-    </KeyboardAwareScrollView>
+    </View>
   );
 };

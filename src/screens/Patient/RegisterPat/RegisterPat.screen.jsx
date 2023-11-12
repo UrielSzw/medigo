@@ -74,11 +74,11 @@ export const RegisterPat = ({navigation}) => {
   };
 
   return (
-    <KeyboardAwareScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.background}>
         <Banner />
         <View style={styles.bodyTop}>
-          <ScrollView style={styles.inputWrapper}>
+          <KeyboardAwareScrollView style={styles.inputWrapper}>
             <Controller
               control={control}
               name="nombre"
@@ -327,20 +327,20 @@ export const RegisterPat = ({navigation}) => {
             />
             <StyledText>Miembros del grupo familiar</StyledText>
             <DynamicInput errors={errors} control={control} />
-          </ScrollView>
+            <View style={styles.body}>
+              <StyledButton
+                style={styles.principalButton}
+                onPress={handleSubmit(onSubmit)}>
+                Registrarse
+              </StyledButton>
+              <TouchableOpacity onPress={handleNavigateRegister}>
+                <StyledText color="blue">Volver</StyledText>
+              </TouchableOpacity>
+              <MedigoLogoIcon style={styles.logo} />
+            </View>
+          </KeyboardAwareScrollView>
         </View>
-        <View style={styles.body}>
-          <StyledButton
-            style={styles.principalButton}
-            onPress={handleSubmit(onSubmit)}>
-            Registrarse
-          </StyledButton>
-          <TouchableOpacity onPress={handleNavigateRegister}>
-            <StyledText color="blue">Volver</StyledText>
-          </TouchableOpacity>
-        </View>
-        <MedigoLogoIcon style={styles.logo} />
       </View>
-    </KeyboardAwareScrollView>
+    </View>
   );
 };

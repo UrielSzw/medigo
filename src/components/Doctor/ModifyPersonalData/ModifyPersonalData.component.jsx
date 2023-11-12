@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {View, ScrollView, Keyboard} from 'react-native';
@@ -12,6 +12,7 @@ import {setSpinner} from '../../../utils/setSpinner';
 import {apiDoctorsUpdate} from '../../../utils/api/doctorRoutes';
 import {styles} from './ModifyPersonalData.styles';
 import {setDoctorData} from '../../../redux/doctor.slice';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export const ModifyPersonalData = ({setHideFooter}) => {
   const navigation = useNavigation();
@@ -77,7 +78,7 @@ export const ModifyPersonalData = ({setHideFooter}) => {
         <PersonalDataIcon />
         <StyledText bold>Datos personales</StyledText>
       </View>
-      <ScrollView
+      <KeyboardAwareScrollView
         contentContainerStyle={styles.inputContent}
         style={styles.inputWrapper}>
         <Controller
@@ -222,7 +223,7 @@ export const ModifyPersonalData = ({setHideFooter}) => {
             />
           )}
         />
-      </ScrollView>
+      </KeyboardAwareScrollView>
       {!isKeyboardVisible && (
         <View style={styles.buttonsContainer}>
           <StyledButton onPress={handleSubmit(onSubmit)}>
