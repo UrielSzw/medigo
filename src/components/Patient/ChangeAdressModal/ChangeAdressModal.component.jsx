@@ -1,6 +1,5 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, TextInput} from 'react-native';
+import {View} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {useDispatch, useSelector} from 'react-redux';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
@@ -9,6 +8,8 @@ import {setUserData} from '../../../redux/user.slice';
 import {apiPatientUpdate} from '../../../utils/api/patientRoutes';
 import {setSpinner} from '../../../utils/setSpinner';
 import {styles} from './ChangeAdressModal.styles';
+import {StyledInput} from '../../Common/StyledInput/StyledInput.component';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export const ChangeAdressModal = ({toggleModal}) => {
   const {
@@ -34,8 +35,7 @@ export const ChangeAdressModal = ({toggleModal}) => {
   };
 
   return (
-    <View style={styles.contentWrapper}>
-      <StyledText>Direccion</StyledText>
+    <KeyboardAwareScrollView contentContainerStyle={styles.contentWrapper}>
       <Controller
         control={control}
         name="direccion"
@@ -44,13 +44,11 @@ export const ChangeAdressModal = ({toggleModal}) => {
           required: 'La dirección es obligatoria',
         }}
         render={({field}) => (
-          <TextInput
-            value={field.value}
-            onChangeText={field.onChange}
-            style={{
-              ...styles.input,
-              borderColor: errors.direccion ? 'red' : 'grey',
-            }}
+          <StyledInput
+            error={errors.direccion?.message}
+            label="Direccion"
+            field={field}
+            name="direccion"
           />
         )}
       />
@@ -59,6 +57,67 @@ export const ChangeAdressModal = ({toggleModal}) => {
           {errors?.direccion.message}
         </StyledText>
       )}
+      <Controller
+        control={control}
+        name="piso"
+        defaultValue={userData.piso}
+        render={({field}) => (
+          <StyledInput
+            error={errors.piso?.message}
+            label="Piso (opcional)"
+            field={field}
+            name="piso"
+          />
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="departamento"
+        defaultValue={userData.departamento}
+        render={({field}) => (
+          <StyledInput
+            error={errors.departamento?.message}
+            label="Departamento (opcional)"
+            field={field}
+            name="departamento"
+          />
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="ciudad"
+        defaultValue={userData.ciudad}
+        rules={{
+          required: 'La ciudad es obligatoria',
+        }}
+        render={({field}) => (
+          <StyledInput
+            label="Ciudad"
+            field={field}
+            name="ciudad"
+            error={errors.ciudad?.message}
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="codigoPostal"
+        defaultValue={userData.codigoPostal}
+        rules={{
+          required: 'El codigo postal es obligatorio',
+        }}
+        render={({field}) => (
+          <StyledInput
+            label="Codigo postal"
+            keyboardType="numeric"
+            field={field}
+            name="codigoPostal"
+            error={errors.codigoPostal?.message}
+          />
+        )}
+      />
       <View>
         <StyledButton onPress={handleSubmit(onSubmit)}>Cambiar</StyledButton>
 
@@ -66,6 +125,6 @@ export const ChangeAdressModal = ({toggleModal}) => {
           Cancelar
         </StyledButton>
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 };

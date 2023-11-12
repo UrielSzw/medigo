@@ -16,7 +16,6 @@ export const styles = StyleSheet.create({
   },
   body: {
     alignItems: 'center',
-    paddingHorizontal: '5%',
     paddingTop: 25,
     marginBottom: 10,
   },

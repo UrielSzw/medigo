@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
   scroll: {
     paddingTop: 10,
     gap: 20,
+    paddingBottom: 10,
   },
   headerWrapper: {
     flexDirection: 'row',

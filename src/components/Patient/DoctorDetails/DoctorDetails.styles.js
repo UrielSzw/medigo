@@ -3,7 +3,8 @@ import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
   info: {
     borderTopWidth: 1,
-    paddingTop: 20,
+    paddingTop: 10,
+    marginTop: 10,
     borderColor: '#F5F5F5',
   },
   infoReviews: {
