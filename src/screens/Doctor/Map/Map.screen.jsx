@@ -13,6 +13,7 @@ import {setSpinner} from '../../../utils/setSpinner';
 import {PinIcon} from '../../../assets';
 import {theme} from '../../../theme/theme';
 import {setDoctorData} from '../../../redux/doctor.slice';
+import {setModal} from '../../../utils/setModal';
 
 export const Map = ({navigation}) => {
   const dispatch = useDispatch();
@@ -59,6 +60,11 @@ export const Map = ({navigation}) => {
         }
       } catch (error) {
         console.log('Error al solicitar permisos: ', error);
+        setModal({
+          show: true,
+          title: 'Error al cargar el mapa',
+          message: 'La API de Google fallo',
+        });
       }
     };
 
