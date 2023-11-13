@@ -33,7 +33,7 @@ export const DoctorListItem = ({
           <View style={styles.infoReviews}>
             <StarIcon />
             <StyledText color="orange">{rating} </StyledText>
-            <StyledText color="orange">{reviews}</StyledText>
+            <StyledText color="orange">({reviews} reseñas)</StyledText>
           </View>
           <View style={styles.infoPrice}>
             <MoneyIcon />

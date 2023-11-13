@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, ScrollView, TouchableOpacity} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {
   Banner,

@@ -21,8 +21,10 @@ export const DoctorDetails = ({setDoctorDetailsModal, handleRequestDoctor}) => {
       <View style={styles.info}>
         <View style={styles.infoReviews}>
           <StarIcon />
-          <StyledText color="orange">{doctorDetails?.valoracion}</StyledText>
-          <StyledText color="orange"> {doctorDetails?.resenas}</StyledText>
+          <StyledText color="orange">{doctorDetails?.valoracion} </StyledText>
+          <StyledText color="orange">
+            ({doctorDetails?.resenas} reseñas)
+          </StyledText>
         </View>
         <View style={styles.infoPrice}>
           <MoneyIcon />

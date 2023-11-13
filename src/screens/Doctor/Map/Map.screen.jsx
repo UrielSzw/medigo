@@ -6,13 +6,13 @@ import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import MapView, {Marker} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import {useDispatch} from 'react-redux';
-import {setUserData} from '../../../redux/user.slice';
 import {FooterDoc, StyledButton, StyledText} from '../../../components';
 import {PATHS} from '../../../routes/paths';
 import {styles} from './Map.Styles';
 import {setSpinner} from '../../../utils/setSpinner';
 import {PinIcon} from '../../../assets';
 import {theme} from '../../../theme/theme';
+import {setDoctorData} from '../../../redux/doctor.slice';
 
 export const Map = ({navigation}) => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ export const Map = ({navigation}) => {
 
   const handleNavigateRegister = () => {
     navigation.navigate(PATHS.HOMEDOCTOR);
-    dispatch(setUserData({location: currentLocation}));
+    dispatch(setDoctorData({location: currentLocation}));
   };
 
   useEffect(() => {
@@ -105,7 +105,7 @@ export const Map = ({navigation}) => {
 
       <StyledButton
         onPress={handleNavigateRegister}
-        disabled={mapSpinner}
+        // disabled={mapSpinner}
         style={{...styles.principalButton, opacity: mapSpinner ? 0.7 : 1}}>
         Confirmar Ubicación
       </StyledButton>

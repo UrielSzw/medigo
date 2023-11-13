@@ -165,13 +165,15 @@ export const HomePat = () => {
   const handleRequestDoctor = async () => {
     try {
       setSpinner(true);
+      const currentDate = new Date();
+
       const response = await apiRequestDoctor({
         nroMatricula: doctorDetails.nroMatricula,
         tiempoLLegada: doctorDetails.tiempo,
+        horaEstimada: currentDate,
       });
 
       if (response.estado === 'solicitando medico') {
-        const currentDate = new Date();
         dispatch(setWaitingCount(currentDate.toISOString()));
         toggleModal('doctorDetails');
         dispatch(setWaitingModal(true));

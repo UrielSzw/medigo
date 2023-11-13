@@ -56,7 +56,6 @@ export const HomeDoc = ({navigation, route}) => {
     const startLongitude = doctorData.location.longitud;
     const endLatitude = requestData.latitudCliente;
     const endLongitude = requestData.longitudCliente;
-    console.log(startLatitude, startLongitude, endLatitude, endLongitude);
     const url = `https://www.google.com/maps/dir/?api=1&origin=${startLatitude},${startLongitude}&destination=${endLatitude},${endLongitude}&travelmode=driving`;
     Linking.openURL(url);
   };
@@ -186,7 +185,8 @@ export const HomeDoc = ({navigation, route}) => {
   useEffect(() => {
     if (requestData.requested) {
       if (requestData.fechaSeleccion === 0) {
-        handlePatientRequestResponse(false);
+        // handlePatientRequestResponse(false);
+        handleBackToInactive();
       } else {
         if (timer.current) {
           clearTimeout(timer.current);
@@ -238,6 +238,12 @@ export const HomeDoc = ({navigation, route}) => {
           response.result.fechaSeleccion,
           60,
         );
+
+        console.log(
+          'response.result.fechaSeleccion',
+          response.result.fechaSeleccion,
+        );
+        console.log('response.result', timeLeft);
 
         if (timeLeft > 1) {
           const dateForString = new Date(response.result.fechaSeleccion);
@@ -355,6 +361,19 @@ export const HomeDoc = ({navigation, route}) => {
 
           {!doctorData.active && requestData.accepted && (
             <AcceptedPatient onPress={() => openGoogleMaps()} />
+          )}
+          {!doctorData.active && requestData.accepted && (
+            <View>
+              <StyledText color="grey" size="default">
+                Direccion: {requestData.direccion}
+              </StyledText>
+              <StyledText color="grey" size="default">
+                Piso: {requestData.piso}
+              </StyledText>
+              <StyledText color="grey" size="default">
+                Departamento: {requestData.departamento}
+              </StyledText>
+            </View>
           )}
         </View>
       </View>
