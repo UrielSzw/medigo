@@ -30,18 +30,17 @@ export const ModifyPersonalDataDoc = () => {
     formState: {errors},
   } = useForm();
   const {especialidades} = useSelector(state => state.commonReducer);
-  const [especialidad, setEspecialidad] = useState('Seleccione especialidad');
+  const [especialidad, setEspecialidad] = useState(doctorData.especialidad);
   const [especialidadModal, setEspecialidadModal] = useState(false);
-  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const onSubmit = async data => {
     if (data) {
       try {
         setSpinner(true);
-        const response = await apiDoctorsUpdate(data);
+        const response = await apiDoctorsUpdate({...data, especialidad});
 
         if (response.success) {
-          dispatch(setDoctorData(data));
+          dispatch(setDoctorData({...data, especialidad}));
           navigation.navigate(PATHS.PERSONALDATADOC);
         }
       } catch (e) {
@@ -55,26 +54,6 @@ export const ModifyPersonalDataDoc = () => {
   const handleBackActivity = () => {
     navigation.navigate(PATHS.PERSONALDATADOC);
   };
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => {
-        setKeyboardVisible(true);
-      },
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        setKeyboardVisible(false);
-      },
-    );
-
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, []);
 
   return (
     <View style={styles.wrapper}>
