@@ -64,6 +64,7 @@ const initialState = {
     end: false,
   },
   timeLeftInRequest: '0',
+  timeLeftForCancel: '0',
 };
 
 export const doctorSlice = createSlice({
@@ -75,12 +76,17 @@ export const doctorSlice = createSlice({
     },
     setRequestData: (state, action) => {
       state.requestData = {...state.requestData, ...action.payload};
+      console.log('state.requestData', state.requestData);
+      console.log('action.payload', action.payload);
     },
     setDoctorActivity: (state, action) => {
       state.doctorActivity = action.payload;
     },
     setTimeLeftInRequest: (state, action) => {
       state.timeLeftInRequest = action.payload;
+    },
+    setTimeLeftForCancel: (state, action) => {
+      state.timeLeftForCancel = action.payload;
     },
     resetRequestData: (state, action) => {
       state.requestData = initialState.requestData;
@@ -108,6 +114,7 @@ export const {
   setDoctorActivity,
   setRequestData,
   setTimeLeftInRequest,
+  setTimeLeftForCancel,
   resetRequestData,
   changeFechaSeleccion,
   decrementFechaSeleccion,

@@ -169,7 +169,7 @@ export const HomePat = () => {
 
       const response = await apiRequestDoctor({
         nroMatricula: doctorDetails.nroMatricula,
-        tiempoLLegada: doctorDetails.tiempo,
+        tiempoLlegada: doctorDetails.tiempo,
         horaEstimada: currentDate,
       });
 

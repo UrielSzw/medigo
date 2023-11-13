@@ -106,7 +106,7 @@ export const WaitingModal = () => {
         } else if (endCount) {
           setCount(-1);
           setEndCount(false);
-        } else if (count % 6 === 0) {
+        } else if (count % 4 === 0) {
           await handleDoctorRequestWait();
         }
       }
@@ -129,7 +129,7 @@ export const WaitingModal = () => {
     const firstLoad = async () => {
       if (waitingModal && waitingCount.length > 4) {
         const time = new Date(waitingCount);
-        const timeLeft = calculateTimeDifference(time, 60);
+        const timeLeft = calculateTimeDifference(time, 70);
 
         if (timeLeft < 0) {
           setSpinner(true);

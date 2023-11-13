@@ -33,6 +33,7 @@ import {
   resetRequestData,
   setDoctorData,
   setRequestData,
+  setTimeLeftForCancel,
   setTimeLeftInRequest,
   toggleDoctorModal,
 } from '../../../redux/doctor.slice';
@@ -43,13 +44,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const HomeDoc = ({navigation, route}) => {
   const dispatch = useDispatch();
-  const {doctorData, requestData, doctorModals, timeLeftInRequest} =
-    useSelector(state => state.doctorReducer);
+  const {
+    doctorData,
+    requestData,
+    doctorModals,
+    timeLeftInRequest,
+    timeLeftForCancel,
+  } = useSelector(state => state.doctorReducer);
   const [permisoDenegado, setPermisoDenegado] = useState(
     route.params ? route.params.permisoDenegado : undefined,
   );
 
   const [isSuccessful, setIsSuccessful] = useState(true);
+  const [cancelCount, setCancelCount] = useState(-1);
 
   const openGoogleMaps = () => {
     const startLatitude = doctorData.location.latitude;
@@ -108,8 +115,11 @@ export const HomeDoc = ({navigation, route}) => {
       if (response) {
         if (response.result === 'cancelada') {
           setSpinner(true);
-          dispatch(setRequestData({accepted: false}));
+          // dispatch(setRequestData({accepted: false}));
           dispatch(resetRequestData());
+          dispatch(setTimeLeftForCancel('0'));
+          setCancelCount(-1);
+          dispatch(setDoctorData({active: false}));
           setGenericModal({
             title: 'El paciente cancelo la consulta',
             message:
@@ -131,21 +141,25 @@ export const HomeDoc = ({navigation, route}) => {
       if (value) {
         const response = await apiAcceptRequest();
 
+        const currentDate = new Date();
+
         if (response.state === 'en curso') {
           toggleModal('detail');
           dispatch(setDoctorData({active: false}));
           dispatch(setRequestData({requested: false, accepted: true}));
-          setTimeout(() => {
-            // Llama al callback después de 120 segundos
-            checkIfPatientCancel();
-          }, 120000);
+          dispatch(setTimeLeftForCancel(currentDate.toISOString()));
+          // setTimeout(() => {
+          // Llama al callback después de 140 segundos
+          //   checkIfPatientCancel();
+          // }, 140000);
         }
       } else {
         const response = await apiDeclineRequest();
 
-        if (response.state === 'seleccionando medico') {
+        if (response.state === 'rechazada') {
           dispatch(setDoctorData({active: false}));
           dispatch(setRequestData({requested: false}));
+          toggleModal('detail');
         }
       }
     } catch (e) {
@@ -300,9 +314,33 @@ export const HomeDoc = ({navigation, route}) => {
     }
   };
 
+  const checkIfPatientCancelWithToken = async () => {
+    try {
+      const tokenUsuarioSaved = await AsyncStorage.getItem('tokenUsuario');
+      if (tokenUsuarioSaved) {
+        await checkIfPatientCancel();
+      }
+    } catch (error) {
+      console.error('Error fetching token or making API call:', error);
+    }
+  };
+
+  const firstLoad = async () => {
+    if (timeLeftForCancel?.length > 4) {
+      const time = new Date(timeLeftForCancel);
+      const timeLeft = calculateTimeDifference(time, 120);
+
+      if (timeLeft > 0) {
+        setCancelCount(timeLeft);
+      } else {
+        checkIfPatientCancelWithToken();
+      }
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
-      if (requestCount % 10 === 0 && doctorData.active) {
+      if (requestCount % 4 === 0 && doctorData.active) {
         await handlePatientRequestWithToken();
       }
 
@@ -322,6 +360,7 @@ export const HomeDoc = ({navigation, route}) => {
   }, [requestCount]);
 
   useEffect(() => {
+    firstLoad();
     if (requestData.requested && timeLeftInRequest.length > 4) {
       const time = new Date(timeLeftInRequest);
       const timeLeft = calculateTimeDifference(time, 60);
@@ -338,6 +377,30 @@ export const HomeDoc = ({navigation, route}) => {
       );
     }
   }, []);
+
+  useEffect(() => {
+    const checkCancel = async () => {
+      if (cancelCount % 4 === 0) {
+        await checkIfPatientCancelWithToken();
+        console.log('checkIfCancel', cancelCount);
+      }
+
+      if (!requestData.accepted) {
+        setCancelCount(-1);
+      } else if (cancelCount >= 0) {
+        console.log('CANCEL', cancelCount);
+        setTimeout(() => {
+          setCancelCount(cancelCount - 1);
+        }, 1000);
+      }
+    };
+
+    checkCancel();
+  }, [cancelCount]);
+
+  useEffect(() => {
+    firstLoad();
+  }, [timeLeftForCancel]);
 
   return (
     <View style={styles.wrapper}>

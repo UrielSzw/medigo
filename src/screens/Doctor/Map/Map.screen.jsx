@@ -89,6 +89,8 @@ export const Map = ({navigation}) => {
         <MapView
           style={styles.map}
           onMapLoaded={() => setMapSpinner(false)}
+          provider="google"
+          mapType="standard"
           initialRegion={{
             latitude: currentLocation.latitude,
             longitude: currentLocation.longitude,

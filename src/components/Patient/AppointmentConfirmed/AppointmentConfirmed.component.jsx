@@ -121,7 +121,7 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
         setTimeout(() => {
           setCount(count - 1);
         }, 1000);
-      } else if (count % 6 === 0) {
+      } else if (count % 4 === 0) {
         await checkIfAppointmentEndedWithToken();
 
         setTimeout(() => {
