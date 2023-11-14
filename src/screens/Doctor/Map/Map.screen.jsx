@@ -60,7 +60,7 @@ export const Map = ({navigation}) => {
             error => {
               console.log('Error al obtener la ubicación: ', error);
             },
-            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+            {enableHighAccuracy: false, timeout: 5000, maximumAge: 0},
           );
         } else if (permissionStatus === RESULTS.UNAVAILABLE) {
           console.log(

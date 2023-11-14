@@ -192,6 +192,8 @@ export const ModifyData = ({navigation}) => {
           render={({field}) => (
             <StyledInput
               label="Email"
+              keyboardType="email-address"
+              autoCapitalize="none"
               style={styles.input}
               field={field}
               name="username"

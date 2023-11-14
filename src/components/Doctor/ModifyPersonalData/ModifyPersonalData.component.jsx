@@ -118,6 +118,8 @@ export const ModifyPersonalData = ({setHideFooter}) => {
             <StyledInput
               label="Email"
               style={styles.input}
+              keyboardType="email-address"
+              autoCapitalize="none"
               field={field}
               name="username"
               error={errors.username?.message}

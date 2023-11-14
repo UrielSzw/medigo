@@ -78,6 +78,8 @@ export const Login = ({navigation}) => {
               field={field}
               name="username"
               label="Email"
+              keyboardType="email-address"
+              autoCapitalize="none"
               style={styles.input}
               error={errors.username?.message}
             />
