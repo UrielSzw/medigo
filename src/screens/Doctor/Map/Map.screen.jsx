@@ -26,6 +26,8 @@ export const Map = ({navigation}) => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [mapSpinner, setMapSpinner] = useState(false);
 
+  const camera = useRef(null);
+
   const handleNavigateRegister = async () => {
     try {
       const response = await apiDoctorsUpdate({
@@ -99,10 +101,12 @@ export const Map = ({navigation}) => {
     return () => {};
   }, []);
 
-  const handleMarkerDragEnd = event => {
-    const {latitude, longitude} = event.nativeEvent.coordinate;
-    setCurrentLocation({latitude, longitude});
-  };
+  useEffect(() => {
+    camera.current.setCamera({
+      zoomLevel: 15,
+      centerCoordinate: [currentLocation.latitude, currentLocation.longitude],
+    });
+  }, [currentLocation]);
 
   return (
     <View style={styles.container}>
@@ -134,23 +138,15 @@ export const Map = ({navigation}) => {
           </Marker>
         </MapView>
       )} */}
-      {currentLocation && (
-        <Mapbox.MapView
-          style={styles.map}
-          zoomEnabled
-          onDidFinishLoadingMap={() => setMapSpinner(false)}
-          onPress={e => {
-            setCurrentLocation(e.geometry.coordinate);
-          }}>
-          <Mapbox.Camera
-            zoomLevel={15}
-            centerCoordinate={[
-              currentLocation.latitude,
-              currentLocation.longitude,
-            ]}
-          />
-        </Mapbox.MapView>
-      )}
+      <Mapbox.MapView
+        zoomEnabled
+        style={styles.map}
+        onDidFinishLoadingMap={() => setMapSpinner(false)}
+        onPress={e => {
+          setCurrentLocation(e.geometry.coordinate);
+        }}>
+        <Mapbox.Camera ref={camera} />
+      </Mapbox.MapView>
 
       <StyledButton
         onPress={handleNavigateRegister}
