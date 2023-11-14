@@ -13,7 +13,7 @@ export const PatientRequest = ({logo, setOpenModalDetail}) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.headerWrapper}>
-        <StyledText size="s">Tiempo restante para acceptar:</StyledText>
+        <StyledText size="s">Tiempo restante para aceptar:</StyledText>
         <StyledText>{requestData.fechaSeleccion}</StyledText>
       </View>
       <View style={styles.dataWrapper}>

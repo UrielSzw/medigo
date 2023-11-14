@@ -83,7 +83,7 @@ export const HomeDoc = ({navigation, route}) => {
       setGenericModal({
         title: 'Error de geolocalización',
         message:
-          'Para poder acceptar clientes, debes permitir la geolocalización',
+          'Para poder aceptar clientes, debes permitir la geolocalización',
         show: true,
       });
     }
@@ -250,7 +250,7 @@ export const HomeDoc = ({navigation, route}) => {
       if (response.result && !requestData.requested) {
         const timeLeft = calculateTimeDifference(
           response.result.fechaSeleccion,
-          45,
+          50,
         );
 
         console.log(
@@ -363,7 +363,7 @@ export const HomeDoc = ({navigation, route}) => {
     firstLoad();
     if (requestData.requested && timeLeftInRequest.length > 4) {
       const time = new Date(timeLeftInRequest);
-      const timeLeft = calculateTimeDifference(time, 45);
+      const timeLeft = calculateTimeDifference(time, 50);
 
       if (timeLeft <= 0) {
         dispatch(resetRequestData());
@@ -486,7 +486,7 @@ export const HomeDoc = ({navigation, route}) => {
         title={
           <View style={styles.headerModalWrapper}>
             <StyledText color="white" size="xs">
-              Tiempo restante para acceptar:
+              Tiempo restante para aceptar:
             </StyledText>
             <StyledText size="s" color="white">
               {requestData.fechaSeleccion}

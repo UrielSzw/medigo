@@ -129,7 +129,7 @@ export const WaitingModal = () => {
     const firstLoad = async () => {
       if (waitingModal && waitingCount.length > 4) {
         const time = new Date(waitingCount);
-        const timeLeft = calculateTimeDifference(time, 70);
+        const timeLeft = calculateTimeDifference(time, 60);
 
         if (timeLeft < 0) {
           setSpinner(true);

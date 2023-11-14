@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {theme} from '../../../theme/theme';
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -23,5 +24,6 @@ export const styles = StyleSheet.create({
     textAlignVertical: 'top',
     paddingHorizontal: 8,
     fontSize: 16,
+    color: theme.colors.black,
   },
 });

@@ -19,7 +19,7 @@ export const PatientDetailsModal = ({handlePatientRequestResponse}) => {
             <StyledText bold size="md">
               {`${requestData.nombre} ${requestData.apellido}`}
             </StyledText>
-            <StyledText color="grey">Pacietne</StyledText>
+            <StyledText color="grey">Paciente</StyledText>
           </View>
         </View>
         <View style={styles.timeWrapper}>
@@ -41,10 +41,10 @@ export const PatientDetailsModal = ({handlePatientRequestResponse}) => {
           Ubicacion de atencion: {requestData.direccion}
         </StyledText>
         <StyledText color="grey" size="default">
-          Piso: {requestData.piso}
+          Piso: {requestData.piso || 'No especifica'}
         </StyledText>
         <StyledText color="grey" size="default">
-          Departamento: {requestData.departamento}
+          Departamento: {requestData.departamento || 'No especifica'}
         </StyledText>
         <View>
           <StyledText color="grey" size="default">
@@ -59,7 +59,7 @@ export const PatientDetailsModal = ({handlePatientRequestResponse}) => {
         </StyledText>
       </View>
       <StyledButton onPress={() => handlePatientRequestResponse(true)}>
-        Acceptar
+        Aceptar
       </StyledButton>
       <StyledButton
         style={styles.button}
