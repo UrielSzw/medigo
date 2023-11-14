@@ -137,17 +137,19 @@ export const Map = ({navigation}) => {
       {currentLocation && (
         <Mapbox.MapView
           style={styles.map}
+          zoomEnabled
           onDidFinishLoadingMap={() => setMapSpinner(false)}
-          camera={{
-            centerCoordinate: {
-              latitude: currentLocation.latitude,
-              longitude: currentLocation.longitude,
-            },
-            zoomLevel: 14, // adjust as needed
-          }}
           onPress={e => {
             setCurrentLocation(e.geometry.coordinate);
-          }}></Mapbox.MapView>
+          }}>
+          <Mapbox.Camera
+            zoomLevel={15}
+            centerCoordinate={[
+              currentLocation.latitude,
+              currentLocation.longitude,
+            ]}
+          />
+        </Mapbox.MapView>
       )}
 
       <StyledButton
