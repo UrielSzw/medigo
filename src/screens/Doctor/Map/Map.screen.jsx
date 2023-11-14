@@ -146,7 +146,11 @@ export const Map = ({navigation}) => {
         onPress={e => {
           setCurrentLocation(e.geometry.coordinate);
         }}>
-        <Mapbox.Camera ref={camera} />
+        <Mapbox.Camera
+          ref={camera}
+          zoomLevel={10}
+          centerCoordinate={[-34.6028526, -58.4735144]}
+        />
       </Mapbox.MapView>
 
       <StyledButton
