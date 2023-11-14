@@ -46,6 +46,7 @@ export const RegisterDoc = ({navigation}) => {
         const response = await apiDoctorsRegister({
           ...data,
           fechaNacimiento: formatToDate(data.fechaNacimiento),
+          especialidad,
         });
 
         if (!response.success) {
