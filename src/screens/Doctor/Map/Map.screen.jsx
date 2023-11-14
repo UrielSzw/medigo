@@ -15,6 +15,11 @@ import {theme} from '../../../theme/theme';
 import {setDoctorData} from '../../../redux/doctor.slice';
 import {setModal} from '../../../utils/setModal';
 import {apiDoctorsUpdate} from '../../../utils/api/doctorRoutes';
+import Mapbox from '@rnmapbox/maps';
+
+Mapbox.setAccessToken(
+  'sk.eyJ1IjoiZXpla29yZW4iLCJhIjoiY2xveHJ6aXJnMDV5ejJpcW93bWFiNXo0dSJ9.leRQwNS0C5DYWwA6wrGptQ',
+);
 
 export const Map = ({navigation}) => {
   const dispatch = useDispatch();
@@ -104,7 +109,7 @@ export const Map = ({navigation}) => {
       <View style={styles.confirmLocation}>
         <StyledText color="white">Tu ubicación actual:</StyledText>
       </View>
-      {currentLocation && (
+      {/* {currentLocation && (
         <MapView
           style={styles.map}
           onMapLoaded={() => setMapSpinner(false)}
@@ -128,6 +133,21 @@ export const Map = ({navigation}) => {
             <PinIcon />
           </Marker>
         </MapView>
+      )} */}
+      {currentLocation && (
+        <Mapbox.MapView
+          style={styles.map}
+          onDidFinishLoadingMap={() => setMapSpinner(false)}
+          camera={{
+            centerCoordinate: {
+              latitude: currentLocation.latitude,
+              longitude: currentLocation.longitude,
+            },
+            zoomLevel: 14, // adjust as needed
+          }}
+          onPress={e => {
+            setCurrentLocation(e.geometry.coordinate);
+          }}></Mapbox.MapView>
       )}
 
       <StyledButton
