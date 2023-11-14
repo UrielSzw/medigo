@@ -106,14 +106,14 @@ Y en cuanto al cliente(paciente) cuenta con su historial de medicos recibidos co
    </p>
 4. Una vez terminada la consulta, lo enviara al paciente directo a una pestaña donde debera valorar al medico y brindar, si quiere, una breve descripcion de la consulta del medico. Y eso luego pasara al historial de consultas(Actividad) en configuracion
    <p align="center">
-     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/valoracion-medico.jpeg?raw=true" alt="" width="200" height="400">
+     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/valorar-paciente.jpeg?raw=true" alt="" width="200" height="400">
    </p>
    <p align="center">
      <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/actividad-paciente.jpeg?raw=true" alt="" width="200" height="400">
    </p>
 5. Luego en la parte inferior si presionamos el icono del usuario nos trasladara a lo que son nuestras Actividad(Historial de Consultas) - Datos Personales - Ayuda. Ademas de todas esas opciones hay tambien un boton de logOut para cerrar sesion
    <p align="center">
-     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/configuracion-paciente.jpeg?raw=true" alt="" width="200" height="400">
+     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/configuracion-medico.jpeg?raw=true" alt="" width="200" height="400">
    </p>
 
 ## Contribución
