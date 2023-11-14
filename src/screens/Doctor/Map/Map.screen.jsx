@@ -14,22 +14,34 @@ import {PinIcon} from '../../../assets';
 import {theme} from '../../../theme/theme';
 import {setDoctorData} from '../../../redux/doctor.slice';
 import {setModal} from '../../../utils/setModal';
+import {apiDoctorsUpdate} from '../../../utils/api/doctorRoutes';
 
 export const Map = ({navigation}) => {
   const dispatch = useDispatch();
   const [currentLocation, setCurrentLocation] = useState(null);
   const [mapSpinner, setMapSpinner] = useState(false);
 
-  const handleNavigateRegister = () => {
-    navigation.navigate(PATHS.HOMEDOCTOR);
-    dispatch(
-      setDoctorData({
-        location: {
-          latitude: currentLocation?.latitude,
-          longitud: currentLocation?.longitude,
-        },
-      }),
-    );
+  const handleNavigateRegister = async () => {
+    try {
+      const response = await apiDoctorsUpdate({
+        latitud: currentLocation?.latitude,
+        longitud: currentLocation?.longitude,
+      });
+
+      if (response.success) {
+        navigation.navigate(PATHS.HOMEDOCTOR);
+        dispatch(
+          setDoctorData({
+            location: {
+              latitude: currentLocation?.latitude,
+              longitud: currentLocation?.longitude,
+            },
+          }),
+        );
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
