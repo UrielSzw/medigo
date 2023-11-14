@@ -102,10 +102,11 @@ export const Map = ({navigation}) => {
   }, []);
 
   useEffect(() => {
-    camera.current.setCamera({
-      zoomLevel: 15,
-      centerCoordinate: [currentLocation.latitude, currentLocation.longitude],
-    });
+    if (currentLocation)
+      camera.current.setCamera({
+        zoomLevel: 15,
+        centerCoordinate: [currentLocation.latitude, currentLocation.longitude],
+      });
   }, [currentLocation]);
 
   return (
