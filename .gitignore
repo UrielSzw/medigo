@@ -67,4 +67,4 @@ yarn-error.log
 .env
 
 # imagenes readme
-/src/assets/readme
+# src/assets/readme
