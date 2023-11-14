@@ -50,8 +50,10 @@ export const formatTime = minutes => {
 };
 
 export const formatToDate = dateStr => {
-  const parts = dateStr.split('-');
-  return new Date(parts[2], parts[1] - 1, parts[0]);
+  const [day, month, year] = dateStr.split('-');
+  const newDateString = `${year}-${month}-${day}`;
+
+  return new Date(newDateString);
 };
 
 export const getFutureDate = seconds => {

@@ -29,7 +29,7 @@ export const RegisterPat = ({navigation}) => {
 
     const firstDate = formatToDate(formData.fechaNacimiento);
 
-    if (formData.grupoFamiliar.length > 1) {
+    if (formData.grupoFamiliar.length >= 1) {
       formData.grupoFamiliar.map(fam => {
         familyGroupDates.push({
           ...fam,
