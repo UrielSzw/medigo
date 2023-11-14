@@ -19,7 +19,7 @@ export const UserDataItem = ({
       <View style={styles.dataWrapper}>
         {logo ? logo : <DefaultProfile />}
         <View>
-          <StyledText bold size={name.length > 15 ? 's' : 'md'}>
+          <StyledText bold size={name.length > 12 ? 's' : 'md'}>
             {name}
           </StyledText>
           <StyledText color="grey">{category}</StyledText>
@@ -29,7 +29,9 @@ export const UserDataItem = ({
         <View style={styles.time}>
           <CarIcon style={styles.carIcon} />
           <ClockIcon fill="#8696BB" style={styles.icon} />
-          <StyledText color="grey">{time} m</StyledText>
+          <StyledText color="grey" size="s">
+            {time} m
+          </StyledText>
         </View>
       )}
     </View>
