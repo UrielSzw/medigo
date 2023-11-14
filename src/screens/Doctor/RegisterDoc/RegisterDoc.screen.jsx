@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState, useEffect} from 'react';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {View, ScrollView, Text, Platform} from 'react-native';
+import {View, ScrollView, Text} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {useSelector} from 'react-redux';
 import {

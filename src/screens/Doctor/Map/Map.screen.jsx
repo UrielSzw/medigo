@@ -22,7 +22,14 @@ export const Map = ({navigation}) => {
 
   const handleNavigateRegister = () => {
     navigation.navigate(PATHS.HOMEDOCTOR);
-    dispatch(setDoctorData({location: currentLocation}));
+    dispatch(
+      setDoctorData({
+        location: {
+          latitude: currentLocation?.latitude,
+          longitud: currentLocation?.longitude,
+        },
+      }),
+    );
   };
 
   useEffect(() => {

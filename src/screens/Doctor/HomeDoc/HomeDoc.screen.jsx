@@ -250,7 +250,7 @@ export const HomeDoc = ({navigation, route}) => {
       if (response.result && !requestData.requested) {
         const timeLeft = calculateTimeDifference(
           response.result.fechaSeleccion,
-          60,
+          45,
         );
 
         console.log(
@@ -363,7 +363,7 @@ export const HomeDoc = ({navigation, route}) => {
     firstLoad();
     if (requestData.requested && timeLeftInRequest.length > 4) {
       const time = new Date(timeLeftInRequest);
-      const timeLeft = calculateTimeDifference(time, 60);
+      const timeLeft = calculateTimeDifference(time, 45);
 
       if (timeLeft <= 0) {
         dispatch(resetRequestData());
@@ -372,7 +372,7 @@ export const HomeDoc = ({navigation, route}) => {
 
       dispatch(
         setRequestData({
-          fechaSeleccion: timeLeft || 50,
+          fechaSeleccion: timeLeft || 35,
         }),
       );
     }
