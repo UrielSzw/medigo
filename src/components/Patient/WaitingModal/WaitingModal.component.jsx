@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
-import {Modal, View} from 'react-native';
+import {ActivityIndicator, Modal, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {StyledText} from '../../Common/StyledText/StyledText.component';
 import {
@@ -20,6 +20,8 @@ import {styles} from './WaitingModal.styles';
 import {setModal} from '../../../utils/setModal';
 import {calculateTimeDifference} from '../../../utils/commonMethods';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {counterEvent} from 'react-native/Libraries/Performance/Systrace';
+import {theme} from '../../../theme/theme';
 
 export const WaitingModal = () => {
   const {doctorDetails, requestDetails, waitingCount, waitingModal} =
@@ -149,9 +151,18 @@ export const WaitingModal = () => {
   return (
     <Modal visible={waitingModal} transparent>
       <View style={styles.background}>
-        <StyledText style={styles.text} color="white">
-          {count}
-        </StyledText>
+        {count >= 0 && (
+          <StyledText style={styles.text} color="white">
+            {count}
+          </StyledText>
+        )}
+        {count < 0 && (
+          <ActivityIndicator
+            size="large"
+            color={theme.colors.white}
+            style={styles.spinner}
+          />
+        )}
       </View>
     </Modal>
   );
