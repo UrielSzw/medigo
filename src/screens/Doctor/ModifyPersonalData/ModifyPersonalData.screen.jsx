@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect} from 'react';
-import {View, Keyboard} from 'react-native';
+import React, {useState} from 'react';
+import {View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   FooterDoc,
@@ -19,7 +19,7 @@ import {apiDoctorsUpdate} from '../../../utils/api/doctorRoutes';
 import {setDoctorData} from '../../../redux/doctor.slice';
 import {PATHS} from '../../../routes/paths';
 import {useNavigation} from '@react-navigation/native';
-import {formatDate} from '../../../utils/commonMethods';
+import {formatDate, formatToDate} from '../../../utils/commonMethods';
 
 export const ModifyPersonalDataDoc = () => {
   const {doctorData} = useSelector(state => state.doctorReducer);
@@ -38,7 +38,11 @@ export const ModifyPersonalDataDoc = () => {
     if (data) {
       try {
         setSpinner(true);
-        const response = await apiDoctorsUpdate({...data, especialidad});
+        const response = await apiDoctorsUpdate({
+          ...data,
+          especialidad,
+          fechaNacimiento: formatToDate(data.fechaNacimiento),
+        });
 
         if (response.success) {
           dispatch(setDoctorData({...data, especialidad}));
@@ -119,7 +123,11 @@ export const ModifyPersonalDataDoc = () => {
         <Controller
           control={control}
           name="fechaNacimiento"
-          defaultValue={formatDate(doctorData.fechaNacimiento)}
+          defaultValue={
+            doctorData.fechaNacimiento.length > 12
+              ? formatDate(doctorData.fechaNacimiento)
+              : doctorData.fechaNacimiento
+          }
           rules={{
             required: 'La fecha de nacimiento es obligatoria',
             validate: {
