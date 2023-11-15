@@ -61,3 +61,45 @@ export const getFutureDate = seconds => {
   currentDate.setSeconds(currentDate.getSeconds() + seconds);
   return currentDate;
 };
+
+export const formatAllDates = formData => {
+  let familyGroupDates = [];
+
+  const firstDate = formatToDate(formData.fechaNacimiento);
+
+  if (formData.grupoFamiliar.length >= 1) {
+    formData.grupoFamiliar.map(fam => {
+      familyGroupDates.push({
+        ...fam,
+        fechaNacimiento: formatToDate(fam.fechaNacimiento),
+      });
+    });
+  }
+
+  return {
+    ...formData,
+    fechaNacimiento: firstDate,
+    grupoFamiliar: familyGroupDates,
+  };
+};
+
+export const formatAllDatesLogin = formData => {
+  let familyGroupDates = [];
+
+  const firstDate = formatDate(new Date(formData.fechaNacimiento));
+
+  if (formData.grupoFamiliar.length >= 1) {
+    formData.grupoFamiliar.map(fam => {
+      familyGroupDates.push({
+        ...fam,
+        fechaNacimiento: formatDate(new Date(fam.fechaNacimiento)),
+      });
+    });
+  }
+
+  return {
+    ...formData,
+    fechaNacimiento: firstDate,
+    grupoFamiliar: familyGroupDates,
+  };
+};

@@ -15,9 +15,9 @@ import {styles} from './FamilyMembers.styles.js';
 
 export const FamilyMembers = ({navigation}) => {
   const {userData} = useSelector(state => state.userReducer);
-  const family = userData?.grupoFamiliar?.slice(
-    1,
-    userData?.grupoFamiliar?.length,
+  const family = userData?.grupoFamiliar?.filter(
+    fam =>
+      !(fam.nombre === userData.nombre && fam.apellido === userData.apellido),
   );
   const dispatch = useDispatch();
 
