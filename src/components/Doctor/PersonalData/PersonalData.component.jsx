@@ -5,15 +5,10 @@ import {StyledButton, StyledText} from '../..';
 import {PersonalDataIcon} from '../../../assets';
 import {PATHS} from '../../../routes/paths';
 import {styles} from './PersonalData.styles';
+import {useSelector} from 'react-redux';
 
-export const PersonalData = ({
-  dni,
-  telefono,
-  especialidad,
-  precio,
-  nroMatricula,
-  radioDeAccion,
-}) => {
+export const PersonalData = () => {
+  const {doctorData} = useSelector(state => state.doctorReducer);
   const navigation = useNavigation();
 
   const handleBackActivity = () => {
@@ -32,22 +27,28 @@ export const PersonalData = ({
           <StyledText bold>Datos personales</StyledText>
         </View>
         <StyledText color="grey" size="default" style={styles.paddLeft}>
-          DNI: {dni}
+          DNI: {doctorData.dni}
         </StyledText>
         <StyledText color="grey" size="default" style={styles.paddLeft}>
-          Telefono: {telefono}
+          Fecha de nacimiento: {doctorData.fechaNacimiento}
         </StyledText>
         <StyledText color="grey" size="default" style={styles.paddLeft}>
-          Especialidades: {especialidad}
+          Sexo: {doctorData.sexo}
         </StyledText>
         <StyledText color="grey" size="default" style={styles.paddLeft}>
-          Precio: {'$' + precio}
+          Telefono: {doctorData.telefono}
         </StyledText>
         <StyledText color="grey" size="default" style={styles.paddLeft}>
-          Numero de Matricula: {nroMatricula}
+          Especialidad: {doctorData.especialidad}
         </StyledText>
         <StyledText color="grey" size="default" style={styles.paddLeft}>
-          Radio de accion: {radioDeAccion + ' km'}
+          Precio: {'$' + doctorData.precio}
+        </StyledText>
+        <StyledText color="grey" size="default" style={styles.paddLeft}>
+          Numero de Matricula: {doctorData.nroMatricula}
+        </StyledText>
+        <StyledText color="grey" size="default" style={styles.paddLeft}>
+          Radio de accion: {doctorData.radioAccion + ' km'}
         </StyledText>
       </View>
 

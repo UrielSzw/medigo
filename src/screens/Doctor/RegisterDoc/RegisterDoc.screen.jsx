@@ -399,11 +399,6 @@ export const RegisterDoc = ({navigation}) => {
               name="nroMatricula"
               rules={{
                 required: 'El número de matrícula es obligatorio',
-                validate: {
-                  isNumber: value =>
-                    !isNaN(parseFloat(value)) ||
-                    'El número de matrícula debe ser un número',
-                },
               }}
               render={({field}) => (
                 <StyledInput

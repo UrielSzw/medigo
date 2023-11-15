@@ -7,6 +7,7 @@ const initialState = {
     apellido: '',
     direccion: '',
     dni: '',
+    password: '',
     especialidad: '',
     fechaNacimiento: '',
     nroMatricula: '',
@@ -73,8 +74,6 @@ export const doctorSlice = createSlice({
   reducers: {
     setDoctorData: (state, action) => {
       state.doctorData = {...state.doctorData, ...action.payload};
-      console.log('state.doctorData ', state.doctorData);
-      console.log('action.payload', action.payload);
     },
     setRequestData: (state, action) => {
       state.requestData = {...state.requestData, ...action.payload};

@@ -26,7 +26,9 @@ export const styles = StyleSheet.create({
     gap: 10,
   },
   scroll: {
+    // flex: 1,
     height: 450,
+    // borderWidth: 1,
   },
   filterContainer: {
     flexDirection: 'row',
@@ -50,7 +52,10 @@ export const styles = StyleSheet.create({
     gap: 5,
   },
   buttonsContainer: {
-    gap: 25,
-    paddingHorizontal: 40,
+    gap: 15,
+  },
+  button: {
+    width: '90%',
+    alignSelf: 'center',
   },
 });

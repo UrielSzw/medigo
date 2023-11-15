@@ -52,6 +52,18 @@ export const PersonalData = ({navigation}) => {
           <StyledText color="grey" size="default">
             Direccion: {userData.direccion}
           </StyledText>
+          <StyledText color="grey" size="default">
+            Piso: {userData.piso}
+          </StyledText>
+          <StyledText color="grey" size="default">
+            Departamento: {userData.departamento}
+          </StyledText>
+          <StyledText color="grey" size="default">
+            Ciudad: {userData.ciudad}
+          </StyledText>
+          <StyledText color="grey" size="default">
+            Codigo postal: {userData.codigoPostal}
+          </StyledText>
         </View>
 
         <View style={styles.buttonsContainer}>

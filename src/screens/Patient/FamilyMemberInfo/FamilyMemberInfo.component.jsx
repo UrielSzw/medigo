@@ -12,7 +12,7 @@ import {
 import {PersonalDataIcon} from '../../../assets';
 import {PATHS} from '../../../routes/paths';
 import {styles} from './FamilyMemberInfo.styles';
-import {formatDate} from '../../../utils/commonMethods';
+import {formatDate, formatToDate} from '../../../utils/commonMethods';
 import {setSpinner} from '../../../utils/setSpinner';
 import {setUserData} from '../../../redux/user.slice';
 import {apiDeleteFamilyMember} from '../../../utils/api/patientRoutes';
@@ -38,13 +38,18 @@ export const FamilyMemberInfo = ({navigation}) => {
       setOpenModal(false);
 
       const newFamilyMembers = userData.grupoFamiliar.filter(
-        fam => fam.nombre !== familyMemberSelected.nombre,
+        fam =>
+          !(
+            fam.nombre === familyMemberSelected.nombre &&
+            fam.apellido === familyMemberSelected.apellido &&
+            fam.fechaNacimiento === familyMemberSelected.fechaNacimiento
+          ),
       );
 
       const response = await apiDeleteFamilyMember({
         nombre: familyMemberSelected.nombre,
         apellido: familyMemberSelected.apellido,
-        fechaNacimiento: familyMemberSelected.fechaNacimiento,
+        fechaNacimiento: formatToDate(familyMemberSelected.fechaNacimiento),
       });
 
       if (response.success) {
@@ -82,7 +87,9 @@ export const FamilyMemberInfo = ({navigation}) => {
           </StyledText>
           <StyledText color="grey" size="default">
             Fecha de nacimiento:{' '}
-            {formatDate(familyMemberSelected.fechaNacimiento)}
+            {familyMemberSelected.fechaNacimiento.length > 12
+              ? formatDate(familyMemberSelected.fechaNacimiento)
+              : familyMemberSelected.fechaNacimiento}
           </StyledText>
           <StyledText color="grey" size="default">
             Sexo: {familyMemberSelected.sexo}

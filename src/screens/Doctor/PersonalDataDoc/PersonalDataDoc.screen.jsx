@@ -16,14 +16,7 @@ export const PersonalDataDoc = () => {
         username={`${doctorData.nombre} ${doctorData.apellido}`}
         email={doctorData.username}
       />
-      <PersonalData
-        dni={doctorData.dni}
-        telefono={doctorData.telefono}
-        especialidad={doctorData.especialidad}
-        precio={doctorData.precio}
-        nroMatricula={doctorData.nroMatricula}
-        radioDeAccion={doctorData.radioAccion}
-      />
+      <PersonalData />
       <FooterDoc current="profile" />
     </View>
   );

@@ -22,7 +22,7 @@ export const SubmitDoctorDataModal = ({
   familyMembersOptions,
   setValue,
 }) => {
-  const {userData} = useSelector(state => state.userReducer);
+  const {userData, requestData} = useSelector(state => state.userReducer);
 
   useEffect(() => {
     setValue('direccion', userData.direccion);
@@ -43,6 +43,7 @@ export const SubmitDoctorDataModal = ({
         contentContainerStyle={styles.scrollContent}>
         <Controller
           control={control}
+          defaultValue={requestData?.motivo}
           name="motivo"
           render={({field}) => (
             <StyledInput
@@ -56,6 +57,7 @@ export const SubmitDoctorDataModal = ({
         />
         <Controller
           control={control}
+          defaultValue={requestData?.sintomas}
           name="sintomas"
           render={({field}) => (
             <StyledInput

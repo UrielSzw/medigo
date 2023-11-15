@@ -70,15 +70,17 @@ export const FamilyMembers = ({navigation}) => {
           <StyledButton
             onPress={handleNavigateModifyFamily}
             children="Agregar"
+            style={styles.button}
           />
 
           <StyledButton
             variant="secondary"
             onPress={handleNavigateProfile}
             children="Volver"
+            style={styles.button}
           />
+          <FooterPatient current="profile" />
         </View>
-        <FooterPatient current="profile" />
       </View>
     </View>
   );

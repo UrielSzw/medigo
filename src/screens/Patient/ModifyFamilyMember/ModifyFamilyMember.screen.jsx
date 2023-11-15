@@ -19,7 +19,7 @@ import {PATHS} from '../../../routes/paths';
 import {styles} from './ModifyFamilyMember.styles';
 import {apiUpdateFamilyMember} from '../../../utils/api/patientRoutes';
 import {updateFamilyMember} from '../../../redux/user.slice';
-import {formatDate} from '../../../utils/commonMethods';
+import {formatDate, formatToDate} from '../../../utils/commonMethods';
 
 export const ModifyFamilyMember = () => {
   const {userData, familyMemberSelected} = useSelector(
@@ -49,6 +49,15 @@ export const ModifyFamilyMember = () => {
 
       const famToEdit = {
         ...prevData,
+        fechaNacimientoViejo: formatToDate(prevData.fechaNacimientoViejo),
+        nombreNuevo: data.nombre,
+        apellidoNuevo: data.apellido,
+        sexoNuevo: data.sexo,
+        fechaNacimientoNuevo: formatToDate(data.fechaNacimiento),
+      };
+
+      const famToEditLocal = {
+        ...prevData,
         nombreNuevo: data.nombre,
         apellidoNuevo: data.apellido,
         sexoNuevo: data.sexo,
@@ -58,7 +67,7 @@ export const ModifyFamilyMember = () => {
       const response = await apiUpdateFamilyMember(famToEdit);
 
       if (response.success) {
-        dispatch(updateFamilyMember(famToEdit));
+        dispatch(updateFamilyMember(famToEditLocal));
         handleBackFamilyMembers();
       }
     } catch (e) {
