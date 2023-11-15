@@ -36,6 +36,7 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
   const [count, setCount] = useState(0);
   const [disabled, setDisabled] = useState(false);
   const [disabledTimeCancel, setDisabledTimeCancel] = useState(null);
+  const [onOpenApp, setOnOpenApp] = useState(false);
 
   const getTitle = () => {
     if (doctorDetails.sexo === 'F') {
@@ -147,6 +148,13 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
       const disabledTime = new Date(disabledCancelDateTime);
       setDisabledTimeCancel(disabledTime);
     }
+
+    if (!onOpenApp) {
+      setOnOpenApp(true);
+      setTimeout(() => {
+        setOnOpenApp(false);
+      }, 5000);
+    }
   }, []);
 
   return (
@@ -183,8 +191,8 @@ export const AppointmentConfirmed = ({logo, setDoctorReviewModal}) => {
           Tiempo restante para cancelar: 2 minutos
         </StyledText>
         <StyledButton
-          style={{opacity: disabled ? 0.3 : 1}}
-          disabled={disabled}
+          style={{opacity: disabled || onOpenApp ? 0.3 : 1}}
+          disabled={disabled || onOpenApp}
           variant="warning"
           onPress={handleCancelAppoinment}>
           Cancelar
