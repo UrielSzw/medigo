@@ -18,6 +18,7 @@ import {useNavigation} from '@react-navigation/native';
 import {PATHS} from '../../../routes/paths';
 import {setUserData} from '../../../redux/user.slice';
 import {apiAddFamilyMember} from '../../../utils/api/patientRoutes';
+import {formatToDate} from '../../../utils/commonMethods';
 
 export const ModifyFamily = () => {
   const {userData} = useSelector(state => state.userReducer);
@@ -38,7 +39,10 @@ export const ModifyFamily = () => {
       setSpinner(true);
       const newFamilyMembers = [...userData.grupoFamiliar, data];
 
-      const response = await apiAddFamilyMember(data);
+      const response = await apiAddFamilyMember({
+        ...data,
+        fechaNacimiento: formatToDate(data.fechaNacimiento),
+      });
 
       if (response.success) {
         dispatch(

@@ -226,6 +226,29 @@ export const RegisterDoc = ({navigation}) => {
                   value: 6,
                   message: 'La contraseña debe tener al menos 6 caracteres',
                 },
+                validate: value => {
+                  // Validar que la contraseña contenga al menos una letra minúscula
+                  if (!/[a-z]/.test(value)) {
+                    return 'La contraseña debe contener al menos una letra minúscula';
+                  }
+
+                  // Validar que la contraseña contenga al menos una letra mayúscula
+                  if (!/[A-Z]/.test(value)) {
+                    return 'La contraseña debe contener al menos una letra mayúscula';
+                  }
+
+                  // Validar que la contraseña contenga al menos un número
+                  if (!/\d/.test(value)) {
+                    return 'La contraseña debe contener al menos un número';
+                  }
+
+                  // Validar que la contraseña contenga al menos un carácter especial
+                  if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+                    return 'La contraseña debe contener al menos un carácter especial';
+                  }
+
+                  return true;
+                },
               }}
               render={({field}) => (
                 <StyledInput
@@ -376,11 +399,6 @@ export const RegisterDoc = ({navigation}) => {
               name="nroMatricula"
               rules={{
                 required: 'El número de matrícula es obligatorio',
-                validate: {
-                  isNumber: value =>
-                    !isNaN(parseFloat(value)) ||
-                    'El número de matrícula debe ser un número',
-                },
               }}
               render={({field}) => (
                 <StyledInput

@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect} from 'react';
-import {View, Keyboard} from 'react-native';
+import React, {useState} from 'react';
+import {View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   FooterDoc,
@@ -19,6 +19,7 @@ import {apiDoctorsUpdate} from '../../../utils/api/doctorRoutes';
 import {setDoctorData} from '../../../redux/doctor.slice';
 import {PATHS} from '../../../routes/paths';
 import {useNavigation} from '@react-navigation/native';
+import {formatDate, formatToDate} from '../../../utils/commonMethods';
 
 export const ModifyPersonalDataDoc = () => {
   const {doctorData} = useSelector(state => state.doctorReducer);
@@ -37,7 +38,11 @@ export const ModifyPersonalDataDoc = () => {
     if (data) {
       try {
         setSpinner(true);
-        const response = await apiDoctorsUpdate({...data, especialidad});
+        const response = await apiDoctorsUpdate({
+          ...data,
+          especialidad,
+          fechaNacimiento: formatToDate(data.fechaNacimiento),
+        });
 
         if (response.success) {
           dispatch(setDoctorData({...data, especialidad}));
@@ -106,11 +111,78 @@ export const ModifyPersonalDataDoc = () => {
             <StyledInput
               label="Email"
               keyboardType="email-address"
+              defaultValue={doctorData.username}
               autoCapitalize="none"
               style={styles.input}
               field={field}
               name="username"
               error={errors.username?.message}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="fechaNacimiento"
+          defaultValue={
+            doctorData.fechaNacimiento.length > 12
+              ? formatDate(doctorData.fechaNacimiento)
+              : doctorData.fechaNacimiento
+          }
+          rules={{
+            required: 'La fecha de nacimiento es obligatoria',
+            validate: {
+              validDate: value => {
+                if (!value) {
+                  return 'La fecha de nacimiento es obligatoria';
+                }
+                const datePattern = /^\d{2}-\d{2}-\d{4}$/;
+                if (!datePattern.test(value)) {
+                  return 'El formato de fecha no es válido (DD-MM-YYYY)';
+                }
+
+                const parts = value.split('-');
+                const day = parseInt(parts[0], 10);
+                const month = parseInt(parts[1], 10);
+                const year = parseInt(parts[2], 10);
+
+                if (
+                  isNaN(day) ||
+                  isNaN(month) ||
+                  isNaN(year) ||
+                  month < 1 ||
+                  month > 12 ||
+                  day < 1 ||
+                  day > 31
+                ) {
+                  return 'La fecha no es válida (DD-MM-YYYY)';
+                }
+
+                const currentDate = new Date();
+
+                const eighteenYearsAgo = currentDate.getFullYear() - 18 < year;
+
+                const oneHundredTwentyYearsAgo =
+                  year >= currentDate.getFullYear() - 120;
+
+                if (eighteenYearsAgo) {
+                  return 'Debe ser mayor de 18 años';
+                }
+
+                if (!oneHundredTwentyYearsAgo) {
+                  return 'Debe ser menor de 120 años';
+                }
+
+                return true;
+              },
+            },
+          }}
+          render={({field}) => (
+            <StyledInput
+              field={field}
+              label="Fecha de nacimiento (DD-MM-YYYY)"
+              style={styles.input}
+              name="fechaNacimiento"
+              error={errors.fechaNacimiento?.message}
             />
           )}
         />
@@ -226,6 +298,24 @@ export const ModifyPersonalDataDoc = () => {
               field={field}
               name="radioAccion"
               error={errors.radioAccion?.message}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="nroMatricula"
+          defaultValue={doctorData.nroMatricula}
+          rules={{
+            required: 'El número de matrícula es obligatorio',
+          }}
+          render={({field}) => (
+            <StyledInput
+              label="Número de matrícula"
+              style={styles.input}
+              keyboardType="numeric"
+              field={field}
+              name="nroMatricula"
+              error={errors.nroMatricula?.message}
             />
           )}
         />

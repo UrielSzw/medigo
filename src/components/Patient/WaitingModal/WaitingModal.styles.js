@@ -10,4 +10,11 @@ export const styles = StyleSheet.create({
   text: {
     fontSize: 100,
   },
+  spinner: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
 });

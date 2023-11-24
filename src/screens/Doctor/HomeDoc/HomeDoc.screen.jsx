@@ -57,6 +57,7 @@ export const HomeDoc = ({navigation, route}) => {
 
   const [isSuccessful, setIsSuccessful] = useState(true);
   const [cancelCount, setCancelCount] = useState(-1);
+  const [cancelByDoctor, setCancelByDoctor] = useState(false);
 
   const openGoogleMaps = () => {
     const startLatitude = doctorData.location.latitude;
@@ -83,7 +84,7 @@ export const HomeDoc = ({navigation, route}) => {
       setGenericModal({
         title: 'Error de geolocalización',
         message:
-          'Para poder acceptar clientes, debes permitir la geolocalización',
+          'Para poder aceptar clientes, debes permitir la geolocalización',
         show: true,
       });
     }
@@ -112,10 +113,9 @@ export const HomeDoc = ({navigation, route}) => {
     try {
       const response = await apiLastRequestState();
 
-      if (response) {
+      if (response && !cancelByDoctor) {
         if (response.result === 'cancelada') {
           setSpinner(true);
-          // dispatch(setRequestData({accepted: false}));
           dispatch(resetRequestData());
           dispatch(setTimeLeftForCancel('0'));
           setCancelCount(-1);
@@ -148,10 +148,7 @@ export const HomeDoc = ({navigation, route}) => {
           dispatch(setDoctorData({active: false}));
           dispatch(setRequestData({requested: false, accepted: true}));
           dispatch(setTimeLeftForCancel(currentDate.toISOString()));
-          // setTimeout(() => {
-          // Llama al callback después de 140 segundos
-          //   checkIfPatientCancel();
-          // }, 140000);
+          setCancelByDoctor(false);
         }
       } else {
         const response = await apiDeclineRequest();
@@ -180,6 +177,7 @@ export const HomeDoc = ({navigation, route}) => {
           toggleModal('review');
         }
       } else {
+        setCancelByDoctor(true);
         const response = await apiCancelRequest();
 
         if (response?.state === 'cancelada') {
@@ -250,14 +248,8 @@ export const HomeDoc = ({navigation, route}) => {
       if (response.result && !requestData.requested) {
         const timeLeft = calculateTimeDifference(
           response.result.fechaSeleccion,
-          45,
+          48,
         );
-
-        console.log(
-          'response.result.fechaSeleccion',
-          response.result.fechaSeleccion,
-        );
-        console.log('response.result', timeLeft);
 
         if (timeLeft > 1) {
           const dateForString = new Date(response.result.fechaSeleccion);
@@ -363,7 +355,7 @@ export const HomeDoc = ({navigation, route}) => {
     firstLoad();
     if (requestData.requested && timeLeftInRequest.length > 4) {
       const time = new Date(timeLeftInRequest);
-      const timeLeft = calculateTimeDifference(time, 45);
+      const timeLeft = calculateTimeDifference(time, 48);
 
       if (timeLeft <= 0) {
         dispatch(resetRequestData());
@@ -382,13 +374,11 @@ export const HomeDoc = ({navigation, route}) => {
     const checkCancel = async () => {
       if (cancelCount % 4 === 0) {
         await checkIfPatientCancelWithToken();
-        console.log('checkIfCancel', cancelCount);
       }
 
       if (!requestData.accepted) {
         setCancelCount(-1);
       } else if (cancelCount >= 0) {
-        console.log('CANCEL', cancelCount);
         setTimeout(() => {
           setCancelCount(cancelCount - 1);
         }, 1000);
@@ -486,7 +476,7 @@ export const HomeDoc = ({navigation, route}) => {
         title={
           <View style={styles.headerModalWrapper}>
             <StyledText color="white" size="xs">
-              Tiempo restante para acceptar:
+              Tiempo restante para aceptar:
             </StyledText>
             <StyledText size="s" color="white">
               {requestData.fechaSeleccion}

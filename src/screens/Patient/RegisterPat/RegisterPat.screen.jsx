@@ -15,7 +15,7 @@ import {apiPatientRegister} from '../../../utils/api/patientRoutes';
 import {setSpinner} from '../../../utils/setSpinner';
 import {setModal} from '../../../utils/setModal';
 import {styles} from './RegisterPat.styles';
-import {formatToDate} from '../../../utils/commonMethods';
+import {formatAllDates} from '../../../utils/commonMethods';
 
 export const RegisterPat = ({navigation}) => {
   const {
@@ -23,27 +23,6 @@ export const RegisterPat = ({navigation}) => {
     handleSubmit,
     formState: {errors},
   } = useForm();
-
-  const formatAllDates = formData => {
-    let familyGroupDates = [];
-
-    const firstDate = formatToDate(formData.fechaNacimiento);
-
-    if (formData.grupoFamiliar.length >= 1) {
-      formData.grupoFamiliar.map(fam => {
-        familyGroupDates.push({
-          ...fam,
-          fechaNacimiento: formatToDate(fam.fechaNacimiento),
-        });
-      });
-    }
-
-    return {
-      ...formData,
-      fechaNacimiento: firstDate,
-      grupoFamiliar: familyGroupDates,
-    };
-  };
 
   const onSubmit = async data => {
     if (data) {
@@ -223,6 +202,29 @@ export const RegisterPat = ({navigation}) => {
                 minLength: {
                   value: 6,
                   message: 'La contraseña debe tener al menos 6 caracteres',
+                },
+                validate: value => {
+                  // Validar que la contraseña contenga al menos una letra minúscula
+                  if (!/[a-z]/.test(value)) {
+                    return 'La contraseña debe contener al menos una letra minúscula';
+                  }
+
+                  // Validar que la contraseña contenga al menos una letra mayúscula
+                  if (!/[A-Z]/.test(value)) {
+                    return 'La contraseña debe contener al menos una letra mayúscula';
+                  }
+
+                  // Validar que la contraseña contenga al menos un número
+                  if (!/\d/.test(value)) {
+                    return 'La contraseña debe contener al menos un número';
+                  }
+
+                  // Validar que la contraseña contenga al menos un carácter especial
+                  if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+                    return 'La contraseña debe contener al menos un carácter especial';
+                  }
+
+                  return true;
                 },
               }}
               render={({field}) => (

@@ -42,8 +42,8 @@ export const formatTime = minutes => {
   if (minutes <= 2) {
     return '2 - 4';
   } else {
-    const minutesFrom = Math.floor(minutes - minutes * 0.1);
-    const minutesTo = Math.ceil(minutes + minutes * 0.1);
+    const minutesFrom = Math.floor(minutes - minutes * 0.15);
+    const minutesTo = Math.ceil(minutes + minutes * 0.2);
 
     return `${minutesFrom} - ${minutesTo}`;
   }
@@ -60,4 +60,46 @@ export const getFutureDate = seconds => {
   const currentDate = new Date();
   currentDate.setSeconds(currentDate.getSeconds() + seconds);
   return currentDate;
+};
+
+export const formatAllDates = formData => {
+  let familyGroupDates = [];
+
+  const firstDate = formatToDate(formData.fechaNacimiento);
+
+  if (formData.grupoFamiliar.length >= 1) {
+    formData.grupoFamiliar.map(fam => {
+      familyGroupDates.push({
+        ...fam,
+        fechaNacimiento: formatToDate(fam.fechaNacimiento),
+      });
+    });
+  }
+
+  return {
+    ...formData,
+    fechaNacimiento: firstDate,
+    grupoFamiliar: familyGroupDates,
+  };
+};
+
+export const formatAllDatesLogin = formData => {
+  let familyGroupDates = [];
+
+  const firstDate = formatDate(new Date(formData.fechaNacimiento));
+
+  if (formData.grupoFamiliar.length >= 1) {
+    formData.grupoFamiliar.map(fam => {
+      familyGroupDates.push({
+        ...fam,
+        fechaNacimiento: formatDate(new Date(fam.fechaNacimiento)),
+      });
+    });
+  }
+
+  return {
+    ...formData,
+    fechaNacimiento: firstDate,
+    grupoFamiliar: familyGroupDates,
+  };
 };

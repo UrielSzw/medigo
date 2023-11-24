@@ -1,12 +1,9 @@
-#  Medigo Manual de uso 
+# Medigo Manual de uso 
 
 Bienvenido/a a nuestra aplicación de Médicos a Domicilio. Esta guía le proporcionará todas las instrucciones necesarias para conectar nuestra aplicación de manera efectiva con nuestro servidor para poder asi hacer uso de nuestros servicios.
 
-
 - [MediGo Manual de Uso](#medigo-manual-de-uso)
   - [Introducción](#introducción)
-  - [Tecnologias Utilizadas](#tecnologias-utilizadas)
-  - [Logica de Negocio](#logica-de-negocio)
   - [Guía de uso](#guía-de-uso)
     - [Caso Paciente](#caso-paciente)
     - [Caso Medico](#caso-medico)
@@ -27,7 +24,7 @@ El proyecto utiliza las siguientes tecnologías y bibliotecas:
 - React Navigation: Una biblioteca para manejar la navegación entre las pantallas en la aplicación.
 - Redux: Una biblioteca de gestión de estado para JavaScript.
 
-**Lógica de negocio**
+*Lógica de negocio*
 
 EL incio de aplicacion es un basico login, con su registrar, el cual tiene 2 opciones. Medico y Paciente, estas 2 tienen un diferente formulario de registro. Cada uno por su parte tendra diferentes pedidos de informacion para poder registrarse. El Paciente cuenta con Nombre - Apellido - Sexo(M/F/O) - Fecha de Nacimiento(DD-MM-YYYY) - Email - Contraseña - Telefono - DNI - Direccion - Piso(opcional) - Departamento(opcional) - Ciudad - Codigo Postal - Miembros del Grupo Familiar que cada uno tiene Nombre - Apellido - Sexo(M/F/O) - Fecha de Nacimiento(DD-MM-YYYY) y el medico cuenta con Nombre - Apellido - Sexo(M/F/O) - Fecha de Nacimiento(DD-MM-YYYY) - Email - Contraseña - Telefono - DNI - Direccion - Especialidad que puede ser(Clinico - Pediatria - Ginecologia - Traumatologia - Alergista) - Precio - Radio de Accion(KM) - Numero de Matricula. Luego de esto se le permitira inciar sesion sin ningun inconveniente.
 
@@ -46,60 +43,78 @@ Y en cuanto al cliente(paciente) cuenta con su historial de medicos recibidos co
 ## Guía de uso
 
 1. Lo primero que se encuentra es el inicio de sesion con un boton de registrarse para crear un cuenta.
-"Aca Foto de INICIAR SESION"
+   <p align="center">
+     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/login.jpeg?raw=true" alt="" width="200" height="400">
+   </p>
 
 2. De ahi al pasar al registrarse podes elegir si ser un usuario Paciente o un usuario Medico, dependiendo de la razon del uso que le des a la aplicacion
-"Aca Foto de SELECCION DE USUARIO"
+   <p align="center">
+     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/registro.jpeg?raw=true" alt="" width="200" height="400">
+   </p>
 
 3. Una vez seleccionado el tipo de usuario, este es el registrarse de Paciente
-"Aca Foto de SELECCION DE USUARIO"
+   <p align="center">
+     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/registro-paciente.jpeg?raw=true" alt="" width="200" height="400">
+   </p>
 
-y este es el registrarse de Medico
-"Aca Foto de SELECCION DE MEDICO"
+4. Este es el registrarse de Medico
+   <p align="center">
+     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/registro-medico.jpeg?raw=true" alt="" width="200" height="400">
+   </p>
 
 ### Caso Paciente
-1. En el caso Paciente, lo primero que se ve es el home del Paciente donde podramos solicitar una consulta y elegir al medico que esten con la cuenta activada
-"Aca Foto de la HOME DE PACIENTE"
-
-2. Ademas de eso encontraremos en la parte superior para cambiar nuestra direccion en cualquier momento
-"Aca Foto de la CAMBIO DE DIRECCION"
-
-3. Luego en la parte inferior si presionamos el icono del usuario nos trasladara a lo que son nuestras Actividad(Historial de Consultas) - Datos Personales - Ayuda - Miembros Familiares. Ademas de todas esas opciones hay tambien un boton de logOut para cerrar sesion
-"Aca Foto de la CONFIGURACION"
-
-4. Al preisonar boton de "Solicitar Medico", se abrira un formulario donde el paciente debera ingresar informacion medica de la consulta
-"Aca Foto de la INFORMACIO MEDICA PARA CONSULTA"
-
-5. Te aparecera una lista de medicos para elegir cual quiere que le haga la consulta con la informacion del medico
-"Aca Foto de la LISTA DE MEDICOS A ELEGIR"
-
-6. Luego debera esperar por 1 minuto para ver si algun medico le acepta la consulta
-"Aca Foto de la ESPERA DE 1 MINUTO"
-
-7. Si se acepta lo mandara a otra pestaña donde le aparecera una card con los datos de la consulta
-"Aca Foto de la MUESTRA DE CONSULTA ACEPTADA"
-
-8. Una vez terminada la consulta, lo enviara al paciente directo a una pestaña donde debera valorar al medico y brindar, si quiere, una breve descripcion de la consulta del medico. Y eso luego pasara al historial de consultas(Actividad) en configuracion
-"Aca Foto de la VALORACION AL MEDICO"
-
+1. En el caso Paciente, lo primero que se ve es el home del Paciente donde podramos solicitar una consulta y elegir al medico que esten con la cuenta activada >  En la parte superior para cambiar nuestra direccion en cualquier momento
+   <p align="center">
+     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/home-paciente.jpeg?raw=true" alt="" width="200" height="400">
+   </p>
+2. Luego en la parte inferior si presionamos el icono del usuario nos trasladara a lo que son nuestras Actividad(Historial de Consultas) - Datos Personales - Ayuda - Miembros Familiares. Ademas de todas esas opciones hay tambien un boton de logOut para cerrar sesion
+   <p align="center">
+     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/configuracion-paciente.jpeg?raw=true" alt="" width="200" height="400">
+   </p>
+3. Al preisonar boton de "Solicitar Medico", se abrira un formulario donde el paciente debera ingresar informacion medica de la consulta
+   <p align="center">
+     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/informacion-consulta.jpeg?raw=true" alt="" width="200" height="400">
+   </p>
+4. Te aparecera una lista de medicos para elegir cual quiere que le haga la consulta con la informacion del medico
+   <p align="center">
+     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/lista-doctores.jpeg?raw=true" alt="" width="200" height="400">
+   </p>
+5. Luego debera esperar por 1 minuto para ver si algun medico le acepta la consulta
+   <p align="center">
+     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/espera.jpeg?raw=true" alt="" width="200" height="400">
+   </p>
+6. Si se acepta lo mandara a otra pestaña donde le aparecera una card con los datos de la consulta
+   <p align="center">
+     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/consulta-aceptada.jpeg?raw=true" alt="" width="200" height="400">
+   </p>
+7. Una vez terminada la consulta, lo enviara al paciente directo a una pestaña donde debera valorar al medico y brindar, si quiere, una breve descripcion de la consulta del medico. Y eso luego pasara al historial de consultas(Actividad) en configuracion
+   <p align="center">
+     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/valoracion-medico.jpeg?raw=true" alt="" width="200" height="400">
+   </p>
 ### Caso Medico
 1. En el caso Medico, lo primero que se ve es el home del Medico donde podramos activar nuestra cuenta para empezar a recibir solicitudes de Pacientes
-"Aca Foto de la HOME DE MEDICO"
-
+   <p align="center">
+     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/home-medico.jpeg?raw=true" alt="" width="200" height="400">
+   </p>
 2. Una vez activa la cuenta nos mandara a un mapa donde deberemos de confirmar nuestra ubicacion
-"Aca Foto del MAPA"
-
+   <p align="center">
+     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/mapa.jpeg?raw=true" alt="" width="200" height="400">
+   </p>
 3. Luego nos empezaran a aparecer los pacientes que nos hayan solicitado y nosotros deberemos de elegir si aceptar o no
-"Aca Foto del ACEPTACION DE PACIENTE"
-
+   <p align="center">
+     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/consulta-aceptada.jpeg?raw=true" alt="" width="200" height="400">
+   </p>
 4. Una vez terminada la consulta, lo enviara al paciente directo a una pestaña donde debera valorar al medico y brindar, si quiere, una breve descripcion de la consulta del medico. Y eso luego pasara al historial de consultas(Actividad) en configuracion
-"Aca Foto de la VALORACION AL MEDICO"
-
-"Aca Foto de la ACTIVIDAD"
-
+   <p align="center">
+     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/valorar-paciente.jpeg?raw=true" alt="" width="200" height="400">
+   </p>
+   <p align="center">
+     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/actividad-paciente.jpeg?raw=true" alt="" width="200" height="400">
+   </p>
 5. Luego en la parte inferior si presionamos el icono del usuario nos trasladara a lo que son nuestras Actividad(Historial de Consultas) - Datos Personales - Ayuda. Ademas de todas esas opciones hay tambien un boton de logOut para cerrar sesion
-"Aca Foto de la CONFIGURACION"
-
+   <p align="center">
+     <img src="https://github.com/UrielSzw/medigo/blob/master/src/assets/readme/configuracion-medico.jpeg?raw=true" alt="" width="200" height="400">
+   </p>
 
 ## Contribución
 

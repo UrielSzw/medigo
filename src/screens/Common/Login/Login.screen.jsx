@@ -17,6 +17,7 @@ import {setDoctorData} from '../../../redux/doctor.slice';
 import {setSpinner} from '../../../utils/setSpinner';
 import {styles} from './Login.styles';
 import {setModal} from '../../../utils/setModal';
+import {formatAllDatesLogin} from '../../../utils/commonMethods';
 
 export const Login = ({navigation}) => {
   const {
@@ -43,7 +44,8 @@ export const Login = ({navigation}) => {
             dispatch(setDoctorData(response));
             navigation.navigate(PATHS.HOMEDOCTOR);
           } else {
-            dispatch(setUserData(response));
+            const formatDate = formatAllDatesLogin(response);
+            dispatch(setUserData(formatDate));
             navigation.navigate(PATHS.HOMEPATIENT);
           }
         }

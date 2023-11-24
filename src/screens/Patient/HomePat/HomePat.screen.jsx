@@ -67,6 +67,13 @@ export const HomePat = () => {
   };
 
   const onSubmit = async data => {
+    dispatch(
+      setRequestDetails({
+        motivo: data.motivo,
+        sintomas: data.sintomas,
+      }),
+    );
+
     if (especialidad === 'Seleccione especialidad') {
       setError('especialidad', {
         type: 'manual',

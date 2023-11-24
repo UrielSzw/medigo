@@ -15,9 +15,9 @@ import {styles} from './FamilyMembers.styles.js';
 
 export const FamilyMembers = ({navigation}) => {
   const {userData} = useSelector(state => state.userReducer);
-  const family = userData?.grupoFamiliar?.slice(
-    1,
-    userData?.grupoFamiliar?.length,
+  const family = userData?.grupoFamiliar?.filter(
+    fam =>
+      !(fam.nombre === userData.nombre && fam.apellido === userData.apellido),
   );
   const dispatch = useDispatch();
 
@@ -70,15 +70,17 @@ export const FamilyMembers = ({navigation}) => {
           <StyledButton
             onPress={handleNavigateModifyFamily}
             children="Agregar"
+            style={styles.button}
           />
 
           <StyledButton
             variant="secondary"
             onPress={handleNavigateProfile}
             children="Volver"
+            style={styles.button}
           />
+          <FooterPatient current="profile" />
         </View>
-        <FooterPatient current="profile" />
       </View>
     </View>
   );
